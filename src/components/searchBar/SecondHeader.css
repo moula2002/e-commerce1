@@ -1,0 +1,702 @@
+/* ================= SECOND HEADER / BOTTOM MENU ================= */
+.second-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background:black;
+  padding: 0.5rem 1rem;
+  color: white;
+  position: sticky;
+  top: 60px;
+  z-index: 999;
+  flex-wrap: nowrap;
+  height: 70px;
+  transition: all 0.3s ease;
+}
+
+/* LEFT MENU CONTAINER */
+.menu-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #888 transparent;
+}
+
+/* "All" BUTTON */
+.menu-item.all {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.menu-icon {
+  margin-right: 5px;
+}
+
+/* HORIZONTAL MENU LIST */
+.menu-list {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: nowrap;
+}
+
+.menu-item {
+  margin-right: 20px;
+  white-space: nowrap;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+
+.menu-item:hover {
+  text-decoration: underline;
+}
+
+/* DROPDOWN FOR MOBILE MENU */
+.menu-list.active {
+  display: block;
+  flex-direction: column;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  background: #232f3e;
+  padding: 10px 0;
+  z-index: 1000;
+}
+
+/* RIGHT SIDE FESTIVAL OFFER */
+.festival-offer {
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.live-now {
+  color: yellow;
+  margin-left: 5px;
+}
+
+/* CLOSE ICON FOR MOBILE MENU */
+.close-icon {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* SCROLLBAR FOR HORIZONTAL MENU */
+.menu-list::-webkit-scrollbar {
+  height: 6px;
+}
+
+.menu-list::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+/* ================= MEDIA QUERIES ================= */
+
+/* Tablets (992px and below) */
+@media (max-width: 992px) {
+  .second-header {
+    padding: 0.5rem;
+  }
+
+  .menu-item {
+    margin-right: 15px;
+    font-size: 0.95rem;
+  }
+
+  .festival-offer {
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile devices (768px and below) */
+@media (max-width: 768px) {
+  .second-header {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    padding: 0.5rem;
+  }
+
+  .menu-left {
+    width: 100%;
+    overflow-x: hidden;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+  }
+
+  .menu-item.all {
+    margin-bottom: 5px;
+  }
+
+  .menu-list {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .menu-list.active {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: 0;
+  }
+
+  .menu-item {
+    margin: 5px 0;
+  }
+
+  .festival-offer {
+    margin-top: 10px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Small mobile devices (480px and below) */
+@media (max-width: 480px) {
+  .menu-item {
+    font-size: 0.85rem;
+    margin-right: 10px;
+  }
+
+  .festival-offer {
+    font-size: 0.8rem;
+  }
+
+  .menu-item.all {
+    font-size: 0.9rem;
+  }
+}
+
+/* ================= SECOND HEADER / BOTTOM MENU ================= */
+.second-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* Enhanced Aesthetic */
+  background: #232f3e; /* Dark Amazon Blue */
+  padding: 0.5rem 1.5rem; /* Increased padding */
+  color: #ffffff;
+  position: sticky;
+  top: 60px;
+  z-index: 999;
+  flex-wrap: nowrap;
+  height: 50px; /* Slightly reduced height for sleeker look */
+  /* Added Animation */
+  transition: all 0.3s ease, box-shadow 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Default subtle shadow */
+  animation: headerFadeIn 0.5s ease-out; /* Entry animation for header */
+}
+
+/* LEFT MENU CONTAINER */
+.menu-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #555555 transparent; /* Darker scrollbar */
+}
+
+/* "All" BUTTON */
+.menu-item.all {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+  margin-right: 20px; /* Increased margin */
+  flex-shrink: 0;
+  padding: 8px 12px;
+  background-color: #364759; /* Slightly lighter base */
+  border-radius: 4px;
+  /* Added Animation */
+  transition: all 0.2s ease-in-out;
+}
+
+.menu-item.all:hover {
+  background-color: #485c72; /* Subtle change on hover */
+  transform: scale(1.05); /* Slight "press" effect */
+}
+
+.menu-icon {
+  margin-right: 8px; /* More space */
+  font-size: 1.2rem;
+}
+
+/* HORIZONTAL MENU LIST */
+.menu-list {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: nowrap;
+}
+
+.menu-item {
+  margin-right: 25px; /* More space between items */
+  white-space: nowrap;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 4px 0; /* Vertical padding for hover effect */
+  position: relative;
+  /* Added Animation */
+  transition: color 0.3s, transform 0.3s;
+}
+
+/* NEW: Clean Underline Hover Effect */
+.menu-item:hover {
+  color: #ff9900; /* Accent color on hover */
+  text-decoration: none; /* Remove default underline */
+}
+
+.menu-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #ff9900; /* Amazon accent color */
+  transform: scaleX(0); /* Start invisible */
+  transition: transform 0.3s ease-out;
+}
+
+.menu-item:hover::after {
+  transform: scaleX(1); /* Expand underline on hover */
+}
+
+/* DROPDOWN FOR MOBILE MENU */
+.menu-list.active {
+  display: flex; /* Use flex to control vertical stacking */
+  flex-direction: column;
+  position: absolute;
+  top: 50px; /* Align with new header height */
+  left: 0;
+  width: 100%;
+  background: #232f3e;
+  padding: 0; /* Remove padding from UL, add to LI */
+  z-index: 1000;
+  /* Added Animation */
+  transform-origin: top;
+  animation: slideDown 0.3s ease-out forwards;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Styling for items inside the mobile menu */
+.menu-list.active .menu-item {
+  margin: 0;
+  padding: 12px 1.5rem; /* Spacious padding for tapping */
+  width: 100%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator */
+}
+
+.menu-list.active .menu-item:hover {
+  background-color: #364759;
+  color: #ffffff;
+}
+.menu-list.active .menu-item::after {
+    display: none; /* Hide underline in mobile menu */
+}
+
+/* RIGHT SIDE FESTIVAL OFFER */
+.festival-offer {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  flex-shrink: 0;
+  color: #ff9900; /* Accent color */
+  padding: 5px 10px;
+  background-color: #364759;
+  border-radius: 4px;
+  cursor: pointer;
+  /* Added Animation */
+  animation: pulseGlow 2.5s infinite ease-in-out alternate;
+  transition: background-color 0.3s;
+}
+
+.festival-offer:hover {
+    background-color: #485c72;
+}
+
+.live-now {
+  color: #ffc107; /* Brighter yellow/gold */
+  margin-left: 8px;
+  /* Added Animation */
+  animation: colorPulse 1s infinite alternate;
+}
+
+/* CLOSE ICON FOR MOBILE MENU */
+.close-icon {
+  position: absolute;
+  top: 15px; /* Centered vertically in header */
+  right: 1.5rem;
+  font-size: 1.8rem;
+  color: #ffffff;
+  cursor: pointer;
+  z-index: 1001;
+  /* Added Animation */
+  transition: transform 0.3s ease-in-out, color 0.3s;
+}
+
+.close-icon:hover {
+  transform: rotate(90deg) scale(1.1); /* Spin and scale effect */
+  color: #ff9900;
+}
+
+/* SCROLLBAR FOR HORIZONTAL MENU */
+.menu-left::-webkit-scrollbar {
+  height: 6px;
+}
+
+.menu-left::-webkit-scrollbar-thumb {
+  background: #555555;
+  border-radius: 3px;
+}
+.menu-left::-webkit-scrollbar-track {
+    background: #232f3e;
+}
+
+
+/* ================= MEDIA QUERIES ================= */
+
+/* Tablets (992px and below) - Adjusted to match new styles */
+@media (max-width: 992px) {
+  .second-header {
+    padding: 0.5rem 1rem;
+  }
+
+  .menu-item {
+    margin-right: 15px;
+    font-size: 0.95rem;
+  }
+
+  .festival-offer {
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile devices (768px and below) - Vertical menu activation */
+@media (max-width: 768px) {
+  .second-header {
+    flex-direction: row; /* Keep it horizontal in mobile mode */
+    align-items: center;
+    height: 50px; /* Fixed height for sticky bar */
+    padding: 0.5rem 1rem;
+    position: relative; /* Remove sticky on small screen if header above is sticky */
+  }
+
+  .menu-left {
+    width: auto;
+    overflow-x: visible; /* Prevent horizontal scroll */
+    flex-wrap: nowrap;
+    margin-bottom: 0;
+    position: static;
+  }
+  
+  /* Hide the menu items by default, rely on .active for display */
+  .menu-list {
+    display: none;
+  }
+  
+  /* Show only the "All" button and the offer side-by-side */
+  .menu-item.all {
+    margin-right: 15px;
+    margin-bottom: 0;
+    font-size: 0.95rem;
+  }
+
+  .festival-offer {
+    margin-top: 0;
+    font-size: 0.85rem;
+  }
+}
+
+/* Small mobile devices (480px and below) */
+@media (max-width: 480px) {
+  .menu-item.all {
+    font-size: 0.85rem;
+  }
+}
+
+
+/* ================= KEYFRAME ANIMATIONS ================= */
+
+/* Header Entry */
+@keyframes headerFadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Dropdown Menu Slide */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: scaleY(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+/* Offer Glow */
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0px 0px rgba(255, 153, 0, 0.5); }
+  100% { box-shadow: 0 0 8px 4px rgba(255, 153, 0, 0); }
+}
+
+/* Live Now Text Pulse */
+@keyframes colorPulse {
+  0% { color: #ffc107; }
+  100% { color: #ff9900; }
+}
+/* ================= SECOND HEADER / BOTTOM MENU (Compact & Transparent) ================= */
+.second-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #232f3e;
+  padding: 0.3rem 1rem; 
+  color: #ffffff;
+  position: sticky;
+  top: 60px;
+  z-index: 999;
+  flex-wrap: nowrap;
+  height: 45px; 
+  transition: all 0.3s ease, box-shadow 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  animation: headerFadeIn 0.5s ease-out;
+}
+
+/* LEFT MENU CONTAINER */
+.menu-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #555555 transparent;
+}
+
+/* "All" BUTTON */
+.menu-item.all {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+  margin-right: 10px; 
+  flex-shrink: 0;
+  padding: 6px 10px; 
+  background-color: #364759;
+  border-radius: 3px;
+  transition: all 0.2s ease-in-out;
+  font-size: 0.95rem;
+}
+
+.menu-item.all:hover {
+  background-color: #485c72;
+  transform: scale(1.03);
+}
+
+.menu-icon {
+  margin-right: 6px; 
+  font-size: 1.1rem;
+}
+
+/* HORIZONTAL MENU LIST */
+/* .menu-list {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: nowrap;
+}
+
+.menu-item {
+  margin-right: 15px; 
+  white-space: nowrap;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 2px 0; 
+  position: relative;
+  transition: color 0.3s, transform 0.3s;
+  font-size: 0.9rem;
+}
+
+.menu-item:hover {
+  color: #ff9900;
+  text-decoration: none;
+}
+
+.menu-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px; 
+  background-color: #ff9900;
+  transform: scaleX(0);
+  transition: transform 0.3s ease-out;
+}
+
+.menu-item:hover::after {
+  transform: scaleX(1);
+} */
+
+/* DROPDOWN FOR MOBILE MENU (Vertical, Transparent) */
+.menu-list.active {
+  display: flex; 
+  flex-direction: column;
+  position: absolute;
+  top: 45px; 
+  left: 0;
+  width: 100%;
+  
+  /* 🌟 KEY CHANGE: Using rgba for transparency 🌟 */
+  background: rgba(35, 47, 62, 0.95); /* Dark blue with 95% opacity */
+  
+  padding: 0;
+  z-index: 1000;
+  transform-origin: top;
+  animation: slideDown 0.3s ease-out forwards;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Styling for items inside the transparent mobile menu */
+.menu-list.active .menu-item {
+  margin: 0;
+  padding: 10px 1rem; 
+  width: 100%;
+  /* Making separator line slightly more transparent too */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
+  font-size: 1rem;
+}
+
+.menu-list.active .menu-item:hover {
+  /* Use a subtle hover highlight inside the transparent menu */
+  background-color: rgba(72, 92, 114, 0.5); 
+  color: #ffffff;
+}
+.menu-list.active .menu-item::after {
+    display: none;
+}
+
+/* RIGHT SIDE FESTIVAL OFFER */
+.festival-offer {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  flex-shrink: 0;
+  color: #ff9900; 
+  padding: 4px 8px; 
+  background-color: #364759;
+  border-radius: 3px;
+  cursor: pointer;
+  animation: pulseGlow 2.5s infinite ease-in-out alternate;
+  transition: background-color 0.3s;
+  font-size: 0.85rem;
+}
+
+.festival-offer:hover {
+    background-color: #485c72;
+}
+
+.live-now {
+  color: #ffc107;
+  margin-left: 5px; 
+  animation: colorPulse 1s infinite alternate;
+}
+
+/* CLOSE ICON FOR MOBILE MENU */
+.close-icon {
+  position: absolute;
+  top: 12px; 
+  right: 1rem;
+  font-size: 1.5rem;
+  color: #ffffff;
+  cursor: pointer;
+  z-index: 1001;
+  transition: transform 0.3s ease-in-out, color 0.3s;
+}
+
+.close-icon:hover {
+  transform: rotate(90deg) scale(1.05);
+  color: #ff9900;
+}
+
+/* SCROLLBAR FOR HORIZONTAL MENU */
+.menu-left::-webkit-scrollbar {
+  height: 4px;
+}
+.menu-left::-webkit-scrollbar-thumb {
+  background: #555555;
+  border-radius: 2px;
+}
+.menu-left::-webkit-scrollbar-track {
+    background: #232f3e;
+}
+
+
+/* ================= MEDIA QUERIES ================= */
+
+/* Tablets (992px and below) */
+@media (max-width: 992px) {
+  .second-header {
+    padding: 0.3rem 0.75rem;
+  }
+}
+
+/* Mobile devices (768px and below) - Vertical menu activation */
+@media (max-width: 768px) {
+  .second-header {
+    height: 45px;
+    padding: 0.3rem 0.75rem;
+  }
+}
+
+/* Small mobile devices (480px and below) */
+@media (max-width: 480px) {
+  .menu-item.all {
+    font-size: 0.85rem;
+  }
+}
+
+/* ================= KEYFRAME ANIMATIONS (UNCHANGED) ================= */
+
+@keyframes headerFadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: scaleY(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0px 0px rgba(255, 153, 0, 0.5); }
+  100% { box-shadow: 0 0 8px 4px rgba(255, 153, 0, 0); }
+}
+
+@keyframes colorPulse {
+  0% { color: #ffc107; }
+  100% { color: #ff9900; }
+}

@@ -1,0 +1,364 @@
+/* -------------------- BASE STYLES & GLOBALS -------------------- */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0a0e14; 
+    margin: 0;
+    padding: 0;
+}
+
+/* -------------------- NAVBAR -------------------- */
+
+/* Navbar Container */
+.navbar-custom {
+    align-items: center;
+    background: linear-gradient(135deg, #0a0e14, #1c1f2a);
+    padding: 0.75rem 2rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    border-radius: 10px 10px 0 0;
+    position: relative;
+    z-index: 100;
+    transition: background 0.3s ease;
+}
+
+.navbar-custom:hover {
+    background: linear-gradient(135deg, #1c1f2a, #0a0e14);
+}
+
+.navbar-header-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+.nav-icon {
+    color: #ffffff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.navbar-brand-custom {
+    font-weight: 700;
+    font-size: 1.9rem;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    margin-left: 0;
+}
+
+.navbar-brand-custom:hover {
+    transform: scale(1.1);
+}
+
+.brand-white {
+    color: #ffffff;
+}
+
+.brand-orange {
+    color: #ff9900;
+}
+
+.explore-plus-diamond {
+    color: #ff9900;
+    font-size: 0.8em;
+    margin-left: 5px;
+}
+
+.navbar-icons-right {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-custom .nav-link {
+    color: #fff;
+    font-weight: 500;
+    margin-left: 1rem;
+    position: relative;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+}
+
+.navbar-custom .nav-link:hover {
+    color: #ff9900;
+}
+
+.nav-link-icon {
+    font-size: 1.2rem;
+    margin-left: 0.5rem;
+}
+
+/* Location Styles */
+.location-wrapper {
+    display: none; 
+    width: 100%;
+    padding: 0 0.75rem;
+    box-sizing: border-box;
+}
+
+.location-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.25rem 0;
+    overflow: hidden;
+    justify-content: flex-start; 
+    margin-bottom: 0;
+}
+
+.location-icon { 
+    color: #ffffffaa; 
+    font-size: 1rem;
+    margin-right: 5px;
+}
+
+.location {
+    color: #ffffffaa;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+}
+
+.location:hover {
+    color: #ffffff;
+}
+
+.location-link { 
+    display: inline;
+    color: #2874f0;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-left: 5px;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.location-arrow { 
+    display: inline;
+    color: #2874f0;
+    font-size: 0.6rem;
+    margin-left: 5px;
+}
+/* End Location Styles */
+
+.cart-info { 
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+    color: #fff; 
+    font-weight: 500;
+}
+
+.cart-icon {
+    font-size: 1.2rem;
+    margin-right: 5px;
+}
+
+.cart-count {
+    background: #ff9900; 
+    color: #0a0e14; 
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-left: 5px; 
+    transition: transform 0.2s ease;
+}
+
+.cart-count:hover {
+    transform: scale(1.2);
+}
+
+.account-button {
+    background: none;
+    border: 1px solid #ffffffaa; 
+    color: #ffffff;
+    padding: 8px 15px;
+    border-radius: 5px; 
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s ease, border-color 0.3s ease;
+    margin-left: auto;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.account-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #ffffff;
+}
+
+/* -------------------- SEARCH BAR (MODIFIED) -------------------- */
+.search-bar-container {
+    display: flex; 
+    justify-content: center; 
+    width: 100%; 
+    position: relative;
+    transition: transform 0.2s ease;
+    margin: 0; 
+    margin-bottom: 0; 
+}
+
+.search-input {
+    width: 100%;
+    max-width: 400px; 
+    padding: 10px 18px; 
+    font-size: 16px;
+    border-radius: 50px;
+    border: 2px solid #ff9900;
+    outline: none;
+    transition: all 0.3s ease;
+    background-color: #fff;
+    color: #000;
+    text-indent: 10px;
+}
+
+.search-input:focus {
+    border-color: #ffc84d;
+    box-shadow: 0 0 12px rgba(255, 153, 0, 0.5);
+}
+
+/* -------------------- OTHER DROPDOWN STYLES (UNCHANGED) -------------------- */
+.search-results {
+    position: absolute;
+    top: 45px;
+    left: 0; 
+    right: 0;
+    background: #1f2233;
+    border-radius: 0 0 12px 12px;
+    max-height: 280px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: fadeInDropdown 0.3s forwards;
+}
+
+@keyframes fadeInDropdown {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* -------------------- MEDIA QUERIES (FIXED FOR OVERFLOW ISSUE) -------------------- */
+
+/* Mobile Devices (max-width: 767px) */
+@media (max-width: 767px) {
+    .navbar-custom {
+        flex-direction: column;
+        align-items: flex-start;
+        /* Minimal vertical padding */
+        padding: 0.2rem 0; 
+        border-radius: 0;
+    }
+
+    /* 1. TOP ROW: Menu | Logo | Icons */
+    .navbar-header-row {
+        width: 100%;
+        padding: 0 0.4rem; 
+    }
+
+    .nav-icon { 
+        font-size: 1.3rem;
+        margin-right: 5px;
+    }
+
+    .navbar-brand-custom {
+        font-size: 1.5rem; 
+    }
+    
+    .location, .returns-orders, .account-button, .nav {
+        display: none !important; 
+    }
+
+    .cart-info {
+        font-size: 0.85rem !important; 
+        margin-left: 8px;
+    }
+
+    .cart-icon {
+        font-size: 1.25rem;
+    }
+    
+    /* 3. SEARCH BAR - FIXING OVERFLOW */
+    .search-bar-container {
+        width: 100%; 
+        max-width: 100%; 
+        margin: 0.25rem 0; 
+        order: 2; 
+        justify-content: center; 
+        /* REMOVED horizontal padding here to allow search input to take full width of container */
+        padding: 0; 
+    }
+
+    .search-input {
+        width: 96%; /* Adjusted to 96% to give space for container's padding/margin */
+        max-width: 100%; 
+        padding: 6px 15px; 
+        font-size: 13px;
+        /* IMPORTANT FIX: Removed border for clean integration into the dark navbar */
+        border: none; 
+        border-radius: 5px;
+        background-color: #fff;
+        text-indent: 25px; 
+        /* Re-centered the search bar visually */
+        margin: 0 2%; 
+        box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+    }
+    
+    .search-bar-container .search-icon {
+        position: absolute;
+        /* Adjusted position to align with the new search-input margin/padding */
+        left: 22px; 
+        top: 50%;
+        transform: translateY(-50%);
+        color: #777;
+        font-size: 0.9rem;
+        z-index: 10;
+        display: block; 
+    }
+    
+    /* 2. LOCATION BAR */
+    .location-wrapper {
+        display: block;
+        order: 3;
+        padding: 0.1rem 0.4rem 0.3rem 0.4rem; 
+    }
+
+    .location-link {
+        font-size: 0.8rem;
+    }
+}
+
+/* Very small mobile screens (e.g., iPhone 5/SE) */
+@media (max-width: 480px) {
+    .navbar-custom {
+        padding: 0.15rem 0;
+    }
+    
+    .navbar-header-row, .location-wrapper {
+        padding: 0 0.4rem;
+    }
+
+    .search-bar-container {
+        padding: 0;
+        margin: 0.2rem 0; 
+    }
+
+    .search-input {
+        padding: 5px 15px; 
+        margin: 0 2%; /* Consistent margin */
+    }
+
+    .navbar-brand-custom {
+        font-size: 1.35rem;
+    }
+}
