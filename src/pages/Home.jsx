@@ -1,5 +1,5 @@
 import React from 'react';
-import Banner from '../components/Banner';
+ import Banner from '../components/Banner';
 import TopDealsPanel from '../components/deals/TopDealsPanel';
 import MobileDealsSection from '../components/deals/MobileDealsSection';
 import HomeKitchenDeals from '../components/deals/HomeKitchenDeals';
@@ -16,11 +16,11 @@ function Home() {
   return (
     <div className="homepage-content bg-light">
 
-      <header className="text-center py-4 bg-dark text-white">
+      <header className="text-center py-2 bg-dark text-white ">
         <h1>Welcome to the Store! 🛍️</h1>
       </header>
 
-      <Banner/>
+      {/* { <Banner/>} */}
 
       <TopDealsPanel />
 
@@ -53,8 +53,6 @@ function Home() {
       <SmallBusinessBestsellers />
 
       <RelatedItems/>
-
-
 
 
       <section className="text-center py-5 bg-light mt-5">

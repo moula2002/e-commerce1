@@ -25,26 +25,19 @@ export default function Header() {
     if (newLoc) dispatch(setLocation(newLoc));
   };
 
-  const goToCart = () => navigate("/cart");
+  const goToCart = () => navigate("/cart"); // Updated: Navigate to /cart
 
   return (
     <>
-      {/* Navbar-Custom-Container: Desktop/Mobile Container */}
       <Navbar className="navbar-custom sticky-top" expand="lg">
-        
-        {/* 1. TOP HEADER ROW (Visible on all screens) */}
-        <div className="navbar-header-row"> 
-          
-          {/* Mobile Menu Icon (Hamburger) */}
+        <div className="navbar-header-row">
           <span className="nav-icon d-block d-lg-none" style={{ marginLeft: '-8px' }}>&#9776;</span>
-            
-          {/* Logo/Brand */}
+
           <Navbar.Brand href="/" className="navbar-brand-custom">
             <span className="brand-white">E-commerce</span>
             <span className="brand-orange">.in</span>
           </Navbar.Brand>
 
-          {/* Desktop Location (Hidden on mobile - d-none) */}
           <div
             className="text-white ms-3 location d-none d-lg-block"
             style={{ cursor: "pointer" }}
@@ -53,27 +46,14 @@ export default function Header() {
             Delivering to <strong>{location}</strong>
           </div>
 
-          {/* Mobile Right Icons (Download/Login/Cart - Visible only on mobile - d-lg-none) */}
           <div className="d-flex align-items-center d-lg-none ms-auto">
-             {/* Download App Icon (Placeholder) */}
-             <span className="nav-icon" style={{ fontSize: '1.2rem' }}>📱</span>
-             {/* Login/Account Icon (Placeholder) */}
-             <span className="nav-icon" onClick={openAuthModal} style={{ fontSize: '1.2rem', margin: '0 10px' }}>👤</span>
-             {/* Cart Icon */}
-            <Nav.Link
-              className="nav-link text-white cart-info"
-              onClick={goToCart}
-              style={{ cursor: "pointer", padding: 0 }}
-            >
-              🛒 
-            </Nav.Link>
+            <span className="nav-icon" style={{ fontSize: '1.2rem' }}>📱</span>
+            <span className="nav-icon" onClick={openAuthModal} style={{ fontSize: '1.2rem', margin: '0 10px' }}>👤</span>
+            <span className="nav-icon" onClick={goToCart} style={{ fontSize: '1.2rem' }}>🛒</span>
           </div>
         </div>
 
-        {/* 3. SEARCH BAR (Full width on mobile, middle on desktop) */}
-        {/* NOTE: mx-3 is now effectively handled by the CSS margin/width fix */}
-        <div className="search-bar-container flex-grow-1"> 
-          {/* Search Icon inside the input area */}
+        <div className="search-bar-container flex-grow-1">
           <span className="search-icon d-block">🔍</span>
           <input
             type="text"
@@ -82,20 +62,15 @@ export default function Header() {
           />
         </div>
 
-        {/* 2. MOBILE LOCATION BAR (Visible only on mobile) */}
         <div className="location-wrapper d-block d-lg-none">
-            <div className="location-container">
-                <span className="location-icon">📍</span>
-                <span className="location">Location not set</span>
-                <span className="location-link" onClick={changeLocation}>
-                    Select delivery location
-                </span>
-                <span className="location-arrow"> &gt; </span>
-            </div>
+          <div className="location-container">
+            <span className="location-icon">📍</span>
+            <span className="location">Location not set</span>
+            <span className="location-link" onClick={changeLocation}>Select delivery location</span>
+            <span className="location-arrow"> &gt; </span>
+          </div>
         </div>
 
-
-        {/* RIGHT SECTION (Desktop only) */}
         <Nav className="align-items-center d-none d-lg-flex ms-3">
           <Button
             variant="outline-light"
@@ -104,9 +79,7 @@ export default function Header() {
           >
             Account
           </Button>
-          <Nav.Link className="nav-link text-white returns-orders">
-            Returns & Orders
-          </Nav.Link>
+          <Nav.Link className="nav-link text-white returns-orders">Returns & Orders</Nav.Link>
           <Nav.Link
             className="nav-link text-white cart-info"
             onClick={goToCart}
@@ -117,10 +90,8 @@ export default function Header() {
         </Nav>
       </Navbar>
 
-      {/* Bottom Menu */}
       <SecondHeader />
 
-      {/* Auth Modal */}
       <Modal show={showAuthModal} onHide={closeAuthModal} centered>
         <Modal.Body>
           <AuthPage onClose={closeAuthModal} />

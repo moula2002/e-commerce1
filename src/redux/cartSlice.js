@@ -13,11 +13,14 @@ const cartSlice = createSlice({
       if (!item?.id) return;
 
       const existingItem = state.items.find((i) => i.id === item.id);
-      const quantityToAdd = item.quantity || 1;
+      // quantity is taken from the item payload, defaulting to 1 if not present
+      const quantityToAdd = item.quantity || 1; 
 
       if (existingItem) {
+        // Increment quantity of existing item
         existingItem.quantity = (existingItem.quantity || 1) + quantityToAdd;
       } else {
+        // Add new item to the cart
         state.items.push({ ...item, quantity: quantityToAdd });
       }
     },
@@ -29,8 +32,10 @@ const cartSlice = createSlice({
       if (!existingItem) return;
 
       if (existingItem.quantity > quantityToRemove) {
+        // Decrement quantity
         existingItem.quantity -= quantityToRemove;
       } else {
+        // Remove item entirely if quantity is less than or equal to quantityToRemove
         state.items = state.items.filter((i) => i.id !== id);
       }
     },

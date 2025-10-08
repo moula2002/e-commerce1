@@ -1,50 +1,84 @@
-import React from "react";
-import img1 from "../assets/banner/mobile.jpg";
-import img2 from "../assets/banner/home.jpg";
-import img3 from "../assets/banner/bathroom-cleaner.png";
-import img4 from "../assets/banner/books.jpg";
+import React, { useEffect, useState } from "react";
 import "./Banner.css";
 
 function Banner() {
-  return (
-    <div className="banner-container text-center">
-      {/* The banner-text section is kept commented out as in the original code, but you can uncomment it if needed. */}
-      {/* <div className="banner-text">
-        <h2> Offer Mela Starting ✨</h2>
-        <p>Get up to 80% off on Electronics, Fashion & More!</p>
-      </div> */}
+  const [banners, setBanners] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    // Use dummy placeholder images for banner simulation
+    const dummyBanners = [
+      {
+        id: 1,
+        url: "https://picsum.photos/id/1015/1200/400",
+        title: "Discover New Arrivals for You",
+      },
+      {
+        id: 2,
+        url: "https://picsum.photos/id/1016/1200/400",
+        title: "Smart Deals on Electronics",
+      },
+      {
+        id: 3,
+        url: "https://picsum.photos/id/1020/1200/400",
+        title: "Home & Kitchen Essentials Sale",
+      },
+      {
+        id: 4,
+        url: "https://picsum.photos/id/1035/1200/400",
+        title: "Grab Festive Offers Now",
+      },
+    ];
+
+    // Simulate loading for effect
+    setTimeout(() => {
+      setBanners(dummyBanners);
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="banner-loading text-center py-5">
+        <div className="spinner-border text-warning" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="banner-container">
       <div
-        id="carouselExampleControlsNoTouching"
+        id="bannerCarousel"
         className="carousel slide carousel-custom"
         data-bs-ride="carousel"
-        data-bs-touch="false"
-        data-bs-interval="1000"
+        data-bs-interval="3000"
       >
         <div className="carousel-inner">
-          {/* Item 1: Mobile */}
-          <div className="carousel-item active">
-            <img src={img1} className="d-block w-100" alt="Mobile" />
-          </div>
-          {/* Item 2: Books (Original img4) */}
-          <div className="carousel-item">
-            <img src={img4} className="d-block w-100" alt="Books" />
-          </div>
-          {/* Item 3: Home (Original img2) */}
-          <div className="carousel-item">
-            <img src={img2} className="d-block w-100" alt="Home" />
-          </div>
-          {/* Item 4: Bathroom Cleaner (Original img3) */}
-          <div className="carousel-item">
-            <img src={img3} className="d-block w-100" alt="Bathroom Cleaner" />
-          </div>
+          {banners.map((banner, index) => (
+            <div
+              key={banner.id}
+              className={`carousel-item ${index === 0 ? "active" : ""}`}
+            >
+              <img
+                src={banner.url}
+                className="d-block w-100 banner-image"
+                alt={banner.title}
+              />
+              <div className="carousel-caption d-none d-md-block">
+                <h3>{banner.title}</h3>
+                <button className="btn btn-warning fw-bold mt-2">Shop Now</button>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* Previous Button */}
+        {/* Prev Button */}
         <button
           className="carousel-control-prev"
           type="button"
-          data-bs-target="#carouselExampleControlsNoTouching"
+          data-bs-target="#bannerCarousel"
           data-bs-slide="prev"
         >
           <span className="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -55,7 +89,7 @@ function Banner() {
         <button
           className="carousel-control-next"
           type="button"
-          data-bs-target="#carouselExampleControlsNoTouching"
+          data-bs-target="#bannerCarousel"
           data-bs-slide="next"
         >
           <span className="carousel-control-next-icon" aria-hidden="true"></span>

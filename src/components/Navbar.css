@@ -1,27 +1,34 @@
 /* -------------------- BASE STYLES & GLOBALS -------------------- */
+:root {
+    --accent-color: #ff9900;
+    --accent-light: #ffc84d;
+    --bg-dark: #0a0e14;
+    --bg-darker: #1c1f2a;
+    --text-white: #ffffff;
+}
+
 body {
     font-family: Arial, sans-serif;
-    background-color: #0a0e14; 
+    background-color: var(--bg-dark);
     margin: 0;
     padding: 0;
 }
 
 /* -------------------- NAVBAR -------------------- */
-
-/* Navbar Container */
 .navbar-custom {
     align-items: center;
-    background: linear-gradient(135deg, #0a0e14, #1c1f2a);
+    background: linear-gradient(135deg, var(--bg-dark), var(--bg-darker));
     padding: 0.75rem 2rem;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     border-radius: 10px 10px 0 0;
-    position: relative;
+    position: sticky;
+    top: 0;
     z-index: 100;
     transition: background 0.3s ease;
 }
 
 .navbar-custom:hover {
-    background: linear-gradient(135deg, #1c1f2a, #0a0e14);
+    background: linear-gradient(135deg, var(--bg-darker), var(--bg-dark));
 }
 
 .navbar-header-row {
@@ -31,7 +38,7 @@ body {
 }
 
 .nav-icon {
-    color: #ffffff;
+    color: var(--text-white);
     font-size: 1.5rem;
     cursor: pointer;
     margin-right: 10px;
@@ -42,7 +49,6 @@ body {
     font-size: 1.9rem;
     text-decoration: none;
     transition: transform 0.3s ease;
-    margin-left: 0;
 }
 
 .navbar-brand-custom:hover {
@@ -50,15 +56,15 @@ body {
 }
 
 .brand-white {
-    color: #ffffff;
+    color: var(--text-white);
 }
 
 .brand-orange {
-    color: #ff9900;
+    color: var(--accent-color);
 }
 
 .explore-plus-diamond {
-    color: #ff9900;
+    color: var(--accent-color);
     font-size: 0.8em;
     margin-left: 5px;
 }
@@ -69,17 +75,16 @@ body {
 }
 
 .navbar-custom .nav-link {
-    color: #fff;
+    color: var(--text-white);
     font-weight: 500;
     margin-left: 1rem;
-    position: relative;
     text-decoration: none;
     transition: color 0.3s ease;
     white-space: nowrap;
 }
 
 .navbar-custom .nav-link:hover {
-    color: #ff9900;
+    color: var(--accent-color);
 }
 
 .nav-link-icon {
@@ -87,66 +92,115 @@ body {
     margin-left: 0.5rem;
 }
 
-/* Location Styles */
+/* -------------------- LOCATION -------------------- */
+/* --- 1. CSS Variables for Consistency --- */
+:root {
+    --primary-blue: #2874f0;      /* Main link color */
+    --accent-yellow: #ffc107;     /* Highlight/Hover color */
+    --text-light: #ffffffb3;      /* Light gray text */
+    --text-white: #ffffff;        /* Pure white text on hover */
+    --bg-dark: #232f3e;           /* Common dark header background */
+    --transition-speed: 0.3s;
+}
+
+/* --- 2. Location Wrapper (The main container) --- */
 .location-wrapper {
-    display: none; 
+    /* Changed from display: none; to display: block; to show the component */
+    display: block; 
     width: 100%;
     padding: 0 0.75rem;
     box-sizing: border-box;
+    /* Reduced margin for better fit if used in a header */
+    margin-right: 20px; 
+    
+    /* ATTRACTIVE ANIMATION: Subtle entrance effect on load */
+    opacity: 0;
+    transform: translateY(5px);
+    animation: fadeInPop 0.5s ease-out forwards; 
+    animation-delay: 0.2s; /* Delay it slightly after the page loads */
 }
 
+/* Keyframe for the entrance animation */
+@keyframes fadeInPop {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- 3. Location Container (Flex layout) --- */
 .location-container {
     display: flex;
     align-items: center;
-    width: 100%;
     padding: 0.25rem 0;
-    overflow: hidden;
-    justify-content: flex-start; 
-    margin-bottom: 0;
+    justify-content: flex-start;
 }
 
-.location-icon { 
-    color: #ffffffaa; 
-    font-size: 1rem;
-    margin-right: 5px;
+/* --- 4. Icon Styling --- */
+.location-icon {
+    /* Bolder icon color for better visibility */
+    color: var(--text-light); 
+    font-size: 1.1rem; /* Slightly larger icon */
+    margin-right: 6px; /* Increased spacing */
 }
 
+/* --- 5. Main Location Text Styling --- */
 .location {
-    color: #ffffffaa;
+    color: var(--text-light);
     font-weight: 500;
-    font-size: 0.95rem;
-    transition: color 0.3s ease;
+    font-size: 0.9rem; /* Adjusted for better hierarchy */
     white-space: nowrap;
+    /* ANIMATION: Smooth color change */
+    transition: color var(--transition-speed) ease-in-out;
 }
 
 .location:hover {
-    color: #ffffff;
+    color: var(--text-white); /* Bright white on hover */
+    /* ANIMATION: Add a subtle underline effect on hover */
+    text-decoration: underline 1px solid var(--accent-yellow);
+    text-underline-offset: 3px;
+    cursor: default;
 }
 
-.location-link { 
-    display: inline;
-    color: #2874f0;
+/* --- 6. Link (e.g., "Change" or "Select") Styling --- */
+.location-link {
+    color: var(--primary-blue);
     font-weight: 700;
-    font-size: 0.9rem;
-    margin-left: 5px;
+    font-size: 0.95rem; /* Slightly emphasized size */
+    margin-left: 8px; /* Increased spacing from location text */
     text-decoration: none;
     white-space: nowrap;
     cursor: pointer;
+    /* ANIMATION: Smooth color change */
+    transition: color var(--transition-speed) ease-out;
 }
 
-.location-arrow { 
-    display: inline;
-    color: #2874f0;
-    font-size: 0.6rem;
-    margin-left: 5px;
+.location-link:hover {
+    color: var(--accent-yellow); /* Yellow/Orange highlight on hover */
+    text-decoration: underline;
 }
-/* End Location Styles */
 
-.cart-info { 
+/* --- 7. Arrow Icon Styling --- */
+.location-arrow {
+    color: var(--primary-blue);
+    font-size: 0.5rem;
+    margin-left: 3px;
+    /* ANIMATION: Subtle bounce/move effect on link hover */
+    transition: transform var(--transition-speed) ease-out;
+}
+
+/* Make the arrow move slightly when the link is hovered */
+.location-link:hover + .location-arrow {
+    transform: translateX(2px);
+    color: var(--accent-yellow);
+}
+
+/* -------------------- CART & ACCOUNT -------------------- */
+.cart-info {
     display: flex;
     align-items: center;
     margin-left: 1rem;
-    color: #fff; 
+    color: var(--text-white);
     font-weight: 500;
 }
 
@@ -156,13 +210,13 @@ body {
 }
 
 .cart-count {
-    background: #ff9900; 
-    color: #0a0e14; 
+    background: var(--accent-color);
+    color: var(--bg-dark);
     padding: 2px 8px;
     border-radius: 12px;
     font-weight: bold;
     font-size: 0.85rem;
-    margin-left: 5px; 
+    margin-left: 5px;
     transition: transform 0.2s ease;
 }
 
@@ -172,10 +226,10 @@ body {
 
 .account-button {
     background: none;
-    border: 1px solid #ffffffaa; 
-    color: #ffffff;
+    border: 1px solid #ffffffaa;
+    color: var(--text-white);
     padding: 8px 15px;
-    border-radius: 5px; 
+    border-radius: 5px;
     font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
@@ -187,51 +241,84 @@ body {
 
 .account-button:hover {
     background-color: rgba(255, 255, 255, 0.1);
-    border-color: #ffffff;
+    border-color: var(--text-white);
 }
 
-/* -------------------- SEARCH BAR (MODIFIED) -------------------- */
+/* -------------------- SEARCH BAR (Animated with Icon Inside) -------------------- */
 .search-bar-container {
-    display: flex; 
-    justify-content: center; 
-    width: 100%; 
+      display: flex;
+    justify-content: flex-start; /* push slightly to right */
+    width: 100%;
     position: relative;
-    transition: transform 0.2s ease;
-    margin: 0; 
-    margin-bottom: 0; 
+    margin: 0;
+    margin-left: 50px; /* shift to right */
+    animation: fadeInSearch 1s ease;
+}
+
+.search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    transition: transform 0.3s ease;
+}
+
+.search-icon {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+    color: #888;
+    transition: color 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
 }
 
 .search-input {
     width: 100%;
-    max-width: 400px; 
-    padding: 10px 18px; 
+    padding: 10px 15px 10px 45px;
     font-size: 16px;
     border-radius: 50px;
-    border: 2px solid #ff9900;
+    border: 2px solid var(--accent-color);
     outline: none;
-    transition: all 0.3s ease;
     background-color: #fff;
     color: #000;
-    text-indent: 10px;
+    transition: all 0.3s ease;
+}
+
+.search-input:hover {
+    box-shadow: 0 0 6px rgba(255, 153, 0, 0.3);
 }
 
 .search-input:focus {
-    border-color: #ffc84d;
+    border-color: var(--accent-light);
     box-shadow: 0 0 12px rgba(255, 153, 0, 0.5);
+    transform: scale(1.02);
 }
 
-/* -------------------- OTHER DROPDOWN STYLES (UNCHANGED) -------------------- */
+.search-wrapper:focus-within .search-icon,
+.search-wrapper:hover .search-icon {
+    color: var(--accent-color);
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Float-up animation */
+@keyframes fadeInSearch {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* -------------------- SEARCH DROPDOWN -------------------- */
 .search-results {
     position: absolute;
     top: 45px;
-    left: 0; 
+    left: 0;
     right: 0;
     background: #1f2233;
     border-radius: 0 0 12px 12px;
     max-height: 280px;
     overflow-y: auto;
     z-index: 1000;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
     padding: 0;
     margin: 0;
     list-style: none;
@@ -247,90 +334,64 @@ body {
     }
 }
 
-
-/* -------------------- MEDIA QUERIES (FIXED FOR OVERFLOW ISSUE) -------------------- */
-
-/* Mobile Devices (max-width: 767px) */
+/* -------------------- MEDIA QUERIES -------------------- */
 @media (max-width: 767px) {
     .navbar-custom {
         flex-direction: column;
         align-items: flex-start;
-        /* Minimal vertical padding */
-        padding: 0.2rem 0; 
+        padding: 0.2rem 0;
         border-radius: 0;
     }
 
-    /* 1. TOP ROW: Menu | Logo | Icons */
     .navbar-header-row {
         width: 100%;
-        padding: 0 0.4rem; 
+        padding: 0 0.4rem;
     }
 
-    .nav-icon { 
+    .nav-icon {
         font-size: 1.3rem;
         margin-right: 5px;
     }
 
     .navbar-brand-custom {
-        font-size: 1.5rem; 
+        font-size: 1.5rem;
     }
-    
+
     .location, .returns-orders, .account-button, .nav {
-        display: none !important; 
+        display: none !important;
     }
 
     .cart-info {
-        font-size: 0.85rem !important; 
+        font-size: 0.85rem !important;
         margin-left: 8px;
     }
 
     .cart-icon {
         font-size: 1.25rem;
     }
-    
-    /* 3. SEARCH BAR - FIXING OVERFLOW */
-    .search-bar-container {
-        width: 100%; 
-        max-width: 100%; 
-        margin: 0.25rem 0; 
-        order: 2; 
-        justify-content: center; 
-        /* REMOVED horizontal padding here to allow search input to take full width of container */
-        padding: 0; 
+
+    /* Mobile Search */
+    .search-wrapper {
+        max-width: 100%;
     }
 
     .search-input {
-        width: 96%; /* Adjusted to 96% to give space for container's padding/margin */
-        max-width: 100%; 
-        padding: 6px 15px; 
-        font-size: 13px;
-        /* IMPORTANT FIX: Removed border for clean integration into the dark navbar */
-        border: none; 
-        border-radius: 5px;
-        background-color: #fff;
-        text-indent: 25px; 
-        /* Re-centered the search bar visually */
-        margin: 0 2%; 
-        box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+        font-size: 14px;
+        padding: 8px 12px 8px 40px;
+        border-radius: 10px;
+        border: none;
+        margin: 0 2%;
     }
-    
-    .search-bar-container .search-icon {
-        position: absolute;
-        /* Adjusted position to align with the new search-input margin/padding */
-        left: 22px; 
-        top: 50%;
-        transform: translateY(-50%);
-        color: #777;
-        font-size: 0.9rem;
-        z-index: 10;
-        display: block; 
+
+    .search-icon {
+        left: 14px;
+        font-size: 1rem;
     }
-    
-    /* 2. LOCATION BAR */
+
     .location-wrapper {
         display: block;
         order: 3;
-        padding: 0.1rem 0.4rem 0.3rem 0.4rem; 
+        padding: 0.1rem 0.4rem 0.3rem 0.4rem;
     }
 
     .location-link {
@@ -338,24 +399,18 @@ body {
     }
 }
 
-/* Very small mobile screens (e.g., iPhone 5/SE) */
 @media (max-width: 480px) {
     .navbar-custom {
         padding: 0.15rem 0;
     }
-    
+
     .navbar-header-row, .location-wrapper {
         padding: 0 0.4rem;
     }
 
-    .search-bar-container {
-        padding: 0;
-        margin: 0.2rem 0; 
-    }
-
     .search-input {
-        padding: 5px 15px; 
-        margin: 0 2%; /* Consistent margin */
+        padding: 5px 15px 5px 38px;
+        margin: 0 2%;
     }
 
     .navbar-brand-custom {

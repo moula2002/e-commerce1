@@ -1,612 +1,353 @@
-/* ================= SECOND HEADER / BOTTOM MENU ================= */
-.second-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background:black;
-  padding: 0.5rem 1rem;
-  color: white;
-  position: sticky;
-  top: 60px;
-  z-index: 999;
-  flex-wrap: nowrap;
-  height: 70px;
-  transition: all 0.3s ease;
-}
-
-/* LEFT MENU CONTAINER */
-.menu-left {
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #888 transparent;
-}
-
-/* "All" BUTTON */
-.menu-item.all {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  font-weight: bold;
-  margin-right: 15px;
-  flex-shrink: 0;
-}
-
-.menu-icon {
-  margin-right: 5px;
-}
-
-/* HORIZONTAL MENU LIST */
-.menu-list {
-  display: flex;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  flex-wrap: nowrap;
-}
-
-.menu-item {
-  margin-right: 20px;
-  white-space: nowrap;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: color 0.2s;
-}
-
-.menu-item:hover {
-  text-decoration: underline;
-}
-
-/* DROPDOWN FOR MOBILE MENU */
-.menu-list.active {
-  display: block;
-  flex-direction: column;
-  position: absolute;
-  top: 50px;
-  left: 0;
-  width: 100%;
-  background: #232f3e;
-  padding: 10px 0;
-  z-index: 1000;
-}
-
-/* RIGHT SIDE FESTIVAL OFFER */
-.festival-offer {
-  font-weight: bold;
-  flex-shrink: 0;
-}
-
-.live-now {
-  color: yellow;
-  margin-left: 5px;
-}
-
-/* CLOSE ICON FOR MOBILE MENU */
-.close-icon {
-  position: absolute;
-  top: 5px;
-  right: 10px;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-/* SCROLLBAR FOR HORIZONTAL MENU */
-.menu-list::-webkit-scrollbar {
-  height: 6px;
-}
-
-.menu-list::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 3px;
-}
-
-/* ================= MEDIA QUERIES ================= */
-
-/* Tablets (992px and below) */
-@media (max-width: 992px) {
-  .second-header {
-    padding: 0.5rem;
-  }
-
-  .menu-item {
-    margin-right: 15px;
-    font-size: 0.95rem;
-  }
-
-  .festival-offer {
-    font-size: 0.9rem;
-  }
-}
-
-/* Mobile devices (768px and below) */
-@media (max-width: 768px) {
-  .second-header {
-    flex-direction: column;
-    align-items: flex-start;
-    height: auto;
-    padding: 0.5rem;
-  }
-
-  .menu-left {
-    width: 100%;
-    overflow-x: hidden;
-    flex-wrap: wrap;
-    margin-bottom: 5px;
-  }
-
-  .menu-item.all {
-    margin-bottom: 5px;
-  }
-
-  .menu-list {
-    display: none;
-    width: 100%;
-    flex-direction: column;
-  }
-
-  .menu-list.active {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    top: 0;
-  }
-
-  .menu-item {
-    margin: 5px 0;
-  }
-
-  .festival-offer {
-    margin-top: 10px;
-    font-size: 0.9rem;
-  }
-}
-
-/* Small mobile devices (480px and below) */
-@media (max-width: 480px) {
-  .menu-item {
-    font-size: 0.85rem;
-    margin-right: 10px;
-  }
-
-  .festival-offer {
-    font-size: 0.8rem;
-  }
-
-  .menu-item.all {
-    font-size: 0.9rem;
-  }
-}
-
-/* ================= SECOND HEADER / BOTTOM MENU ================= */
-.second-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  /* Enhanced Aesthetic */
-  background: #232f3e; /* Dark Amazon Blue */
-  padding: 0.5rem 1.5rem; /* Increased padding */
-  color: #ffffff;
-  position: sticky;
-  top: 60px;
-  z-index: 999;
-  flex-wrap: nowrap;
-  height: 50px; /* Slightly reduced height for sleeker look */
-  /* Added Animation */
-  transition: all 0.3s ease, box-shadow 0.3s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Default subtle shadow */
-  animation: headerFadeIn 0.5s ease-out; /* Entry animation for header */
-}
-
-/* LEFT MENU CONTAINER */
-.menu-left {
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #555555 transparent; /* Darker scrollbar */
-}
-
-/* "All" BUTTON */
-.menu-item.all {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  font-weight: bold;
-  margin-right: 20px; /* Increased margin */
-  flex-shrink: 0;
-  padding: 8px 12px;
-  background-color: #364759; /* Slightly lighter base */
-  border-radius: 4px;
-  /* Added Animation */
-  transition: all 0.2s ease-in-out;
-}
-
-.menu-item.all:hover {
-  background-color: #485c72; /* Subtle change on hover */
-  transform: scale(1.05); /* Slight "press" effect */
-}
-
-.menu-icon {
-  margin-right: 8px; /* More space */
-  font-size: 1.2rem;
-}
-
-/* HORIZONTAL MENU LIST */
-.menu-list {
-  display: flex;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  flex-wrap: nowrap;
-}
-
-.menu-item {
-  margin-right: 25px; /* More space between items */
-  white-space: nowrap;
-  cursor: pointer;
-  flex-shrink: 0;
-  padding: 4px 0; /* Vertical padding for hover effect */
-  position: relative;
-  /* Added Animation */
-  transition: color 0.3s, transform 0.3s;
-}
-
-/* NEW: Clean Underline Hover Effect */
-.menu-item:hover {
-  color: #ff9900; /* Accent color on hover */
-  text-decoration: none; /* Remove default underline */
-}
-
-.menu-item::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: #ff9900; /* Amazon accent color */
-  transform: scaleX(0); /* Start invisible */
-  transition: transform 0.3s ease-out;
-}
-
-.menu-item:hover::after {
-  transform: scaleX(1); /* Expand underline on hover */
-}
-
-/* DROPDOWN FOR MOBILE MENU */
-.menu-list.active {
-  display: flex; /* Use flex to control vertical stacking */
-  flex-direction: column;
-  position: absolute;
-  top: 50px; /* Align with new header height */
-  left: 0;
-  width: 100%;
-  background: #232f3e;
-  padding: 0; /* Remove padding from UL, add to LI */
-  z-index: 1000;
-  /* Added Animation */
-  transform-origin: top;
-  animation: slideDown 0.3s ease-out forwards;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-}
-
-/* Styling for items inside the mobile menu */
-.menu-list.active .menu-item {
-  margin: 0;
-  padding: 12px 1.5rem; /* Spacious padding for tapping */
-  width: 100%;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator */
-}
-
-.menu-list.active .menu-item:hover {
-  background-color: #364759;
-  color: #ffffff;
-}
-.menu-list.active .menu-item::after {
-    display: none; /* Hide underline in mobile menu */
-}
-
-/* RIGHT SIDE FESTIVAL OFFER */
-.festival-offer {
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-  flex-shrink: 0;
-  color: #ff9900; /* Accent color */
-  padding: 5px 10px;
-  background-color: #364759;
-  border-radius: 4px;
-  cursor: pointer;
-  /* Added Animation */
-  animation: pulseGlow 2.5s infinite ease-in-out alternate;
-  transition: background-color 0.3s;
-}
-
-.festival-offer:hover {
-    background-color: #485c72;
-}
-
-.live-now {
-  color: #ffc107; /* Brighter yellow/gold */
-  margin-left: 8px;
-  /* Added Animation */
-  animation: colorPulse 1s infinite alternate;
-}
-
-/* CLOSE ICON FOR MOBILE MENU */
-.close-icon {
-  position: absolute;
-  top: 15px; /* Centered vertically in header */
-  right: 1.5rem;
-  font-size: 1.8rem;
-  color: #ffffff;
-  cursor: pointer;
-  z-index: 1001;
-  /* Added Animation */
-  transition: transform 0.3s ease-in-out, color 0.3s;
-}
-
-.close-icon:hover {
-  transform: rotate(90deg) scale(1.1); /* Spin and scale effect */
-  color: #ff9900;
-}
-
-/* SCROLLBAR FOR HORIZONTAL MENU */
-.menu-left::-webkit-scrollbar {
-  height: 6px;
-}
-
-.menu-left::-webkit-scrollbar-thumb {
-  background: #555555;
-  border-radius: 3px;
-}
-.menu-left::-webkit-scrollbar-track {
-    background: #232f3e;
-}
-
-
-/* ================= MEDIA QUERIES ================= */
-
-/* Tablets (992px and below) - Adjusted to match new styles */
-@media (max-width: 992px) {
-  .second-header {
-    padding: 0.5rem 1rem;
-  }
-
-  .menu-item {
-    margin-right: 15px;
-    font-size: 0.95rem;
-  }
-
-  .festival-offer {
-    font-size: 0.9rem;
-  }
-}
-
-/* Mobile devices (768px and below) - Vertical menu activation */
-@media (max-width: 768px) {
-  .second-header {
-    flex-direction: row; /* Keep it horizontal in mobile mode */
-    align-items: center;
-    height: 50px; /* Fixed height for sticky bar */
-    padding: 0.5rem 1rem;
-    position: relative; /* Remove sticky on small screen if header above is sticky */
-  }
-
-  .menu-left {
-    width: auto;
-    overflow-x: visible; /* Prevent horizontal scroll */
-    flex-wrap: nowrap;
-    margin-bottom: 0;
-    position: static;
-  }
-  
-  /* Hide the menu items by default, rely on .active for display */
-  .menu-list {
-    display: none;
-  }
-  
-  /* Show only the "All" button and the offer side-by-side */
-  .menu-item.all {
-    margin-right: 15px;
-    margin-bottom: 0;
-    font-size: 0.95rem;
-  }
-
-  .festival-offer {
-    margin-top: 0;
-    font-size: 0.85rem;
-  }
-}
-
-/* Small mobile devices (480px and below) */
-@media (max-width: 480px) {
-  .menu-item.all {
-    font-size: 0.85rem;
-  }
-}
-
-
-/* ================= KEYFRAME ANIMATIONS ================= */
-
-/* Header Entry */
-@keyframes headerFadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Dropdown Menu Slide */
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: scaleY(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scaleY(1);
-  }
-}
-
-/* Offer Glow */
-@keyframes pulseGlow {
-  0% { box-shadow: 0 0 0px 0px rgba(255, 153, 0, 0.5); }
-  100% { box-shadow: 0 0 8px 4px rgba(255, 153, 0, 0); }
-}
-
-/* Live Now Text Pulse */
-@keyframes colorPulse {
-  0% { color: #ffc107; }
-  100% { color: #ff9900; }
-}
-/* ================= SECOND HEADER / BOTTOM MENU (Compact & Transparent) ================= */
-.second-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #232f3e;
-  padding: 0.3rem 1rem; 
-  color: #ffffff;
-  position: sticky;
-  top: 60px;
-  z-index: 999;
-  flex-wrap: nowrap;
-  height: 45px; 
-  transition: all 0.3s ease, box-shadow 0.3s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  animation: headerFadeIn 0.5s ease-out;
-}
-
-/* LEFT MENU CONTAINER */
-.menu-left {
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #555555 transparent;
-}
-
-/* "All" BUTTON */
-.menu-item.all {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  font-weight: bold;
-  margin-right: 10px; 
-  flex-shrink: 0;
-  padding: 6px 10px; 
-  background-color: #364759;
-  border-radius: 3px;
-  transition: all 0.2s ease-in-out;
-  font-size: 0.95rem;
-}
-
-.menu-item.all:hover {
-  background-color: #485c72;
-  transform: scale(1.03);
-}
-
-.menu-icon {
-  margin-right: 6px; 
-  font-size: 1.1rem;
-}
-
-/* HORIZONTAL MENU LIST */
-/* .menu-list {
-  display: flex;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  flex-wrap: nowrap;
-}
-
-.menu-item {
-  margin-right: 15px; 
-  white-space: nowrap;
-  cursor: pointer;
-  flex-shrink: 0;
-  padding: 2px 0; 
-  position: relative;
-  transition: color 0.3s, transform 0.3s;
-  font-size: 0.9rem;
-}
-
-.menu-item:hover {
-  color: #ff9900;
-  text-decoration: none;
-}
-
-.menu-item::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 1px; 
-  background-color: #ff9900;
-  transform: scaleX(0);
-  transition: transform 0.3s ease-out;
-}
-
-.menu-item:hover::after {
-  transform: scaleX(1);
+/* ================= CSS VARIABLES ================= */
+:root {
+    --accent-color: #ff9900;
+    --accent-light: #ffc84d;
+    --bg-dark: #0a0e14;
+    --bg-darker: #1c1f2a;
+    --bg-second-header: #232f3e;
+    --text-white: #ffffff;
+ /* Max width for main content */
+    --padding-sides: 2rem; /* Default side padding for larger screens */
 } */
 
-/* DROPDOWN FOR MOBILE MENU (Vertical, Transparent) */
-.menu-list.active {
-  display: flex; 
-  flex-direction: column;
-  position: absolute;
-  top: 45px; 
-  left: 0;
-  width: 100%;
-  
-  /* 🌟 KEY CHANGE: Using rgba for transparency 🌟 */
-  background: rgba(35, 47, 62, 0.95); /* Dark blue with 95% opacity */
-  
-  padding: 0;
-  z-index: 1000;
-  transform-origin: top;
-  animation: slideDown 0.3s ease-out forwards;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+/* ================= GLOBAL STYLES & FIXED HEADER BLOCK ================= */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-dark); 
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
-/* Styling for items inside the transparent mobile menu */
-.menu-list.active .menu-item {
-  margin: 0;
-  padding: 10px 1rem; 
-  width: 100%;
-  /* Making separator line slightly more transparent too */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
-  font-size: 1rem;
+/* 💥 FIX: Wrapper for both FIXED headers */
+/* This div should wrap both your <Navbar> and <SecondHeader> components */
+.main-header-fixed-block {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: var(--bg-darker);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
+
+/* 💥 FIX: Main Content Area Padding */
+/* Apply this class to the <main> tag that wraps all your page content */
+.main-content-area {
+    /* Desktop: (Top Navbar: ~78px + Second Header: 45px = 123px total fixed height) */
+    padding-top: 123px; 
+    min-height: 100vh;
+    /* 💥 ADDED: Center the content and prevent overflow */
+    max-width: var(--max-content-width); 
+    margin: 0 auto; /* Center the content horizontally */
+    padding-left: var(--padding-sides);
+    padding-right: var(--padding-sides);
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+
+/* -------------------- NAVBAR (TOP HEADER) -------------------- */
+
+.navbar-custom {
+    display: flex;
+    justify-content: space-between; /* Distribute items */
+    align-items: center;
+    background: linear-gradient(135deg, var(--bg-dark), var(--bg-darker));
+    padding: 0.75rem var(--padding-sides); /* Use variable for consistent padding */
+    
+    position: static !important; /* Parent .main-header-fixed-block handles fixed positioning */
+    z-index: 10;
+}
+
+.navbar-header-row {
+    display: flex;
+    align-items: center;
+}
+
+.nav-icon {
+    color: var(--accent-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: color 0.2s;
+}
+
+.navbar-brand-custom {
+    font-weight: 800;
+    font-size: 2rem;
+    text-decoration: none;
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    margin-left: 0;
+    line-height: 1;
+}
+
+.navbar-brand-custom:hover {
+    transform: scale(1.05);
+}
+
+.brand-white { color: var(--text-white); }
+.brand-orange { color: var(--accent-color); }
+
+/* Desktop Location (if you have one in the top nav) */
+.location strong {
+    color: var(--accent-color);
+}
+
+/* Right Desktop Links (Account, Cart, etc.) */
+.navbar-custom .nav-link {
+    color: #ffffffc0;
+    font-weight: 500;
+    margin-left: 1.5rem;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+}
+
+.navbar-custom .nav-link:hover {
+    color: var(--accent-color);
+    text-shadow: 0 0 5px rgba(255, 153, 0, 0.5);
+}
+
+.account-button {
+    background: var(--accent-color);
+    border: none; 
+    color: var(--bg-dark);
+    padding: 8px 20px;
+    border-radius: 5px; 
+    font-weight: 700;
+    transition: all 0.3s ease;
+    white-space: nowrap; /* Prevent button text wrapping */
+}
+
+.account-button:hover {
+    background-color: var(--accent-light);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255, 153, 0, 0.4);
+}
+
+.cart-count {
+    background: var(--accent-color); 
+    color: var(--bg-dark); 
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-left: 5px; 
+}
+
+
+/* -------------------- SEARCH BAR -------------------- */
+
+.search-bar-container {
+    display: flex; 
+    align-items: center;
+    flex-grow: 1; 
+    flex-shrink: 1; 
+    margin: 0 20px; 
+    position: relative;
+    animation: fadeInSearch 1s ease;
+    justify-content: center; /* Center the search input */
+}
+
+.search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 550px; 
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 15px 10px 45px; 
+    font-size: 16px;
+    border-radius: 50px;
+    border: 2px solid var(--accent-color);
+    outline: none;
+    background-color: var(--text-white);
+    color: #000;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: var(--accent-light);
+    box-shadow: 0 0 12px rgba(255, 153, 0, 0.5);
+}
+
+.search-icon {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+    color: #888;
+    pointer-events: none;
+    transition: color 0.3s ease;
+}
+.search-bar-container:hover .search-icon {
+    color: var(--accent-color);
+}
+
+
+/* -------------------- LOCATION STYLES (For Mobile/Second Header) -------------------- */
+.location-wrapper {
+    display: none; 
+    width: 100%;
+    padding: 0 var(--padding-sides);
+    box-sizing: border-box;
+    background: var(--bg-second-header); 
+}
+.location-icon { color: var(--accent-color); }
+.location-link { color: #58a6ff; }
+
+
+/* ================= SECOND HEADER / FIXED BOTTOM MENU ================= */
+.second-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-second-header);
+    padding: 0.3rem var(--padding-sides); 
+    color: var(--text-white);
+    
+    /* 💥 FIX: Removed fixed positioning from here */
+    /* It should be part of .main-header-fixed-block now */
+    position: relative; /* Changed from fixed to relative for internal layout */
+    top: auto; /* Reset */
+    left: auto; /* Reset */
+    right: auto; /* Reset */
+    
+    z-index: 999;
+    flex-wrap: nowrap;
+    height: 45px; /* Slightly reduced height for better integration */
+    transition: all 0.3s ease, box-shadow 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    animation: headerFadeIn 0.5s ease-out;
+    
+    /* 💥 ADDED: Ensure second header itself respects max-width and centers */
+    max-width: var(--max-content-width); 
+    margin: 0 auto; 
+    box-sizing: border-box; 
+}
+
+/* LEFT MENU CONTAINER */
+.menu-left {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #555555 transparent;
+    max-width: calc(100% - 100px); /* Leave space for festival offer */
+}
+.menu-left::-webkit-scrollbar { height: 4px; }
+.menu-left::-webkit-scrollbar-thumb { background: #555555; border-radius: 2px; }
+.menu-left::-webkit-scrollbar-track { background: var(--bg-second-header); }
+
+/* "All" BUTTON */
+.menu-item.all {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    margin-right: 10px; 
+    flex-shrink: 0;
+    padding: 6px 10px; 
+    background-color: #364759;
+    border-radius: 3px;
+    transition: all 0.2s ease-in-out;
+    font-size: 0.95rem;
+}
+
+.menu-item.all:hover {
+    background-color: #485c72;
+    transform: scale(1.03);
+}
+
+.menu-icon {
+    margin-right: 6px; 
+    font-size: 1.1rem;
+}
+
+/* MENU LIST */
+.menu-list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-wrap: nowrap;
+}
+
+.menu-item {
+    margin-right: 20px;
+    white-space: nowrap;
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    transition: color 0.3s;
+    font-size: 0.9rem;
+}
+
+.menu-item:hover { color: var(--accent-color); }
+
+.menu-item::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent-color);
+    transform: scaleX(0);
+    transition: transform 0.3s ease-out;
+}
+.menu-item:hover::after { transform: scaleX(1); }
+
+/* MOBILE MENU DROPDOWN */
+.menu-list.active {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 45px; /* Adjust if second header height changes */
+    left: 0;
+    width: 100%;
+    background: rgba(35, 47, 62, 0.95);
+    padding: 0;
+    z-index: 1000;
+    transform-origin: top;
+    animation: slideDown 0.3s ease-out forwards;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.menu-list.active .menu-item {
+    margin: 0;
+    padding: 10px 1rem; 
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
+    font-size: 1rem;
+}
+
+.menu-list.active .menu-item:last-child { border-bottom: none; }
 
 .menu-list.active .menu-item:hover {
-  /* Use a subtle hover highlight inside the transparent menu */
-  background-color: rgba(72, 92, 114, 0.5); 
-  color: #ffffff;
+    background-color: rgba(72, 92, 114, 0.5); 
+    color: var(--text-white);
 }
-.menu-list.active .menu-item::after {
-    display: none;
-}
+
+.menu-list.active .menu-item::after { display: none; }
 
 /* RIGHT SIDE FESTIVAL OFFER */
 .festival-offer {
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-  flex-shrink: 0;
-  color: #ff9900; 
-  padding: 4px 8px; 
-  background-color: #364759;
-  border-radius: 3px;
-  cursor: pointer;
-  animation: pulseGlow 2.5s infinite ease-in-out alternate;
-  transition: background-color 0.3s;
-  font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    flex-shrink: 0;
+    color: var(--accent-color); 
+    padding: 4px 8px; 
+    background-color: #364759;
+    border-radius: 3px;
+    cursor: pointer;
+    animation: pulseGlow 2.5s infinite ease-in-out alternate;
+    transition: background-color 0.3s;
+    font-size: 0.85rem;
 }
 
 .festival-offer:hover {
@@ -614,89 +355,177 @@
 }
 
 .live-now {
-  color: #ffc107;
-  margin-left: 5px; 
-  animation: colorPulse 1s infinite alternate;
+    color: var(--accent-light);
+    margin-left: 5px; 
+    animation: colorPulse 1s infinite alternate;
 }
 
-/* CLOSE ICON FOR MOBILE MENU */
+/* CLOSE ICON (for mobile dropdown) */
 .close-icon {
-  position: absolute;
-  top: 12px; 
-  right: 1rem;
-  font-size: 1.5rem;
-  color: #ffffff;
-  cursor: pointer;
-  z-index: 1001;
-  transition: transform 0.3s ease-in-out, color 0.3s;
+    position: absolute;
+    top: 12px; 
+    right: 1rem;
+    font-size: 1.5rem;
+    color: var(--text-white);
+    cursor: pointer;
+    z-index: 1001;
+    transition: transform 0.3s ease-in-out, color 0.3s;
 }
 
 .close-icon:hover {
-  transform: rotate(90deg) scale(1.05);
-  color: #ff9900;
+    transform: rotate(90deg) scale(1.05);
+    color: var(--accent-color);
 }
-
-/* SCROLLBAR FOR HORIZONTAL MENU */
-.menu-left::-webkit-scrollbar {
-  height: 4px;
-}
-.menu-left::-webkit-scrollbar-thumb {
-  background: #555555;
-  border-radius: 2px;
-}
-.menu-left::-webkit-scrollbar-track {
-    background: #232f3e;
-}
-
 
 /* ================= MEDIA QUERIES ================= */
 
-/* Tablets (992px and below) */
 @media (max-width: 992px) {
-  .second-header {
-    padding: 0.3rem 0.75rem;
-  }
+    :root {
+        --padding-sides: 1.5rem; /* Reduce side padding for smaller desktops/tablets */
+    }
+    .second-header, .navbar-custom {
+        padding-left: var(--padding-sides);
+        padding-right: var(--padding-sides);
+    }
 }
 
-/* Mobile devices (768px and below) - Vertical menu activation */
 @media (max-width: 768px) {
-  .second-header {
-    height: 45px;
-    padding: 0.3rem 0.75rem;
-  }
+    :root {
+        --padding-sides: 0.75rem; /* Further reduce padding for tablets/mobile */
+    }
+    /* 💥 FIX: Mobile Content Padding - Adjusted for fixed headers (assuming ~105px) */
+    .main-content-area {
+        padding-top: 105px; 
+        padding-left: var(--padding-sides);
+        padding-right: var(--padding-sides);
+    }
+    
+    .navbar-custom {
+        flex-direction: column; /* Stack items vertically */
+        align-items: flex-start;
+        padding: 0.2rem var(--padding-sides); 
+    }
+
+    /* Top Row (Menu | Logo | Icons) */
+    .navbar-header-row {
+        width: 100%;
+        padding: 0.5rem 0; 
+        box-sizing: border-box;
+    }
+    
+    /* Search Bar on Mobile */
+    .search-bar-container {
+        order: 2; /* Place search bar below top row */
+        flex-grow: 0;
+        width: 100%;
+        margin: 0.25rem 0; 
+        padding: 0; /* Handled by .main-content-area padding */
+    }
+    .search-wrapper { max-width: 100%; }
+    .search-input {
+        width: 100%; 
+        padding: 6px 15px 6px 40px; 
+        font-size: 14px;
+        border: 1px solid var(--accent-color);
+        border-radius: 5px;
+    }
+    .search-bar-container .search-icon { left: 20px; }
+    
+    /* Location Bar on Mobile */
+    .location-wrapper {
+        display: block;
+        order: 3;
+        width: 100%;
+        padding: 0.3rem 0;
+    }
+
+    /* Second Header Mobile adjustments */
+    .second-header {
+        height: 45px;
+        padding-left: var(--padding-sides);
+        padding-right: var(--padding-sides);
+    }
+    .menu-list {
+        display: none; /* Hide horizontal menu on mobile by default */
+    }
+    /* Hide desktop specific links */
+    .navbar-custom .nav-link, 
+    .account-button {
+        display: none !important;
+    }
+    .navbar-brand-custom { font-size: 1.6rem; }
+    .nav-icon { font-size: 1.2rem; }
 }
 
-/* Small mobile devices (480px and below) */
 @media (max-width: 480px) {
-  .menu-item.all {
-    font-size: 0.85rem;
-  }
+    :root {
+        --padding-sides: 0.5rem; /* Even smaller padding for very small screens */
+    }
+    .main-content-area {
+        padding-top: 100px; /* Adjust for very small screens */
+        padding-left: var(--padding-sides);
+        padding-right: var(--padding-sides);
+    }
+    .navbar-custom {
+        padding-left: var(--padding-sides);
+        padding-right: var(--padding-sides);
+    }
+    .navbar-header-row {
+        padding: 0.4rem 0;
+    }
+    .search-input {
+        padding: 5px 15px 5px 38px;
+    }
+    .navbar-brand-custom { font-size: 1.35rem; }
+    .menu-item.all { font-size: 0.85rem; }
+    .second-header {
+         padding-left: var(--padding-sides);
+         padding-right: var(--padding-sides);
+    }
 }
 
-/* ================= KEYFRAME ANIMATIONS (UNCHANGED) ================= */
-
+/* ================= KEYFRAME ANIMATIONS ================= */
 @keyframes headerFadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: scaleY(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scaleY(1);
-  }
+    from {
+        opacity: 0;
+        transform: scaleY(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scaleY(1);
+    }
 }
 
 @keyframes pulseGlow {
-  0% { box-shadow: 0 0 0px 0px rgba(255, 153, 0, 0.5); }
-  100% { box-shadow: 0 0 8px 4px rgba(255, 153, 0, 0); }
+    0% { box-shadow: 0 0 0px 0px rgba(255, 153, 0, 0.5); }
+    100% { box-shadow: 0 0 8px 4px rgba(255, 153, 0, 0); }
 }
 
 @keyframes colorPulse {
-  0% { color: #ffc107; }
-  100% { color: #ff9900; }
+    0% { color: #ffc107; }
+    100% { color: #ff9900; }
+}
+
+
+
+
+
+/* cusomer service */
+
+
+
+/* Style for the React Router Link inside the menu item */
+.menu-item .menu-link-custom {
+    /* Reset link appearance to match list text */
+    color: inherit;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+    /* Ensure it gets the same hover effect as the parent li */
+    display: block; 
 }

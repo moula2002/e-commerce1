@@ -1,0 +1,53 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "E-commerce client project using React, Vite, and TailwindCSS",
+  "main": "tailwind.config.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 3000",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moula2002/newrepo.git"
+  },
+  "keywords": [
+    "react",
+    "vite",
+    "tailwindcss",
+    "e-commerce"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "classnames": "^2.5.1",
+    "framer-motion": "^12.23.22",
+    "react": "^19.2.0",
+    "react-bootstrap": "^2.10.10",
+    "react-dom": "^19.2.0",
+    "react-icons": "^5.5.0",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.9.3",
+    "redux": "^5.0.1",
+    "redux-thunk": "^3.1.0",
+    "tailwindcss": "^4.1.14",
+    "vite": "^7.1.7"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.0.4",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.36.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "postcss": "^8.5.6"
+  },
+  "bugs": {
+    "url": "https://github.com/moula2002/newrepo/issues"
+  },
+  "homepage": "https://github.com/moula2002/newrepo#readme"
+}
