@@ -1,419 +1,193 @@
-/* -------------------- BASE STYLES & GLOBALS -------------------- */
+/* -------------------- GLOBAL COLORS -------------------- */
 :root {
-    --accent-color: #ff9900;
-    --accent-light: #ffc84d;
-    --bg-dark: #0a0e14;
-    --bg-darker: #1c1f2a;
-    --text-white: #ffffff;
+  --accent-color: #ff9900;
+  --accent-light: #ffc84d;
+  --bg-dark: #0a0e14;
+  --bg-darker: #1c1f2a;
+  --text-white: #ffffff;
+  --text-light: #ffffffb3;
 }
 
+/* -------------------- BASE STYLES -------------------- */
 body {
-    font-family: Arial, sans-serif;
-    background-color: var(--bg-dark);
-    margin: 0;
-    padding: 0;
+  font-family: "Poppins", Arial, sans-serif;
+  background-color: var(--bg-dark);
+  margin: 0;
+  padding: 0;
+  color: var(--text-white);
 }
 
 /* -------------------- NAVBAR -------------------- */
 .navbar-custom {
-    align-items: center;
-    background: linear-gradient(135deg, var(--bg-dark), var(--bg-darker));
-    padding: 0.75rem 2rem;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    border-radius: 10px 10px 0 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    transition: background 0.3s ease;
+  background: linear-gradient(135deg, var(--bg-dark), var(--bg-darker));
+  padding: 0.6rem 1.2rem;
+  transition: all 0.3s ease;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.navbar-custom:hover {
-    background: linear-gradient(135deg, var(--bg-darker), var(--bg-dark));
-}
-
-.navbar-header-row {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0;
-}
-
-.nav-icon {
-    color: var(--text-white);
-    font-size: 1.5rem;
-    cursor: pointer;
-    margin-right: 10px;
+.navbar-custom.scrolled {
+  background: #0a0e14;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 .navbar-brand-custom {
-    font-weight: 700;
-    font-size: 1.9rem;
-    text-decoration: none;
-    transition: transform 0.3s ease;
+  font-weight: 700;
+  font-size: 1.6rem;
+  text-decoration: none;
+  transition: transform 0.3s ease;
 }
 
 .navbar-brand-custom:hover {
-    transform: scale(1.1);
+  transform: scale(1.08);
 }
 
 .brand-white {
-    color: var(--text-white);
+  color: #ffffff;
 }
 
 .brand-orange {
-    color: var(--accent-color);
+  color: var(--accent-color);
 }
 
-.explore-plus-diamond {
-    color: var(--accent-color);
-    font-size: 0.8em;
-    margin-left: 5px;
-}
-
-.navbar-icons-right {
-    display: flex;
-    align-items: center;
-}
-
-.navbar-custom .nav-link {
-    color: var(--text-white);
-    font-weight: 500;
-    margin-left: 1rem;
-    text-decoration: none;
-    transition: color 0.3s ease;
-    white-space: nowrap;
-}
-
-.navbar-custom .nav-link:hover {
-    color: var(--accent-color);
-}
-
-.nav-link-icon {
-    font-size: 1.2rem;
-    margin-left: 0.5rem;
-}
-
-/* -------------------- LOCATION -------------------- */
-/* --- 1. CSS Variables for Consistency --- */
-:root {
-    --primary-blue: #2874f0;      /* Main link color */
-    --accent-yellow: #ffc107;     /* Highlight/Hover color */
-    --text-light: #ffffffb3;      /* Light gray text */
-    --text-white: #ffffff;        /* Pure white text on hover */
-    --bg-dark: #232f3e;           /* Common dark header background */
-    --transition-speed: 0.3s;
-}
-
-/* --- 2. Location Wrapper (The main container) --- */
-.location-wrapper {
-    /* Changed from display: none; to display: block; to show the component */
-    display: block; 
-    width: 100%;
-    padding: 0 0.75rem;
-    box-sizing: border-box;
-    /* Reduced margin for better fit if used in a header */
-    margin-right: 20px; 
-    
-    /* ATTRACTIVE ANIMATION: Subtle entrance effect on load */
-    opacity: 0;
-    transform: translateY(5px);
-    animation: fadeInPop 0.5s ease-out forwards; 
-    animation-delay: 0.2s; /* Delay it slightly after the page loads */
-}
-
-/* Keyframe for the entrance animation */
-@keyframes fadeInPop {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* --- 3. Location Container (Flex layout) --- */
-.location-container {
-    display: flex;
-    align-items: center;
-    padding: 0.25rem 0;
-    justify-content: flex-start;
-}
-
-/* --- 4. Icon Styling --- */
-.location-icon {
-    /* Bolder icon color for better visibility */
-    color: var(--text-light); 
-    font-size: 1.1rem; /* Slightly larger icon */
-    margin-right: 6px; /* Increased spacing */
-}
-
-/* --- 5. Main Location Text Styling --- */
-.location {
-    color: var(--text-light);
-    font-weight: 500;
-    font-size: 0.9rem; /* Adjusted for better hierarchy */
-    white-space: nowrap;
-    /* ANIMATION: Smooth color change */
-    transition: color var(--transition-speed) ease-in-out;
-}
-
-.location:hover {
-    color: var(--text-white); /* Bright white on hover */
-    /* ANIMATION: Add a subtle underline effect on hover */
-    text-decoration: underline 1px solid var(--accent-yellow);
-    text-underline-offset: 3px;
-    cursor: default;
-}
-
-/* --- 6. Link (e.g., "Change" or "Select") Styling --- */
-.location-link {
-    color: var(--primary-blue);
-    font-weight: 700;
-    font-size: 0.95rem; /* Slightly emphasized size */
-    margin-left: 8px; /* Increased spacing from location text */
-    text-decoration: none;
-    white-space: nowrap;
-    cursor: pointer;
-    /* ANIMATION: Smooth color change */
-    transition: color var(--transition-speed) ease-out;
-}
-
-.location-link:hover {
-    color: var(--accent-yellow); /* Yellow/Orange highlight on hover */
-    text-decoration: underline;
-}
-
-/* --- 7. Arrow Icon Styling --- */
-.location-arrow {
-    color: var(--primary-blue);
-    font-size: 0.5rem;
-    margin-left: 3px;
-    /* ANIMATION: Subtle bounce/move effect on link hover */
-    transition: transform var(--transition-speed) ease-out;
-}
-
-/* Make the arrow move slightly when the link is hovered */
-.location-link:hover + .location-arrow {
-    transform: translateX(2px);
-    color: var(--accent-yellow);
-}
-
-/* -------------------- CART & ACCOUNT -------------------- */
-.cart-info {
-    display: flex;
-    align-items: center;
-    margin-left: 1rem;
-    color: var(--text-white);
-    font-weight: 500;
-}
-
-.cart-icon {
-    font-size: 1.2rem;
-    margin-right: 5px;
-}
-
-.cart-count {
-    background: var(--accent-color);
-    color: var(--bg-dark);
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-weight: bold;
-    font-size: 0.85rem;
-    margin-left: 5px;
-    transition: transform 0.2s ease;
-}
-
-.cart-count:hover {
-    transform: scale(1.2);
-}
-
-.account-button {
-    background: none;
-    border: 1px solid #ffffffaa;
-    color: var(--text-white);
-    padding: 8px 15px;
-    border-radius: 5px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.3s ease, border-color 0.3s ease;
-    margin-left: auto;
-    text-decoration: none;
-    white-space: nowrap;
-}
-
-.account-button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: var(--text-white);
-}
-
-/* -------------------- SEARCH BAR (Animated with Icon Inside) -------------------- */
+/* -------------------- SEARCH BAR -------------------- */
 .search-bar-container {
-      display: flex;
-    justify-content: flex-start; /* push slightly to right */
-    width: 100%;
-    position: relative;
-    margin: 0;
-    margin-left: 50px; /* shift to right */
-    animation: fadeInSearch 1s ease;
-}
-
-.search-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 420px;
-    transition: transform 0.3s ease;
-}
-
-.search-icon {
-    position: absolute;
-    top: 50%;
-    left: 15px;
-    transform: translateY(-50%);
-    font-size: 1.1rem;
-    color: #888;
-    transition: color 0.3s ease, transform 0.3s ease;
-    pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .search-input {
-    width: 100%;
-    padding: 10px 15px 10px 45px;
-    font-size: 16px;
-    border-radius: 50px;
-    border: 2px solid var(--accent-color);
-    outline: none;
-    background-color: #fff;
-    color: #000;
-    transition: all 0.3s ease;
-}
-
-.search-input:hover {
-    box-shadow: 0 0 6px rgba(255, 153, 0, 0.3);
+  border-radius: 50px;
+  border: 2px solid var(--accent-color);
+  padding: 8px 16px;
+  width: 260px;
+  outline: none;
+  transition: all 0.3s ease;
+  font-size: 15px;
+  background: #fff;
+  color: #000;
 }
 
 .search-input:focus {
-    border-color: var(--accent-light);
-    box-shadow: 0 0 12px rgba(255, 153, 0, 0.5);
-    transform: scale(1.02);
+  border-color: var(--accent-light);
+  box-shadow: 0 0 10px rgba(255, 153, 0, 0.5);
 }
 
-.search-wrapper:focus-within .search-icon,
-.search-wrapper:hover .search-icon {
-    color: var(--accent-color);
-    transform: translateY(-50%) scale(1.1);
+.search-btn {
+  background-color: var(--accent-color);
+  color: #000;
+  font-weight: 600;
+  border-radius: 50px;
+  padding: 8px 16px;
+  border: none;
+  margin-left: 6px;
+  transition: background-color 0.3s ease;
 }
 
-/* Float-up animation */
-@keyframes fadeInSearch {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+.search-btn:hover {
+  background-color: var(--accent-light);
 }
 
-/* -------------------- SEARCH DROPDOWN -------------------- */
-.search-results {
-    position: absolute;
-    top: 45px;
-    left: 0;
-    right: 0;
-    background: #1f2233;
-    border-radius: 0 0 12px 12px;
-    max-height: 280px;
-    overflow-y: auto;
-    z-index: 1000;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-    padding: 0;
-    margin: 0;
-    list-style: none;
+/* -------------------- LOCATION -------------------- */
+.location {
+  color: var(--text-light);
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.location:hover {
+  color: var(--accent-color);
+}
+
+/* -------------------- ACCOUNT & CART -------------------- */
+.account-button,
+.cart-button {
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.account-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.cart-button {
+  border: 1px solid var(--accent-color);
+  background: transparent;
+  color: var(--text-white);
+}
+
+.cart-button:hover {
+  background-color: var(--accent-color);
+  color: #000;
+}
+
+.cart-count {
+  background: var(--accent-color);
+  color: #000;
+  border-radius: 50%;
+  padding: 2px 6px;
+  margin-left: 6px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  transition: transform 0.2s ease;
+}
+
+.cart-count:hover {
+  transform: scale(1.15);
+}
+
+/* -------------------- ANIMATIONS -------------------- */
+@keyframes fadeIn {
+  from {
     opacity: 0;
-    transform: translateY(-10px);
-    animation: fadeInDropdown 0.3s forwards;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-@keyframes fadeInDropdown {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* -------------------- RESPONSIVE -------------------- */
+@media (max-width: 992px) {
+  .search-bar-container {
+    justify-content: flex-start;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .account-button,
+  .cart-button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .navbar-custom {
+    padding: 0.4rem 1rem;
+  }
 }
 
-/* -------------------- MEDIA QUERIES -------------------- */
-@media (max-width: 767px) {
-    .navbar-custom {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 0.2rem 0;
-        border-radius: 0;
-    }
+@media (max-width: 576px) {
+  .navbar-brand-custom {
+    font-size: 1.3rem;
+  }
 
-    .navbar-header-row {
-        width: 100%;
-        padding: 0 0.4rem;
-    }
+  .search-input {
+    font-size: 14px;
+    padding: 6px 14px;
+  }
 
-    .nav-icon {
-        font-size: 1.3rem;
-        margin-right: 5px;
-    }
-
-    .navbar-brand-custom {
-        font-size: 1.5rem;
-    }
-
-    .location, .returns-orders, .account-button, .nav {
-        display: none !important;
-    }
-
-    .cart-info {
-        font-size: 0.85rem !important;
-        margin-left: 8px;
-    }
-
-    .cart-icon {
-        font-size: 1.25rem;
-    }
-
-    /* Mobile Search */
-    .search-wrapper {
-        max-width: 100%;
-    }
-
-    .search-input {
-        font-size: 14px;
-        padding: 8px 12px 8px 40px;
-        border-radius: 10px;
-        border: none;
-        margin: 0 2%;
-    }
-
-    .search-icon {
-        left: 14px;
-        font-size: 1rem;
-    }
-
-    .location-wrapper {
-        display: block;
-        order: 3;
-        padding: 0.1rem 0.4rem 0.3rem 0.4rem;
-    }
-
-    .location-link {
-        font-size: 0.8rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .navbar-custom {
-        padding: 0.15rem 0;
-    }
-
-    .navbar-header-row, .location-wrapper {
-        padding: 0 0.4rem;
-    }
-
-    .search-input {
-        padding: 5px 15px 5px 38px;
-        margin: 0 2%;
-    }
-
-    .navbar-brand-custom {
-        font-size: 1.35rem;
-    }
+  .search-btn {
+    padding: 6px 14px;
+    font-size: 14px;
+  }
 }

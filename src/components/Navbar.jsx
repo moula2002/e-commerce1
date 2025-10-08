@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Navbar, Nav, Container, Button, Modal, Form } from "react-bootstrap";
+import { motion } from "framer-motion";
 import { setLocation } from "../redux/store";
-import { Navbar, Nav, Button, Modal } from "react-bootstrap";
 import AuthPage from "../pages/LoginPage";
 import SecondHeader from "./searchBar/SecondHeader";
 import "./Navbar.css";
@@ -13,9 +14,13 @@ export default function Header() {
 
   const { location } = useSelector((state) => state.header);
   const cartItems = useSelector((state) => state.cart?.items || []);
-  const cartCount = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  const cartCount = cartItems.reduce(
+    (sum, item) => sum + (item.quantity || 1),
+    0
+  );
 
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [search, setSearch] = useState("");
 
   const openAuthModal = () => setShowAuthModal(true);
   const closeAuthModal = () => setShowAuthModal(false);
@@ -25,69 +30,98 @@ export default function Header() {
     if (newLoc) dispatch(setLocation(newLoc));
   };
 
-  const goToCart = () => navigate("/cart"); // Updated: Navigate to /cart
+  const goToCart = () => navigate("/cart");
 
   return (
     <>
-      <Navbar className="navbar-custom sticky-top" expand="lg">
-        <div className="navbar-header-row">
-          <span className="nav-icon d-block d-lg-none" style={{ marginLeft: '-8px' }}>&#9776;</span>
-
-          <Navbar.Brand href="/" className="navbar-brand-custom">
-            <span className="brand-white">E-commerce</span>
-            <span className="brand-orange">.in</span>
-          </Navbar.Brand>
-
-          <div
-            className="text-white ms-3 location d-none d-lg-block"
-            style={{ cursor: "pointer" }}
-            onClick={changeLocation}
+      <Navbar
+        expand="lg"
+        sticky="top"
+        className="navbar-custom shadow-sm"
+        variant="dark"
+      >
+        <Container fluid className="px-3">
+          {/* Logo + Brand */}
+          <motion.div
+            className="d-flex align-items-center brand-container"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
           >
-            Delivering to <strong>{location}</strong>
-          </div>
+            <Navbar.Brand
+              href="/"
+              className="navbar-brand-custom d-flex align-items-center"
+            >
+              <span className="brand-white">E-commerce</span>
+              <span className="brand-orange">.in</span>
+            </Navbar.Brand>
+          </motion.div>
 
-          <div className="d-flex align-items-center d-lg-none ms-auto">
-            <span className="nav-icon" style={{ fontSize: '1.2rem' }}>📱</span>
-            <span className="nav-icon" onClick={openAuthModal} style={{ fontSize: '1.2rem', margin: '0 10px' }}>👤</span>
-            <span className="nav-icon" onClick={goToCart} style={{ fontSize: '1.2rem' }}>🛒</span>
-          </div>
-        </div>
+          {/* Mobile Toggle Button */}
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 
-        <div className="search-bar-container flex-grow-1">
-          <span className="search-icon d-block">🔍</span>
-          <input
-            type="text"
-            placeholder="Search for Products"
-            className="search-input"
-          />
-        </div>
+          {/* Collapsible Navbar */}
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="mx-auto align-items-center">
+              {/* Search Bar */}
+              <motion.div
+                className="search-bar-container my-2 my-lg-0"
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Form className="d-flex">
+                  <Form.Control
+                    type="search"
+                    placeholder="Search for products"
+                    className="me-2 search-input"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                  <Button
+                    variant="warning"
+                    className="search-btn"
+                    onClick={() => alert(`Searching for "${search}"`)}
+                  >
+                    🔍
+                  </Button>
+                </Form>
+              </motion.div>
+            </Nav>
 
-        <div className="location-wrapper d-block d-lg-none">
-          <div className="location-container">
-            <span className="location-icon">📍</span>
-            <span className="location">Location not set</span>
-            <span className="location-link" onClick={changeLocation}>Select delivery location</span>
-            <span className="location-arrow"> &gt; </span>
-          </div>
-        </div>
+            {/* Right Side Buttons */}
+            <Nav className="align-items-center ms-lg-3">
+              <motion.div
+                className="text-white location me-3"
+                whileHover={{ scale: 1.05 }}
+                style={{ cursor: "pointer" }}
+                onClick={changeLocation}
+              >
+                Deliver to <strong>{location || "Set location"}</strong>
+              </motion.div>
 
-        <Nav className="align-items-center d-none d-lg-flex ms-3">
-          <Button
-            variant="outline-light"
-            className="me-3 account-button"
-            onClick={openAuthModal}
-          >
-            Account
-          </Button>
-          <Nav.Link className="nav-link text-white returns-orders">Returns & Orders</Nav.Link>
-          <Nav.Link
-            className="nav-link text-white cart-info"
-            onClick={goToCart}
-            style={{ cursor: "pointer" }}
-          >
-            🛒 Cart <span className="cart-count">{cartCount}</span>
-          </Nav.Link>
-        </Nav>
+              <motion.div whileHover={{ scale: 1.1 }}>
+                <Button
+                  variant="outline-light"
+                  className="me-2 account-button"
+                  onClick={openAuthModal}
+                >
+                  👤 Account
+                </Button>
+              </motion.div>
+
+              <motion.div whileHover={{ scale: 1.1 }}>
+                <Button
+                  variant="outline-warning"
+                  className="cart-button"
+                  onClick={goToCart}
+                >
+                  🛒 Cart <span className="cart-count">{cartCount}</span>
+                </Button>
+              </motion.div>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
       </Navbar>
 
       <SecondHeader />

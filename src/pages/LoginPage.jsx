@@ -76,8 +76,7 @@ export default function AuthPage({ onClose }) {
 
   return (
     <div style={styles.loginContainer}>
-      {/* Single ✕ Close Button */}
-      {/* CSS பிழையைத் தவிர்க்க div-க்கு பதிலாக button பயன்படுத்தப்பட்டுள்ளது, மேலும் style நேரடியாக கொடுக்கப்பட்டுள்ளது */}
+      
       <button style={styles.loginCloseBtn} onClick={onClose} aria-label="Close">
         ✕
       </button>
