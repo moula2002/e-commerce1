@@ -2,9 +2,9 @@ import React from "react";
 // 💥 Import useSelector to get state and useDispatch to dispatch actions
 import { useSelector, useDispatch } from "react-redux";
 // 💥 Import actions from cartSlice
-import { addToCart, removeFromCart } from "../redux/cartSlice"; 
-import CartItems from "../components/Cart/CartItems";
-import EmptyCart from "../components/Cart/EmptyCart";
+import { addToCart, removeFromCart } from "../../redux/cartSlice"; 
+import CartItems from "../cartPage/CartItems";
+import EmptyCart from "../cartPage/EmptyCart";
 import "./CartPage.css"; // Assuming CSS is correctly linked
 
 const CartPage = () => {

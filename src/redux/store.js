@@ -1,10 +1,8 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 import cartReducer from "./cartSlice";
-import footerReducer from "./footerSlice"; // ✅ added footer slice
+import footerReducer from "./footerSlice";
 
-// ----------------------
-// Header slice
-// ----------------------
+
 const initialHeader = { location: "Bengaluru", cartCount: 0 };
 
 const headerSlice = createSlice({
@@ -14,6 +12,7 @@ const headerSlice = createSlice({
     setLocation: (state, action) => {
       state.location = action.payload;
     },
+    // Keep this action for the listener to use
     setCartCount: (state, action) => {
       state.cartCount = action.payload;
     },
@@ -22,15 +21,15 @@ const headerSlice = createSlice({
 
 export const { setLocation, setCartCount } = headerSlice.actions;
 
-// ----------------------
 // Store configuration
-// ----------------------
 export const store = configureStore({
   reducer: {
     cart: cartReducer,
     header: headerSlice.reducer,
-    footer: footerReducer, // ✅ footer added here
+    footer: footerReducer,
   },
 });
+
+
 
 export default store;

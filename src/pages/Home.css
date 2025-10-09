@@ -1,0 +1,220 @@
+/* ================================================ */
+/* 🎨 MODERN E-COMMERCE LIGHT THEME (BLACK TEXT) */
+/* ================================================ */
+:root {
+  --accent-color: #ff9900;
+  --accent-light: #ffc84d;
+  --bg-light: #ffffff;
+  --bg-card: #f8f9fa;
+  --text-dark: #212529;
+  --text-muted: #555;
+  --shadow-soft: 0 6px 20px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 8px 30px rgba(255, 153, 0, 0.25);
+}
+
+body {
+  background-color: var(--bg-light);
+  font-family: "Poppins", sans-serif;
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+/* ================================================ */
+/* 🏠 HOMEPAGE STRUCTURE */
+/* ================================================ */
+.homepage-content {
+  overflow-x: hidden;
+  color: var(--text-dark);
+}
+
+/* Header gradient */
+.bg-gradient {
+  background: linear-gradient(135deg, #ffffff 0%, #fff4e6 40%, #ff9900 100%);
+  color: var(--text-dark);
+}
+
+/* ================================================ */
+/* 💫 SECTION CARD STYLES */
+/* ================================================ */
+.deal-section-card {
+  background: var(--bg-card);
+  border-radius: 1rem;
+  padding: 2rem;
+  margin: 3rem auto;
+  box-shadow: var(--shadow-soft);
+  transition: all 0.4s ease;
+  position: relative;
+  max-width: 95%;
+  overflow: hidden;
+  color: var(--text-dark);
+}
+
+/* Shine animation overlay */
+.deal-section-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  transition: all 0.8s ease;
+}
+
+.deal-section-card:hover::after {
+  left: 120%;
+}
+
+/* Lift & glow hover effect */
+.deal-section-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Headings inside cards */
+.deal-section-card h2,
+.deal-section-card h3 {
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+/* Paragraphs */
+.deal-section-card p {
+  color: var(--text-muted);
+}
+
+/* ================================================ */
+/* 🧭 CATEGORY GRID STYLING */
+/* ================================================ */
+.category-grid .col-lg-3 > div {
+  background: #ffffff;
+  border-radius: 0.8rem;
+  box-shadow: var(--shadow-soft);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid #f1f1f1;
+  color: var(--text-dark);
+}
+
+.category-grid .col-lg-3 > div:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Inner glow border */
+.category-grid .col-lg-3 > div::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 2px solid transparent;
+  background: linear-gradient(
+    45deg,
+    var(--accent-color),
+    rgba(255, 255, 255, 0)
+  )
+  border-box;
+ -webkit-mask: linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.category-grid .col-lg-3 > div:hover::before {
+  border-color: var(--accent-color);
+}
+
+/* Category Titles */
+.category-grid h5,
+.category-grid p {
+  color: var(--text-dark);
+}
+
+/* ================================================ */
+/* ✨ ANIMATIONS */
+/* ================================================ */
+.banner-fade-in {
+  animation: fadeIn 1.2s ease-out forwards;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.component-slide-in {
+  animation: slideIn 1.2s ease-out;
+}
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-25px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.footer-scale-up {
+  animation: scaleUp 1s ease-out;
+}
+@keyframes scaleUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.float-pulse {
+  animation: floatPulse 2.5s ease-in-out infinite;
+}
+@keyframes floatPulse {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* Accent glow for key titles */
+.glow-text {
+  text-shadow: 0 0 10px rgba(255, 153, 0, 0.3);
+  color: var(--accent-color);
+  font-weight: 700;
+}
+
+/* ================================================ */
+/* 📱 RESPONSIVE */
+/* ================================================ */
+@media (max-width: 768px) {
+  .deal-section-card {
+    padding: 1.2rem;
+    margin: 1.5rem auto;
+  }
+
+  header h1 {
+    font-size: 1.8rem;
+  }
+
+  footer h2 {
+    font-size: 1.4rem;
+  }
+}

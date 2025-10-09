@@ -1,85 +1,161 @@
-// src/components/HomeKitchenDeals.jsx
+import React, { useState, useEffect } from "react";
+import { Container, Spinner, Alert } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
-
-/**
- * Renders a horizontal scrollable section of Home & Kitchen related products
- * as seen in the Amazon screenshot (as simple images, not full cards).
- */
 function HomeKitchenDeals() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const styles = {
+    scrollContainer: {
+      display: "flex",
+      overflowX: "auto",
+      gap: "1rem",
+      paddingBottom: "10px",
+      scrollbarWidth: "thin",
+    },
+    productCard: {
+      flex: "0 0 auto",
+      width: "180px",
+      backgroundColor: "#ffffff",
+      color: "black",
+      borderRadius: "8px",
+      textAlign: "center",
+      boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+      transition: "transform 0.2s ease, box-shadow 0.2s ease",
+      cursor: "pointer",
+    },
+    productImage: {
+      maxHeight: "140px",
+      objectFit: "contain",
+      width: "100%",
+    },
+    header: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: "1rem",
+      color: "black",
+    },
+    seeMore: {
+      color: "#007bff",
+      textDecoration: "none",
+      fontWeight: "bold",
+    },
+  };
 
   useEffect(() => {
     const fetchHomeKitchenItems = async () => {
       try {
-        // Fetch more items to get a good selection for filtering
-        const response = await fetch('https://fakestoreapi.com/products?limit=8');
+        const response = await fetch("https://fakestoreapi.com/products?limit=8");
         if (!response.ok) throw new Error("Network response failed.");
         const data = await response.json();
 
-        // Filter for items that *could* be home/kitchen related, or at least not clothing/jewelry
-        const homeKitchenLikeItems = data
-          .filter(product => 
-            !['electronics', 'jewelery', 'men\'s clothing', 'women\'s clothing']
-            .some(category => product.category.toLowerCase().includes(category))
-          )
-          .slice(0, 5) // Get about 5 items
-          .map((product, index) => ({
-              ...product,
-              // Custom titles to fit the screenshot's look
-              mockTitle: [
-                "Toothbrush Holder", 
-                "Dish Soap Dispenser", 
-                "Trash Bags Roll", 
-                "Batman Key Holder", 
-                "Egg Storage Rack"
-              ][index % 5] || product.title // Cycle through mock titles
-          }));
+        const mockTitles = [
+          "Smart Dish Soap Dispenser",
+          "Premium Silicone Spatula Set",
+          "Ceramic Coffee Mug Collection",
+          "Digital Kitchen Scale",
+          "Stainless Steel Water Bottle",
+          "Ergonomic Toothbrush Holder",
+          "Aesthetic Wall Clock",
+          "Glass Food Storage Containers",
+        ];
 
-        setProducts(homeKitchenLikeItems);
+        const items = data.map((item, index) => ({
+          ...item,
+          mockTitle: mockTitles[index % mockTitles.length],
+          mockPrice: `$${(Math.random() * (50 - 10) + 10).toFixed(2)}`,
+        }));
+
+        setProducts(items);
       } catch (e) {
-        console.error("Failed to fetch home/kitchen items:", e);
+        console.error("Failed to fetch Home & Kitchen items:", e);
         setError("Failed to load Home & Kitchen deals.");
       } finally {
         setLoading(false);
       }
     };
+
     fetchHomeKitchenItems();
   }, []);
 
   if (loading) {
-    return <Container className="my-4 text-center">Loading Home & Kitchen Deals...</Container>;
+    return (
+      <Container className="my-5 text-center text-dark">
+        <Spinner animation="border" variant="warning" />
+        <p className="mt-2">Loading Home & Kitchen Deals...</p>
+      </Container>
+    );
   }
+
   if (error) {
-    return <Container className="my-4 alert alert-danger">{error}</Container>;
+    return (
+      <Container className="my-5">
+        <Alert variant="danger" className="text-center">
+          {error}
+        </Alert>
+      </Container>
+    );
   }
 
   return (
     <Container fluid className="my-5 px-4">
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h3 className="mb-0 fw-bold">Up to 70% off | Home & kitchen storage from stores nearby</h3>
-        <a href="#" className="text-decoration-none">See more &raquo;</a>
+      <div style={styles.header}>
+        <h3 className="mb-0 fw-bold">Up to 70% off | Home & Kitchen Storage</h3>
+        <a href="#" style={styles.seeMore}>
+          See more &raquo;
+        </a>
       </div>
 
-      <Row className="g-3 justify-content-start">
-        {products.map((product, index) => (
-          // Each item is a Col. lg={2} makes 6 items per row, or 5 plus space
-          <Col key={product.id} xs={6} md={4} lg={2} className="d-flex flex-column align-items-center text-center">
-            <div className="bg-white p-3 rounded shadow-sm h-100 w-100 d-flex flex-column justify-content-center align-items-center">
-              <img 
-                src={product.image} 
-                alt={product.mockTitle} 
-                className="img-fluid" 
-                style={{ maxHeight: '150px', maxWidth: '100%', objectFit: 'contain' }}
+      <div style={styles.scrollContainer}>
+        {products.map((product) => (
+          <div
+            key={product.id}
+            style={styles.productCard}
+            className="shadow-sm p-2"
+            onClick={() => navigate(`/product/${product.id}`)} // 👈 Navigate to ProductDetailPage
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-5px)";
+              e.currentTarget.style.boxShadow = "0 4px 12px rgba(255,153,0,0.4)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "none";
+              e.currentTarget.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+            }}
+          >
+            <div className="p-3">
+              <img
+                src={product.image}
+                alt={product.mockTitle}
+                style={styles.productImage}
               />
-              <small className="mt-2 text-muted">{product.mockTitle}</small>
             </div>
-          </Col>
+            <div className="p-2">
+              <p className="fw-bold mb-1 text-success">{product.mockPrice}</p>
+              <small>{product.mockTitle}</small>
+            </div>
+          </div>
         ))}
-      </Row>
+
+        {/* Advertisement Card */}
+        <div
+          style={{
+            ...styles.productCard,
+            backgroundColor: "#dc3545",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            color: "white",
+          }}
+        >
+          <h5 className="fw-bold mb-1">🔥 Limited Offer</h5>
+          <p className="mb-1">Smart LED Lamp</p>
+          <small>Up to 80% off</small>
+        </div>
+      </div>
     </Container>
   );
 }

@@ -1,3 +1,5 @@
+// AuthPage.jsx (No functional changes needed for the prompt's request)
+
 import React, { useState } from "react";
 import { Button, Form, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -13,9 +15,10 @@ const styles = {
         padding: '30px',
         backgroundColor: '#fff',
         borderRadius: '12px',
-        // Modal component provides the shadow and centering
+        // Note: Assumes this component is rendered either inside a Modal or as a full page component.
         position: 'relative', 
     },
+    // The close button logic is typically for when it's used as a Modal.
     loginCloseBtn: {
         position: 'absolute',
         top: '10px',
@@ -29,6 +32,8 @@ const styles = {
     }
 };
 
+// NOTE: If this component is used as a standalone page for '/login', 
+// the `onClose` prop will likely be undefined and can be ignored.
 export default function AuthPage({ onClose }) {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
@@ -44,20 +49,22 @@ export default function AuthPage({ onClose }) {
     if (isLogin) {
       // --- FAKE LOGIN LOGIC ---
       if (email === FAKE_EMAIL && password === FAKE_PASSWORD) {
-        // Success: Use alert() as requested by user
+        // Success
         alert(`Login Successful! Welcome back.`); 
         
-        // 💥 Perform actions upon successful login (e.g., redirect or close modal)
+        // Perform actions upon successful login (e.g., redirect or close modal)
         if (onClose) onClose();
+        else navigate("/"); // Redirect to home if it's a standalone page
         
       } else {
-        // Failure: Show error message using React Bootstrap Alert
+        // Failure: Show error message
         setError("Invalid email or password. Please use: test@example.com / password123");
       }
     } else {
       // --- SIGNUP LOGIC (Fake) ---
       alert(`Signup submitted! Successfully registered ${name} with email ${email}.`);
       if (onClose) onClose(); 
+      else setIsLogin(true); // Switch to login after fake signup
     }
   };
 
@@ -71,15 +78,19 @@ export default function AuthPage({ onClose }) {
 
   const goHome = () => {
     navigate("/"); // Go to home page
-    if (onClose) onClose(); // Close modal
+    if (onClose) onClose(); // Close modal if applicable
   };
 
   return (
     <div style={styles.loginContainer}>
       
-      <button style={styles.loginCloseBtn} onClick={onClose} aria-label="Close">
-        ✕
-      </button>
+      {/* Conditionally render close button only if onClose is provided (i.e., used as a Modal) */}
+      {onClose && (
+          <button style={styles.loginCloseBtn} onClick={onClose} aria-label="Close">
+              ✕
+          </button>
+      )}
+      
 
       <h2 className="text-center mb-4">{isLogin ? "Login" : "Signup"}</h2>
 
