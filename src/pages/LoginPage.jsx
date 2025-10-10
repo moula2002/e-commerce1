@@ -32,8 +32,6 @@ const styles = {
     }
 };
 
-// NOTE: If this component is used as a standalone page for '/login', 
-// the `onClose` prop will likely be undefined and can be ignored.
 export default function AuthPage({ onClose }) {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
@@ -134,7 +132,7 @@ export default function AuthPage({ onClose }) {
           />
         </Form.Group>
 
-        <Button variant="primary" type="submit" className="w-100 mb-3">
+        <Button variant="bt btn-warning" type="submit" className="w-100 mb-3">
           {isLogin ? "Login" : "Signup"}
         </Button>
       </Form>

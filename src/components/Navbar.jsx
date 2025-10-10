@@ -36,9 +36,9 @@ export default function Header() {
     <>
       <Navbar
         expand="lg"
-        sticky="top"
-        className="navbar-custom shadow-sm"
+        className="navbar-custom shadow-sm fixed-top"
         variant="dark"
+        style={{width:"100%"}}
       >
         <Container fluid className="px-3">
           {/* Logo + Brand */}

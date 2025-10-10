@@ -1,29 +1,75 @@
 import React from "react";
-import "./CartPage.css"; // Assuming CSS is correctly linked
+
+import { Card, Button, Row, Col, Image, ButtonGroup } from "react-bootstrap";
 
 const CartItem = ({ item, onIncrease, onDecrease, onRemove }) => {
-  // item.title is used as the name in ProductDetailPage, so we use it here.
-  const name = item.title; 
-    
-  // Price formatting function
+  const name = item.title;
+
   const formatPrice = (value) =>
-    new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
+    new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0,
+    }).format(value);
 
   return (
-    <div className="cart-item">
-      <img src={item.image} alt={name} className="cart-item-image" />
-      <div className="cart-item-info">
-        <h4>{name}</h4>
-        <p>{formatPrice(item.price)}</p>
-        <div className="cart-item-quantity">
-          <button onClick={() => onDecrease(item)} disabled={item.quantity <= 1}>-</button>
-          <span>{item.quantity}</span>
-          <button onClick={() => onIncrease(item)}>+</button>
-        </div>
-      </div>
-      {/* Remove button logic remains the same */}
-      <button className="cart-item-remove" onClick={() => onRemove(item)}>Remove</button>
-    </div>
+    <Card className="mb-3 shadow-sm border-0 cart-item-card">
+      <Card.Body>
+        <Row className="align-items-center">
+          {/* Product Image */}
+          <Col xs={4} md={2} className="text-center">
+            <Image
+              src={item.image}
+              alt={name}
+              fluid
+              rounded
+              className="cart-item-image"
+              style={{ maxHeight: "90px", objectFit: "contain" }}
+            />
+          </Col>
+
+          {/* Product Info */}
+          <Col xs={8} md={4}>
+            <h5 className="fw-semibold mb-1">{name}</h5>
+            <p className="text-warning fw-bold mb-0">{formatPrice(item.price)}</p>
+          </Col>
+
+          {/* Quantity Controls */}
+          <Col xs={12} md={3} className="mt-3 mt-md-0 text-md-center">
+            <ButtonGroup aria-label="Quantity controls">
+              <Button
+                variant="outline-light"
+                onClick={() => onDecrease(item)}
+                disabled={item.quantity <= 1}
+              >
+                −
+              </Button>
+              <Button variant="dark" disabled>
+                {item.quantity}
+              </Button>
+              <Button
+                variant="outline-light"
+                onClick={() => onIncrease(item)}
+              >
+                +
+              </Button>
+            </ButtonGroup>
+          </Col>
+
+          {/* Remove Button */}
+          <Col xs={12} md={3} className="mt-3 mt-md-0 text-md-end text-center">
+            <Button
+              variant="danger"
+              size="sm"
+              className="rounded-pill px-3"
+              onClick={() => onRemove(item)}
+            >
+              🗑 Remove
+            </Button>
+          </Col>
+        </Row>
+      </Card.Body>
+    </Card>
   );
 };
 

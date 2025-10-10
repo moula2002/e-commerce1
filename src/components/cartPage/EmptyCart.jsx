@@ -4,6 +4,8 @@ import React from "react";
 import "../cartPage/CartPage"; // Assuming CartPage.css is correctly referenced
 import { IoArrowBackOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 
 const EMPTY_CART_IMAGE_URL = "https://rukminim2.flixcart.com/www/800/800/promos/16/05/2019/d438a32e-765a-4d8b-b4a6-520b560971e8.png";
 
@@ -13,6 +15,11 @@ const EmptyCart = () => {
   const handleBack = () => {
     navigate(-1); // Go back to previous page
   };
+   const cartItems = useSelector((state) => state.cart.items || []);
+   console.log(cartItems);
+   console.log(cartItems.length);
+   
+   
 
   // New handler to navigate to the Login page
   const handleSignIn = () => {
@@ -44,8 +51,8 @@ const EmptyCart = () => {
 
         <div className="cart-empty-buttons">
           {/* Updated to use handleSignIn */}
-          <button className="signin-btn" onClick={handleSignIn}>Sign in</button>
-          <button className="signup-btn" onClick={() => navigate("/register")}>Sign up</button>
+          <button className="signin-btn" onClick={handleSignIn}>Login in</button>
+          
         </div>
 
         <p className="cart-empty-footer">

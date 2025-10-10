@@ -22,8 +22,6 @@ body {
   background: linear-gradient(135deg, var(--bg-dark), var(--bg-darker));
   padding: 0.6rem 1.2rem;
   transition: all 0.3s ease;
-  position: sticky;
-  top: 0;
   z-index: 1000;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }

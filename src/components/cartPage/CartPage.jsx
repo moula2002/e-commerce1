@@ -1,35 +1,39 @@
 import React from "react";
-// 💥 Import useSelector to get state and useDispatch to dispatch actions
 import { useSelector, useDispatch } from "react-redux";
-// 💥 Import actions from cartSlice
-import { addToCart, removeFromCart } from "../../redux/cartSlice"; 
-import CartItems from "../cartPage/CartItems";
-import EmptyCart from "../cartPage/EmptyCart";
-import "./CartPage.css"; // Assuming CSS is correctly linked
+import { addToCart, removeFromCart, clearCart } from "../../redux/cartSlice";
+import CartItems from "./CartItems";
+import EmptyCart from "./EmptyCart";
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import "./CartPage.css";
 
 const CartPage = () => {
   const dispatch = useDispatch();
-  // 💥 Select cart items from Redux state
+  const navigate = useNavigate();
   const cartItems = useSelector((state) => state.cart.items || []);
 
-  // Handlers to dispatch actions
   const handleIncrease = (item) => dispatch(addToCart({ ...item, quantity: 1 }));
   const handleDecrease = (item) => dispatch(removeFromCart({ id: item.id, quantity: 1 }));
   const handleRemove = (item) => dispatch(removeFromCart({ id: item.id }));
+  const handleClear = () => dispatch(clearCart());
 
-  // Calculate total price. Note: item.price is the INR price calculated in ProductDetailPage.
-  const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  const totalPrice = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
-  // Price formatting function
   const formatPrice = (value) =>
-    new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
+    new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0,
+    }).format(value);
 
-  // Show EmptyCart component if no items are present
-  if (!cartItems.length) return <EmptyCart />;
+  if (cartItems.length === 0) return <EmptyCart />;
 
   return (
-    <div className="cart-container">
-      <h2>Shopping Cart</h2>
+    <Container className="cart-container py-4">
+      <h2 className="cart-heading mb-4 text-center text-dark">🛍️ Your Shopping Cart</h2>
 
       <CartItems
         items={cartItems}
@@ -38,12 +42,37 @@ const CartPage = () => {
         onRemove={handleRemove}
       />
 
-      <div className="cart-summary">
-        {/* Total is displayed in INR */}
-        <h3>Total: {formatPrice(totalPrice)}</h3>
-        <button className="checkout-btn">Proceed to Checkout</button>
-      </div>
-    </div>
+      <Row className="justify-content-center mt-5">
+        <Col xs={12} md={8} lg={6}>
+          <Card className="cart-summary-card shadow-lg border-0">
+            <Card.Body className="text-center">
+              <h3 className="fw-bold mb-3 text-dark">
+                Total: <span className="text-warning">{formatPrice(totalPrice)}</span>
+              </h3>
+
+              <div className="d-flex justify-content-center gap-3">
+                {/* ✅ Go to Checkout on click */}
+                <Button
+                  variant="warning"
+                  className="checkout-btn px-4 fw-semibold"
+                  onClick={() => navigate("/checkout")}
+                >
+                  Proceed to Checkout
+                </Button>
+
+                <Button
+                  variant="outline-danger"
+                  className="clear-btn px-4 fw-semibold"
+                  onClick={handleClear}
+                >
+                  Clear Cart
+                </Button>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
