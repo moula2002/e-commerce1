@@ -3,19 +3,15 @@
 import React, { useState, useEffect } from "react";
 import { Card, Row, Col, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
-import { app } from "../firebase"; // ✅ make sure firebase.js exports initialized `app`
 
 /**
  * CategoryPanel Component
- * Fetches product previews from Firestore by category document ID.
+ * Displays two product previews from a category.
  */
-function CategoryPanel({ title, categoryId }) {
+function CategoryPanel({ title, mockCategory }) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const db = getFirestore(app);
 
   useEffect(() => {
     const fetchCategoryItems = async () => {
@@ -23,39 +19,35 @@ function CategoryPanel({ title, categoryId }) {
         setLoading(true);
         setError(null);
 
-        // ✅ Get the document for this category
-        const docRef = doc(db, "category", categoryId);
-        const docSnap = await getDoc(docRef);
+        const response = await fetch("https://fakestoreapi.com/products?limit=10");
+        if (!response.ok) throw new Error("Network response failed");
 
-        if (docSnap.exists()) {
-          const data = docSnap.data();
+        const data = await response.json();
 
-          // Assume Firestore doc contains { products: [ {id, image, title, price}, ... ] }
-          const formattedItems = (data.products || []).slice(0, 2).map((product) => ({
-            id: product.id,
-            image: product.image,
-            description:
-              product.title.length > 25
-                ? product.title.substring(0, 25) + "..."
-                : product.title,
-          }));
+        const filteredItems = data.filter((product) =>
+          product.category.toLowerCase().includes(mockCategory.toLowerCase())
+        );
 
-          setItems(formattedItems);
-        } else {
-          setError("No such category found.");
-        }
+        const formattedItems = filteredItems.slice(0, 2).map((product) => ({
+          id: product.id, // include ID for navigation
+          image: product.image,
+          description:
+            product.title.length > 25
+              ? product.title.substring(0, 25) + "..."
+              : product.title,
+        }));
+
+        setItems(formattedItems);
       } catch (err) {
-        console.error("Firestore fetch failed:", err);
+        console.error(`Failed to fetch ${mockCategory} items:`, err);
         setError("Failed to load category deals.");
       } finally {
         setLoading(false);
       }
     };
 
-    if (categoryId) {
-      fetchCategoryItems();
-    }
-  }, [categoryId, db]);
+    fetchCategoryItems();
+  }, [mockCategory]);
 
   if (loading) {
     return (
@@ -86,6 +78,7 @@ function CategoryPanel({ title, categoryId }) {
             key={index}
             className="d-flex flex-column align-items-center text-center"
           >
+            {/* ✅ Wrap each product in a Link */}
             <Link
               to={`/product/${item.id}`}
               className="text-decoration-none text-dark"
