@@ -51,7 +51,6 @@ const CartPage = () => {
               </h3>
 
               <div className="d-flex justify-content-center gap-3">
-                {/* ✅ Go to Checkout on click */}
                 <Button
                   variant="warning"
                   className="checkout-btn px-4 fw-semibold"
