@@ -12,6 +12,7 @@
 body {
   font-family: "Poppins", Arial, sans-serif;
   background-color: var(--bg-dark);
+  position:sticky;
   margin: 0;
   padding: 0;
   color: var(--text-white);
@@ -24,6 +25,7 @@ body {
   transition: all 0.3s ease;
   z-index: 1000;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  
 }
 
 .navbar-custom.scrolled {
@@ -91,15 +93,37 @@ body {
 }
 
 /* -------------------- LOCATION -------------------- */
-.location {
-  color: var(--text-light);
-  font-weight: 500;
-  cursor: pointer;
-  transition: color 0.3s ease;
+/* -------------------- LOCATION MODAL -------------------- */
+.location-modal .modal-content {
+  background: var(--bg-darker);
+  color: var(--text-white);
+  border-radius: 15px;
+  box-shadow: 0 0 25px rgba(255, 153, 0, 0.3);
+  border: 1px solid rgba(255, 153, 0, 0.2);
 }
 
-.location:hover {
-  color: var(--accent-color);
+.location-modal .modal-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.location-modal .modal-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.location-modal .form-control {
+  background-color: #fff;
+  color: #000;
+  border-radius: 8px;
+  border: 2px solid var(--accent-color);
+}
+
+.location-modal .form-control:focus {
+  box-shadow: 0 0 10px rgba(255, 153, 0, 0.4);
+  border-color: var(--accent-light);
+}
+
+.location-modal .btn-warning {
+  font-weight: 600;
 }
 
 /* -------------------- ACCOUNT & CART -------------------- */
@@ -189,3 +213,4 @@ body {
     font-size: 14px;
   }
 }
+

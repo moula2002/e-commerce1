@@ -1,14 +1,14 @@
 /* ================= CSS VARIABLES ================= */
 :root {
-    --accent-color: #ff9900;
-    --accent-light: #ffc84d;
-    --bg-dark: #0a0e14;
-    --bg-darker: #1c1f2a;
-    --bg-second-header: #232f3e;
+    --accent-color: #ff9900; /* Primary orange/gold */
+    --accent-light: #ffc84d; /* Lighter orange for hover/glow */
+    --bg-dark: #0a0e14;      /* Very dark background */
+    --bg-darker: #1c1f2a;    /* Slightly lighter dark background (for header block) */
+    --bg-second-header: #232f3e; /* Amazon-like dark blue/gray */
     --text-white: #ffffff;
- /* Max width for main content */
+    --max-content-width: 1400px; /* Max width for main content area */
     --padding-sides: 2rem; /* Default side padding for larger screens */
-} */
+}
 
 /* ================= GLOBAL STYLES & FIXED HEADER BLOCK ================= */
 
@@ -20,8 +20,7 @@ body {
     overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
-/* 💥 FIX: Wrapper for both FIXED headers */
-/* This div should wrap both your <Navbar> and <SecondHeader> components */
+/* 💥 FIX: Wrapper for both FIXED headers (Navbar + Second Header) */
 .main-header-fixed-block {
     position: fixed;
     top: 0;
@@ -33,14 +32,14 @@ body {
 }
 
 /* 💥 FIX: Main Content Area Padding */
-/* Apply this class to the <main> tag that wraps all your page content */
 .main-content-area {
     /* Desktop: (Top Navbar: ~78px + Second Header: 45px = 123px total fixed height) */
     padding-top: 123px; 
+    padding-bottom: 50px; /* Ensure content doesn't stick to the bottom */
     min-height: 100vh;
-    /* 💥 ADDED: Center the content and prevent overflow */
+    /* Center the content and prevent overflow */
     max-width: var(--max-content-width); 
-    margin: 0 auto; /* Center the content horizontally */
+    margin: 0 auto; 
     padding-left: var(--padding-sides);
     padding-right: var(--padding-sides);
     box-sizing: border-box; /* Include padding in width calculation */
@@ -51,12 +50,11 @@ body {
 
 .navbar-custom {
     display: flex;
-    justify-content: space-between; /* Distribute items */
+    justify-content: space-between; 
     align-items: center;
     background: linear-gradient(135deg, var(--bg-dark), var(--bg-darker));
-    padding: 0.75rem var(--padding-sides); /* Use variable for consistent padding */
-    
-    position: static !important; /* Parent .main-header-fixed-block handles fixed positioning */
+    padding: 0.75rem var(--padding-sides); 
+    position: static !important; 
     z-index: 10;
 }
 
@@ -89,7 +87,6 @@ body {
 .brand-white { color: var(--text-white); }
 .brand-orange { color: var(--accent-color); }
 
-/* Desktop Location (if you have one in the top nav) */
 .location strong {
     color: var(--accent-color);
 }
@@ -116,7 +113,7 @@ body {
     border-radius: 5px; 
     font-weight: 700;
     transition: all 0.3s ease;
-    white-space: nowrap; /* Prevent button text wrapping */
+    white-space: nowrap;
 }
 
 .account-button:hover {
@@ -146,7 +143,7 @@ body {
     margin: 0 20px; 
     position: relative;
     animation: fadeInSearch 1s ease;
-    justify-content: center; /* Center the search input */
+    justify-content: center;
 }
 
 .search-wrapper {
@@ -200,6 +197,13 @@ body {
 
 
 /* ================= SECOND HEADER / FIXED BOTTOM MENU ================= */
+
+/* Wrapper to respect max-width and center the content within the fixed header block */
+.second-header-wrapper {
+    width: 100%;
+    /* Ensure no background color here if you want the fixed block to handle it */
+}
+
 .second-header {
     display: flex;
     justify-content: space-between;
@@ -208,21 +212,19 @@ body {
     padding: 0.3rem var(--padding-sides); 
     color: var(--text-white);
     
-    /* 💥 FIX: Removed fixed positioning from here */
-    /* It should be part of .main-header-fixed-block now */
-    position: relative; /* Changed from fixed to relative for internal layout */
-    top: auto; /* Reset */
-    left: auto; /* Reset */
-    right: auto; /* Reset */
+    position: relative; 
+    top: auto;
+    left: auto; 
+    right: auto;
     
     z-index: 999;
     flex-wrap: nowrap;
-    height: 45px; /* Slightly reduced height for better integration */
+    height: 45px; 
     transition: all 0.3s ease, box-shadow 0.3s;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     animation: headerFadeIn 0.5s ease-out;
     
-    /* 💥 ADDED: Ensure second header itself respects max-width and centers */
+    /* Ensure second header itself respects max-width and centers */
     max-width: var(--max-content-width); 
     margin: 0 auto; 
     box-sizing: border-box; 
@@ -236,21 +238,21 @@ body {
     overflow-x: auto;
     scrollbar-width: thin;
     scrollbar-color: #555555 transparent;
-    max-width: calc(100% - 100px); /* Leave space for festival offer */
+    max-width: calc(100% - 120px); /* Leave space for festival offer + margin */
 }
 .menu-left::-webkit-scrollbar { height: 4px; }
 .menu-left::-webkit-scrollbar-thumb { background: #555555; border-radius: 2px; }
 .menu-left::-webkit-scrollbar-track { background: var(--bg-second-header); }
 
-/* "All" BUTTON */
+/* "All" BUTTON / MOBILE TOGGLE */
 .menu-item.all {
     display: flex;
     align-items: center;
     cursor: pointer;
     font-weight: bold;
-    margin-right: 10px; 
+    margin-right: 15px; /* Increased margin for better separation */
     flex-shrink: 0;
-    padding: 6px 10px; 
+    padding: 6px 12px; 
     background-color: #364759;
     border-radius: 3px;
     transition: all 0.2s ease-in-out;
@@ -258,7 +260,8 @@ body {
 }
 
 .menu-item.all:hover {
-    background-color: #485c72;
+    background-color: var(--accent-color); /* Hover for a strong visual cue */
+    color: var(--bg-dark); /* Text color change on hover */
     transform: scale(1.03);
 }
 
@@ -267,7 +270,7 @@ body {
     font-size: 1.1rem;
 }
 
-/* MENU LIST */
+/* MENU LIST (Desktop Horizontal Menu) */
 .menu-list {
     display: flex;
     list-style: none;
@@ -282,12 +285,27 @@ body {
     cursor: pointer;
     flex-shrink: 0;
     position: relative;
-    transition: color 0.3s;
+    /* transition: color 0.3s; (Removed as Link component handles color change) */
     font-size: 0.9rem;
 }
 
-.menu-item:hover { color: var(--accent-color); }
+/* 🎯 ENHANCEMENT: Style for the React Router Link inside the menu item */
+.menu-item .menu-link-custom {
+    color: inherit;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+    display: block; 
+    transition: color 0.3s, text-shadow 0.3s; /* Transition for visual effect */
+}
 
+/* 🎯 ENHANCEMENT: Give the link a subtle lift effect on hover (Bootstrap-like shadow/glow) */
+.menu-item:hover .menu-link-custom {
+    color: var(--accent-color);
+    text-shadow: 0 0 5px rgba(255, 153, 0, 0.5); /* Subtle glow effect */
+}
+
+/* Hover underline effect */
 .menu-item::after {
     content: '';
     position: absolute;
@@ -301,38 +319,49 @@ body {
 }
 .menu-item:hover::after { transform: scaleX(1); }
 
+
 /* MOBILE MENU DROPDOWN */
 .menu-list.active {
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: 45px; /* Adjust if second header height changes */
+    top: 45px; 
     left: 0;
-    width: 100%;
-    background: rgba(35, 47, 62, 0.95);
+    right: 0; /* FIX: Ensure it covers full width */
+    width: 100%; 
+    background: rgba(35, 47, 62, 0.98); /* Slightly more opaque background */
     padding: 0;
     z-index: 1000;
     transform-origin: top;
     animation: slideDown 0.3s ease-out forwards;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7); /* Deeper shadow for depth */
 }
 
 .menu-list.active .menu-item {
     margin: 0;
     padding: 10px 1rem; 
     width: 100%;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15); /* Slightly clearer separator */
     font-size: 1rem;
+    text-align: left; /* Align text to the left in the dropdown */
 }
 
 .menu-list.active .menu-item:last-child { border-bottom: none; }
 
 .menu-list.active .menu-item:hover {
-    background-color: rgba(72, 92, 114, 0.5); 
+    background-color: rgba(72, 92, 114, 0.7); /* Stronger hover background */
     color: var(--text-white);
 }
 
-.menu-list.active .menu-item::after { display: none; }
+.menu-list.active .menu-item::after { display: none; } /* Hide underline on dropdown items */
+
+/* Style for icon in mobile menu */
+.menu-item-mobile-icon {
+    margin-right: 10px;
+    color: var(--accent-light);
+    font-size: 1.1rem;
+}
+
 
 /* RIGHT SIDE FESTIVAL OFFER */
 .festival-offer {
@@ -363,25 +392,26 @@ body {
 /* CLOSE ICON (for mobile dropdown) */
 .close-icon {
     position: absolute;
-    top: 12px; 
-    right: 1rem;
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%);
+    right: var(--padding-sides);
     font-size: 1.5rem;
-    color: var(--text-white);
+    color: var(--accent-color); /* Highlight the close button */
     cursor: pointer;
     z-index: 1001;
     transition: transform 0.3s ease-in-out, color 0.3s;
 }
 
 .close-icon:hover {
-    transform: rotate(90deg) scale(1.05);
-    color: var(--accent-color);
+    transform: translateY(-50%) rotate(90deg) scale(1.1); /* Rotate and scale */
+    color: var(--accent-light);
 }
 
 /* ================= MEDIA QUERIES ================= */
 
 @media (max-width: 992px) {
     :root {
-        --padding-sides: 1.5rem; /* Reduce side padding for smaller desktops/tablets */
+        --padding-sides: 1.5rem; 
     }
     .second-header, .navbar-custom {
         padding-left: var(--padding-sides);
@@ -391,9 +421,9 @@ body {
 
 @media (max-width: 768px) {
     :root {
-        --padding-sides: 0.75rem; /* Further reduce padding for tablets/mobile */
+        --padding-sides: 0.75rem; 
     }
-    /* 💥 FIX: Mobile Content Padding - Adjusted for fixed headers (assuming ~105px) */
+    /* FIX: Mobile Content Padding - Adjusted for fixed headers (assuming ~105px) */
     .main-content-area {
         padding-top: 105px; 
         padding-left: var(--padding-sides);
@@ -401,7 +431,7 @@ body {
     }
     
     .navbar-custom {
-        flex-direction: column; /* Stack items vertically */
+        flex-direction: column; 
         align-items: flex-start;
         padding: 0.2rem var(--padding-sides); 
     }
@@ -415,11 +445,11 @@ body {
     
     /* Search Bar on Mobile */
     .search-bar-container {
-        order: 2; /* Place search bar below top row */
+        order: 2; 
         flex-grow: 0;
         width: 100%;
         margin: 0.25rem 0; 
-        padding: 0; /* Handled by .main-content-area padding */
+        padding: 0;
     }
     .search-wrapper { max-width: 100%; }
     .search-input {
@@ -444,6 +474,7 @@ body {
         height: 45px;
         padding-left: var(--padding-sides);
         padding-right: var(--padding-sides);
+        flex-wrap: wrap; /* Allow wrapping if items are too wide (though we hide list) */
     }
     .menu-list {
         display: none; /* Hide horizontal menu on mobile by default */
@@ -455,18 +486,31 @@ body {
     }
     .navbar-brand-custom { font-size: 1.6rem; }
     .nav-icon { font-size: 1.2rem; }
+    
+    .menu-left {
+        max-width: 100%; /* Allows the menu to take full width */
+        overflow-x: hidden; 
+        flex-grow: 1;
+    }
+
+    /* Ensure the "All" button is styled for mobile interaction */
+    .menu-item.all:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-dark);
+        transform: none; /* Remove desktop scale effect */
+    }
+    
+    .festival-offer {
+        font-size: 0.75rem; /* Smaller font on mobile */
+    }
 }
 
 @media (max-width: 480px) {
     :root {
-        --padding-sides: 0.5rem; /* Even smaller padding for very small screens */
+        --padding-sides: 0.5rem; 
     }
     .main-content-area {
-        padding-top: 100px; /* Adjust for very small screens */
-        padding-left: var(--padding-sides);
-        padding-right: var(--padding-sides);
-    }
-    .navbar-custom {
+        padding-top: 100px; 
         padding-left: var(--padding-sides);
         padding-right: var(--padding-sides);
     }
@@ -478,10 +522,6 @@ body {
     }
     .navbar-brand-custom { font-size: 1.35rem; }
     .menu-item.all { font-size: 0.85rem; }
-    .second-header {
-         padding-left: var(--padding-sides);
-         padding-right: var(--padding-sides);
-    }
 }
 
 /* ================= KEYFRAME ANIMATIONS ================= */
@@ -509,17 +549,4 @@ body {
 @keyframes colorPulse {
     0% { color: #ffc107; }
     100% { color: #ff9900; }
-}
-
-/* cusomer service */
-
-/* Style for the React Router Link inside the menu item */
-.menu-item .menu-link-custom {
-    /* Reset link appearance to match list text */
-    color: inherit;
-    text-decoration: none;
-    padding: 0;
-    margin: 0;
-    /* Ensure it gets the same hover effect as the parent li */
-    display: block; 
 }

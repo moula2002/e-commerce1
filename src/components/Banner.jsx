@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react";
+// 🎯 Import necessary Firebase functions
+import { collection, getDocs } from "firebase/firestore";
+// 🎯 Import your initialized Firestore instance
+import { db } from "../firebase"; 
 import "./Banner.css";
 
 function Banner() {
@@ -6,36 +10,40 @@ function Banner() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Use dummy placeholder images for banner simulation
-    const dummyBanners = [
-      {
-        id: 1,
-        url: "https://picsum.photos/id/1015/1200/400",
-        title: "Discover New Arrivals for You",
-      },
-      {
-        id: 2,
-        url: "https://picsum.photos/id/1016/1200/400",
-        title: "Smart Deals on Electronics",
-      },
-      {
-        id: 3,
-        url: "https://picsum.photos/id/1020/1200/400",
-        title: "Home & Kitchen Essentials Sale",
-      },
-      {
-        id: 4,
-        url: "https://picsum.photos/id/1035/1200/400",
-        title: "Grab Festive Offers Now",
-      },
-    ];
+    const fetchBanners = async () => {
+      try {
+        // Fetch all documents from the 'posters' collection
+        const querySnapshot = await getDocs(collection(db, "posters"));
+        const bannerList = [];
 
-    // Simulate loading for effect
-    setTimeout(() => {
-      setBanners(dummyBanners);
-      setLoading(false);
-    }, 1000);
-  }, []);
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          
+          // 1. Filter and extract fields based on your Firestore document structure
+          if (data.status === 'active') { 
+            bannerList.push({
+              id: doc.id,
+              // Uses 'image' field for the URL
+              url: data.image, 
+              // Uses 'bannerName' field for the title
+              title: data.bannerName || "Untitled Banner",
+            });
+          }
+        });
+
+        setBanners(bannerList);
+      } catch (error) {
+        // Log any errors (like "Permission Denied") to the browser console
+        console.error("Error fetching banners:", error); 
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBanners();
+  }, []); // Run only once on mount
+
+  // --- Conditional Rendering for Loading and Empty State ---
 
   if (loading) {
     return (
@@ -47,6 +55,11 @@ function Banner() {
     );
   }
 
+  if (banners.length === 0) {
+    return <p className="text-center py-5 text-muted">No active banners found.</p>;
+  }
+
+  // --- Main Carousel Rendering (Bootstrap 5) ---
   return (
     <div className="banner-container">
       <div
@@ -68,6 +81,7 @@ function Banner() {
               />
               <div className="carousel-caption d-none d-md-block">
                 <h3>{banner.title}</h3>
+                {/* Button added back from your dummy code */}
                 <button className="btn btn-warning fw-bold mt-2">Shop Now</button>
               </div>
             </div>

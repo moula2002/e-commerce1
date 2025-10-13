@@ -20,14 +20,21 @@ export default function Header() {
   );
 
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showLocationModal, setShowLocationModal] = useState(false);
+  const [newLocation, setNewLocation] = useState(location || "");
   const [search, setSearch] = useState("");
 
   const openAuthModal = () => setShowAuthModal(true);
   const closeAuthModal = () => setShowAuthModal(false);
 
-  const changeLocation = () => {
-    const newLoc = prompt("Enter new location:", location);
-    if (newLoc) dispatch(setLocation(newLoc));
+  const openLocationModal = () => setShowLocationModal(true);
+  const closeLocationModal = () => setShowLocationModal(false);
+
+  const saveLocation = () => {
+    if (newLocation.trim() !== "") {
+      dispatch(setLocation(newLocation));
+      closeLocationModal();
+    }
   };
 
   const goToCart = () => navigate("/cart");
@@ -36,12 +43,11 @@ export default function Header() {
     <>
       <Navbar
         expand="lg"
-        className="navbar-custom shadow-sm fixed-top"
+        className="navbar-custom shadow-sm sticky-top"
         variant="dark"
-        style={{width:"100%"}}
       >
         <Container fluid className="px-3">
-          {/* Logo + Brand */}
+          {/* Logo */}
           <motion.div
             className="d-flex align-items-center brand-container"
             initial={{ opacity: 0, y: -20 }}
@@ -57,10 +63,8 @@ export default function Header() {
             </Navbar.Brand>
           </motion.div>
 
-          {/* Mobile Toggle Button */}
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 
-          {/* Collapsible Navbar */}
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mx-auto align-items-center">
               {/* Search Bar */}
@@ -70,7 +74,7 @@ export default function Header() {
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.3 }}
               >
-                <Form className="d-flex">
+                <Form className="d-flex w-100">
                   <Form.Control
                     type="search"
                     placeholder="Search for products"
@@ -89,18 +93,19 @@ export default function Header() {
               </motion.div>
             </Nav>
 
-            {/* Right Side Buttons */}
             <Nav className="align-items-center ms-lg-3">
+              {/* Location */}
               <motion.div
                 className="text-white location me-3"
                 whileHover={{ scale: 1.05 }}
                 style={{ cursor: "pointer" }}
-                onClick={changeLocation}
+                onClick={openLocationModal}
               >
                 Deliver to <strong>{location || "Set location"}</strong>
               </motion.div>
 
-              <motion.div whileHover={{ scale: 1.1 }}>
+              {/* Account (desktop) */}
+              <motion.div whileHover={{ scale: 1.1 }} className="d-none d-lg-block">
                 <Button
                   variant="outline-light"
                   className="me-2 account-button"
@@ -110,6 +115,18 @@ export default function Header() {
                 </Button>
               </motion.div>
 
+              {/* Account (mobile) */}
+              <motion.div whileHover={{ scale: 1.1 }} className="d-lg-none">
+                <Button
+                  variant="outline-light"
+                  className="me-2 account-button"
+                  onClick={openAuthModal}
+                >
+                  👤
+                </Button>
+              </motion.div>
+
+              {/* Cart */}
               <motion.div whileHover={{ scale: 1.1 }}>
                 <Button
                   variant="outline-warning"
@@ -126,10 +143,52 @@ export default function Header() {
 
       <SecondHeader />
 
+      {/* Auth Modal */}
       <Modal show={showAuthModal} onHide={closeAuthModal} centered>
         <Modal.Body>
           <AuthPage onClose={closeAuthModal} />
         </Modal.Body>
+      </Modal>
+
+      {/* Location Modal */}
+      <Modal
+        show={showLocationModal}
+        onHide={closeLocationModal}
+        centered
+        backdrop="static"
+        className="location-modal"
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8, y: -20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Set Delivery Location 📍</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group>
+                <Form.Label>Enter your location:</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Eg: Chennai, Tamil Nadu"
+                  value={newLocation}
+                  onChange={(e) => setNewLocation(e.target.value)}
+                />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={closeLocationModal}>
+              Cancel
+            </Button>
+            <Button variant="warning" onClick={saveLocation}>
+              Save Location
+            </Button>
+          </Modal.Footer>
+        </motion.div>
       </Modal>
     </>
   );

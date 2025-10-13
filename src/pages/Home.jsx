@@ -1,15 +1,21 @@
 import React from "react";
-import Banner from "../components/Banner";
-import TopDealsPanel from "../components/deals/TopDealsPanel";
-import MobileDealsSection from "../components/deals/MobileDealsSection";
-import HomeKitchenDeals from "../components/deals/HomeKitchenDeals";
-import CategoryPanel from "../components/deals/CategoryPanel";
-import SmartTVDeals from "../components/deals/SmartTVDeals";
-import SmallBusinessBestsellers from "../components/deals/SmallBusinessBestsellers";
-import RelatedItems from "../components/deals/RelatedItems";
-
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap"; 
 import "./Home.css";
+import Banner from "../components/Banner";
+import Fashion from "../components/category/Fashion";
+import Accessories from "../components/category/Accessories"; 
+import Cosmetics from "../components/category/Cosmetics"; 
+import Toys from "../components/category/Toys"; 
+import Stationary from "../components/category/Stationary"; 
+import Book from "../components/category/Book"; 
+import PhotoFrame from "../components/category/PhotoFrame"; 
+import Footwears from "../components/category/Footwears"; 
+import Jewellery from "../components/category/Jewellery"; 
+import Mens from "../components/category/Mens"; 
+import Kids from "../components/category/Kids"; 
+import Electronics from "../components/category/Electronics"; 
+import PersonalCare from "../components/category/PersonalCare"; // 🎯 1. Import the PersonalCare component
+
 
 function Home() {
   return (
@@ -30,62 +36,115 @@ function Home() {
         <Banner />
       </div>
 
-      <main className="container-fluid px-0 text-light">
-        {/* 🏷️ Top Deals */}
-        <section className="deal-section-card component-slide-in">
-          <TopDealsPanel />
-        </section>
+      {/* 👗 Fashion Section */}
+      <section className="mt-5">
+        <div className="text-center mb-4 fw-bold text-warning">
+          Featured Fashion Category 👗
+        </div>
+        <Fashion /> 
+      </section>
 
-        {/* 📱 Mobile Deals */}
-        <section className="deal-section-card component-slide-in">
-          <MobileDealsSection />
-        </section>
+      {/* Accessories section */}
+      <section className="mt-5">
+        <div className="text-center mb-4 fw-bold text-warning">
+          Featured Accessories
+        </div>
+        <Accessories/> 
+      </section>
+      
+      {/* 💄 Cosmetics section */}
+      <section className="mt-5">
+        <div className="text-center mb-4 fw-bold text-warning">
+          Featured Cosmetics 💄
+        </div>
+        <Cosmetics /> 
+      </section>
 
-        {/* 🏡 Home & Kitchen */}
-        <section className="deal-section-card component-slide-in">
-          <HomeKitchenDeals />
-        </section>
+      {/* 🧸 Toys section */}
+      <section className="mt-5">
+        <div className="text-center mb-4 fw-bold text-warning">
+          Featured Toys 🧸
+        </div>
+        <Toys /> 
+      </section>
+      
+      {/* ✏️ Stationary section */}
+      <section className="mt-5">
+        <div className="text-center mb-4 fw-bold text-warning">
+          Featured Stationery ✏️
+        </div>
+        <Stationary /> 
+      </section>
+      
+      {/* 📚 Book section */}
+      <section className="mt-5">
+        <div className="text-center mb-4 fw-bold text-warning">
+          Featured Books 📚
+        </div>
+        <Book /> 
+      </section>
 
-        {/* 🛍️ Categories */}
-        <Container fluid className="my-5 px-4 category-grid">
-          <h2 className="text-center mb-4 fw-bold text-dat glow-text">
-            Shop by Category
-          </h2>
-          <Row className="g-4">
-            <Col lg={3} md={6} sm={12}>
-              <CategoryPanel title="Up to 70% off | Women's Clothing" mockCategory="clothing" />
-            </Col>
-            <Col lg={3} md={6} sm={12}>
-              <CategoryPanel title="Up to 80% off | Festive Jewelry" mockCategory="jewelery" />
-            </Col>
-            <Col lg={3} md={6} sm={12}>
-              <CategoryPanel title="Best of Electronics & Gadgets" mockCategory="electronics" />
-            </Col>
-            <Col lg={3} md={6} sm={12}>
-              <CategoryPanel title="Up to 60% off | Men's Fashion" mockCategory="men" />
-            </Col>
-          </Row>
-        </Container>
+      {/* 🖼️ Photo Frame section */}
+      <section className="mt-5">
+        <div className="text-center mb-4 fw-bold text-warning">
+          Featured Photo Frames 🖼️
+        </div>
+        <PhotoFrame /> 
+      </section>
+      
+      {/* 👟 Footwears section */}
+      <section className="mt-5">
+        <div className="text-center mb-4 fw-bold text-warning">
+          Featured Footwears 👟
+        </div>
+        <Footwears /> 
+      </section>
+      
+      {/* 💍 Jewellery section */}
+      <section className="mt-5">
+        <div className="text-center mb-4 fw-bold text-warning">
+          Featured Jewellery 💎
+        </div>
+        <Jewellery /> 
+      </section>
 
-        {/* 📺 Smart TV Deals */}
-        <section className="deal-section-card component-slide-in">
-          <SmartTVDeals />
-        </section>
+      {/* 👔 Men's section */}
+      <section className="mt-5">
+        <div className="text-center mb-4 fw-bold text-warning">
+          Featured Men's Clothing 👔
+        </div>
+        <Mens /> 
+      </section>
+      
+      {/* 👧 Kids section */}
+      <section className="mt-5">
+        <div className="text-center mb-4 fw-bold text-warning">
+          Featured Kids' Products 🎈
+        </div>
+        <Kids /> 
+      </section>
+      
+      {/* 💻 Electronics section */}
+      <section className="mt-5">
+        <div className="text-center mb-4 fw-bold text-warning">
+          Featured Electronics 📱
+        </div>
+        <Electronics /> 
+      </section>
+      
+      {/* 🧴 Personal Care section (NEW Section) */}
+      <section className="mt-5">
+        <div className="text-center mb-4 fw-bold text-warning">
+          Featured Personal Care 🧴
+        </div>
+        {/* 🎯 2. Render the PersonalCare component */}
+        <PersonalCare /> 
+      </section>
 
-        {/* 🏬 Small Business */}
-        <section className="deal-section-card component-slide-in">
-          <SmallBusinessBestsellers />
-        </section>
-
-        {/* 🔁 Related Items */}
-        <section className="deal-section-card component-slide-in">
-          <RelatedItems />
-        </section>
-      </main>
 
       {/* 🌈 Footer */}
       <footer className="text-center py-5 bg-dark text-white mt-5 footer-scale-up border-top border-warning">
-        <h2 className="fw-bold text-warning">End of Today’s Best Deals !</h2>
+        <h2 className="fw-bold text-warning">End of Today’s Best Deals!</h2>
         <p className="lead text-secondary">
           Keep exploring for more offers and check back tomorrow for fresh deals.
         </p>
