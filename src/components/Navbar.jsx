@@ -58,8 +58,9 @@ export default function Header() {
               href="/"
               className="navbar-brand-custom d-flex align-items-center"
             >
-              <span className="brand-white">E-commerce</span>
-              <span className="brand-orange">.in</span>
+              <div><img src="/Sadhanacart1.png" alt="SadhanaCart Logo" className="footer-logo-img me-2" /></div>
+              <span className="brand-white">Sadhana</span>
+              <span className="brand-orange">Cart</span>
             </Navbar.Brand>
           </motion.div>
 

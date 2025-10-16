@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./SecondHeader.css";
 // Importing more icons for a richer UI
-// 🎯 Import the FaBook icon for the new category
 import { FaBars, FaTimes, FaTags, FaStore, FaHandHoldingHeart, FaSmile, FaTools, FaLaptop, FaUser, FaChild, FaShoePrints, FaGem, FaRedo, FaBoxOpen, FaBook } from "react-icons/fa";
 
 const SecondHeader = () => {
@@ -12,25 +11,19 @@ const SecondHeader = () => {
     // Map menu names to their corresponding category IDs and routes
     const menuMap = [
         { name: "Home", icon: FaStore, path: "/" },
-        { name: "Fashion", icon: FaTags, id: "HeXWnBOQM2wlEkiDRnDZ", path: "/category/HeXWnBOQM2wlEkiDRnDZ" },
-        { name: "Accessories", icon: FaGem, id: "tToIcw0WK8HnmXpb7xwD", path: "/category/tToIcw0WK8HnmXpb7xwD" },
-        { name: "Cosmetics", icon: FaSmile, id: "uo5LVD3Yfgu974INYIIM", path: "/category/uo5LVD3Yfgu974INYIIM" },
-        { name: "Toys", icon: FaBoxOpen, id: "ifKM8nTFpICFmuHaO0sV", path: "/category/ifKM8nTFpICFmuHaO0sV" },
-        { name: "Stationary", icon: FaTools, id: "VeX3PrCKc7tJ4uTEIPCF", path: "/category/VeX3PrCKc7tJ4uTEIPCF" },
-        
-        // 📚 NEW CATEGORY: Books
-        { name: "Book", icon: FaBook, id: "bookId999", path: "/category/bookId999" },
-        
-        // --- Placeholder IDs for remaining items ---
-        { name: "Photo Frame", icon: FaHandHoldingHeart, id: "pfId123", path: "/category/pfId123" },
-        { name: "Footwears", icon: FaShoePrints, id: "fwId456", path: "/category/fwId456" },
-        { name: "Jewellery", icon: FaGem, id: "jwlId789", path: "/category/jwlId789" },
-        { name: "Mens", icon: FaUser, id: "mensId012", path: "/category/mensId012" },
-        { name: "Kids", icon: FaChild, id: "kidsId345", path: "/category/kidsId345" },
-        { name: "Electronics", icon: FaLaptop, id: "elecId678", path: "/category/elecId678" },
-        { name: "Personal Care", icon: FaRedo, id: "pcId901", path: "/category/pcId901" },
-        
-        // --- Special Links ---
+        { name: "Fashion", icon: FaTags, path: "/fashion" },
+        { name: "Accessories", icon: FaGem, path: "/accessories" },
+        { name: "Cosmetics", icon: FaSmile, path: "/cosmetics" },
+        { name: "Toys", icon: FaBoxOpen, path: "/toys" },
+        { name: "Stationary", icon: FaTools, path: "/Stationary" },
+        { name: "Book", icon: FaBook, path: "/book" },
+        { name: "Photo Frame", icon: FaHandHoldingHeart, path: "/photoframe" },
+        { name: "Footwears", icon: FaShoePrints, path: "/footwears" },
+        { name: "Jewellery", icon: FaGem, path: "/jewellery" },
+        { name: "Mens", icon: FaUser, path: "/mens" },
+        { name: "Kids", icon: FaChild, path: "/kids" },
+        { name: "Electronics", icon: FaLaptop, path: "/electronics" },
+        { name: "Personal Care", icon: FaRedo, path: "/personalcare" },
         { name: "Customer Service", icon: FaTimes, path: "/support" }
     ];
 
@@ -40,7 +33,6 @@ const SecondHeader = () => {
 
     return (
         <div className="second-header-wrapper">
-            {/* The fixed block wrapper is often rendered outside, but let's assume it's here for context */}
             <div className="second-header">
                 {/* Left Menu */}
                 <div className="menu-left">
@@ -50,7 +42,6 @@ const SecondHeader = () => {
                     </div>
 
                     {/* Menu List */}
-                    {/* The menu is only active on mobile when the state is true */}
                     <ul className={`menu-list ${mobileMenu ? "active" : ""}`}>
                         {menuMap.map((item, idx) => (
                             <li

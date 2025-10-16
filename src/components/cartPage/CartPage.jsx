@@ -12,6 +12,10 @@ const CartPage = () => {
   const navigate = useNavigate();
   const cartItems = useSelector((state) => state.cart.items || []);
 
+  // 💥 PLACEHOLDER FOR AUTHENTICATION CHECK 💥
+  // In a real app, this should be fetched from Redux or Context
+  const isLoggedIn = false; // <<< Set this to 'true' to skip login
+
   const handleIncrease = (item) => dispatch(addToCart({ ...item, quantity: 1 }));
   const handleDecrease = (item) => dispatch(removeFromCart({ id: item.id, quantity: 1 }));
   const handleRemove = (item) => dispatch(removeFromCart({ id: item.id }));
@@ -28,6 +32,18 @@ const CartPage = () => {
       currency: "INR",
       maximumFractionDigits: 0,
     }).format(value);
+
+  // --- HANDLER FOR CONDITIONAL NAVIGATION ---
+  const handleCheckout = () => {
+    if (isLoggedIn) {
+      // If logged in, proceed to checkout
+      navigate("/checkout");
+    } else {
+      // If not logged in, navigate to the login/auth page, passing the intended destination
+      navigate("/login", { state: { from: "/checkout" } }); 
+    }
+  };
+  // ---------------------------------------------
 
   if (cartItems.length === 0) return <EmptyCart />;
 
@@ -54,9 +70,9 @@ const CartPage = () => {
                 <Button
                   variant="warning"
                   className="checkout-btn px-4 fw-semibold"
-                  onClick={() => navigate("/checkout")}
+                  onClick={handleCheckout} 
                 >
-                  Proceed to Checkout
+                  Proceed to buy
                 </Button>
 
                 <Button

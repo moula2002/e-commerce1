@@ -1,35 +1,44 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from "./cartSlice";
 import footerReducer from "./footerSlice";
+import productReducer from "./productSlice"; 
 
-
+// 🧩 Header slice (your existing one)
 const initialHeader = { location: "Bengaluru", cartCount: 0 };
 
-const headerSlice = createSlice({
+const headerSlice = {
   name: "header",
   initialState: initialHeader,
   reducers: {
     setLocation: (state, action) => {
       state.location = action.payload;
     },
-    // Keep this action for the listener to use
     setCartCount: (state, action) => {
       state.cartCount = action.payload;
     },
   },
-});
+};
 
-export const { setLocation, setCartCount } = headerSlice.actions;
+// Export header actions
+export const { setLocation, setCartCount } = headerSlice.reducers;
 
-// Store configuration
+// 🏪 Configure the store — combine everything here
 export const store = configureStore({
   reducer: {
     cart: cartReducer,
-    header: headerSlice.reducer,
     footer: footerReducer,
+    products: productReducer, // 👈 new
+    header: (state = initialHeader, action) => {
+      switch (action.type) {
+        case "header/setLocation":
+          return { ...state, location: action.payload };
+        case "header/setCartCount":
+          return { ...state, cartCount: action.payload };
+        default:
+          return state;
+      }
+    },
   },
 });
-
-
 
 export default store;

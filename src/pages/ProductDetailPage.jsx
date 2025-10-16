@@ -1,25 +1,27 @@
-// src/pages/ProductDetailPage.jsx
-
 import React, { useEffect, useState, useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Spinner, Alert, Card, Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
 
-const EXCHANGE_RATE = 83; // Assuming you have this defined
+// 🚨 FIREBASE IMPORTS
+// Adjust the path to 'db' based on your file structure (e.g., "../firebase")
+import { db } from "../firebase";
+import { doc, getDoc, collection, getDocs, query, where, limit } from "firebase/firestore";
+
+const EXCHANGE_RATE = 1;
 
 function ProductDetailPage() {
+    // Get product ID from URL params
     const { id } = useParams();
     const dispatch = useDispatch();
-
-    // useNavigate-a initialize pannavum
     const navigate = useNavigate();
 
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Category products state
+    // State for Similar Products
     const [categoryProducts, setCategoryProducts] = useState([]);
     const [catLoading, setCatLoading] = useState(true);
     const [catError, setCatError] = useState(null);
@@ -33,19 +35,26 @@ function ProductDetailPage() {
         productPrice: { fontSize: "2.2rem", fontWeight: 800, color: "#dc3545", marginTop: "15px", marginBottom: "15px" },
     };
 
-    // Fetch main product
+    // --- 1. Fetch Main Product Details (Runs on ID change) ---
     useEffect(() => {
-        window.scrollTo(0, 0);
+        window.scrollTo(0, 0); // Scroll to top when product ID changes
         const fetchProduct = async () => {
             try {
                 setLoading(true);
                 setError(null);
-                // Use a safe ID or a known product ID for quick testing if fakestoreapi is down or you need a mock.
-                const response = await fetch(`https://fakestoreapi.com/products/${id}`);
-                if (!response.ok) throw new Error("Failed to fetch product");
-                const data = await response.json();
+
+                const productRef = doc(db, "products", id);
+                const productSnap = await getDoc(productRef);
+
+                if (!productSnap.exists()) {
+                    throw new Error(`Product with ID ${id} not found.`);
+                }
+
+                const data = { id: productSnap.id, ...productSnap.data() };
                 setProduct(data);
+
             } catch (err) {
+                console.error("🔥 Error fetching product details:", err);
                 setError(err.message);
             } finally {
                 setLoading(false);
@@ -54,27 +63,42 @@ function ProductDetailPage() {
         fetchProduct();
     }, [id]);
 
-    // Fetch category products
+    // --- 2. Fetch Similar Category Products (Runs after main product is loaded) ---
     useEffect(() => {
-        if (!product) return;
+        if (!product || !product.category) return;
 
         const fetchCategoryProducts = async () => {
             try {
                 setCatLoading(true);
                 setCatError(null);
-                const response = await fetch(`https://fakestoreapi.com/products/category/${encodeURIComponent(product.category)}`);
-                if (!response.ok) throw new Error("Failed to fetch category products");
-                const data = await response.json();
 
-                const formattedData = data.map(p => ({
-                    ...p,
-                    priceINR: (p.price * EXCHANGE_RATE).toFixed(0),
-                    priceValue: p.price * EXCHANGE_RATE
-                }));
+                const productsRef = collection(db, "products");
 
-                // Exclude current product
-                setCategoryProducts(formattedData.filter(p => p.id !== product.id));
+                const q = query(
+                    productsRef,
+                    where("category", "==", product.category),
+                    limit(10) // Fetch maximum 10 similar products
+                );
+
+                const querySnapshot = await getDocs(q);
+
+                const fetchedProducts = querySnapshot.docs.map(d => {
+                    const data = d.data();
+                    const priceValue = (data.price || 0) * EXCHANGE_RATE;
+                    return {
+                        id: d.id,
+                        ...data,
+                        priceINR: priceValue.toFixed(0),
+                        priceValue: priceValue,
+                        rating: data.rating || { rate: 4.0, count: 100 }
+                    };
+                });
+
+                // Filter out the current product
+                setCategoryProducts(fetchedProducts.filter(p => p.id !== product.id));
+
             } catch (err) {
+                console.error("🔥 Error fetching category products:", err);
                 setCatError(err.message);
             } finally {
                 setCatLoading(false);
@@ -84,31 +108,28 @@ function ProductDetailPage() {
         fetchCategoryProducts();
     }, [product]);
 
-    // --- Add to Cart / Buy Now Handlers ---
+    // --- Handlers ---
     const handleAddToCart = () => {
         if (!product) return;
-        const priceINR = product.price * EXCHANGE_RATE;
+        const priceINR = (product.price || 0) * EXCHANGE_RATE;
 
-        // Dispatch to Redux - THIS IS THE KEY PART
         dispatch(addToCart({
             id: product.id,
-            title: product.title,
+            title: product.name || product.title || "Product",
             price: priceINR,
-            image: product.image,
+            image: product.images || product.image || "https://via.placeholder.com/150",
             quantity: 1
         }));
 
-        alert(`Added "${product.title}" to cart! (₹${priceINR.toFixed(0)})`);
+        alert(`Added "${product.name || product.title}" to cart! (₹${priceINR.toFixed(0)})`);
     };
 
     const handleBuyNow = () => {
-        // 1. Product-a Cart-la add pannavum
         handleAddToCart();
-        // 2. Checkout page-kku navigate pannavum
         navigate("/checkout");
     };
 
-    // Category products filtered & sorted
+    // --- Filtering and Sorting Logic for Similar Products ---
     const filteredAndSortedCategory = useMemo(() => {
         let list = [...categoryProducts];
         list = list.filter(p => p.priceValue <= filterPrice);
@@ -116,45 +137,49 @@ function ProductDetailPage() {
         switch (sortBy) {
             case "price-asc": list.sort((a, b) => a.priceValue - b.priceValue); break;
             case "price-desc": list.sort((a, b) => b.priceValue - a.priceValue); break;
-            case "name-asc": list.sort((a, b) => a.title.localeCompare(b.title)); break;
-            case "rating": default: list.sort((a, b) => b.rating.rate - a.rating.rate);
+            case "name-asc": list.sort((a, b) => (a.name || a.title || "").localeCompare(b.name || b.title || "")); break;
+            case "rating": default: list.sort((a, b) => (b.rating?.rate || 0) - (a.rating?.rate || 0));
         }
 
         return list;
     }, [categoryProducts, sortBy, filterPrice]);
 
-    // Loading / Error
-    if (loading) return <div className="text-center py-5"><Spinner animation="border" /></div>;
+    // --- Render Loading / Error States ---
+    if (loading) return <div className="text-center py-5"><Spinner animation="border" variant="primary" /></div>;
     if (error) return <Alert variant="danger" className="mt-4 text-center">{error}</Alert>;
-    if (!product) return <p>No product found.</p>;
+    if (!product) return <p className="text-center py-5">No product found for this ID.</p>;
 
-    const productPriceINR = (product.price * EXCHANGE_RATE).toFixed(0);
-    const originalPriceINR = (product.price * 100).toFixed(0);
+    // --- Data Preparation for Display ---
+    const productPriceINR = ((product.price || 0) * EXCHANGE_RATE).toFixed(0);
+    const originalPriceINR = ((product.price * 1.5) * EXCHANGE_RATE).toFixed(0);
     const discountPercentage = (((originalPriceINR - productPriceINR) / originalPriceINR) * 100).toFixed(0);
+    const rating = product.rating || { rate: 4.0, count: 100 };
 
+    // --- Main Render ---
     return (
         <Container className="py-4">
 
-            {/* Main Product */}
+            {/* Main Product Detail Card */}
             <Card style={styles.productDetailContainer} className="p-4 mb-5">
                 <Row>
                     <Col md={5} style={styles.productImageCol} className="text-center">
-                        <img src={product.image} alt={product.title} className="img-fluid" style={styles.detailImg} />
+                        <img
+                            src={product.images || product.image || "https://via.placeholder.com/350"}
+                            alt={product.name || product.title || "Product Image"}
+                            className="img-fluid"
+                            style={styles.detailImg}
+                        />
                     </Col>
                     <Col md={7}>
-                        <h2 className="fw-bold">{product.title}</h2>
-                        <p className="text-primary fw-semibold text-uppercase">{product.category}</p>
+                        <h2 className="fw-bold">{product.name || product.title || "Product Name"}</h2>
+                        <p className="text-primary fw-semibold text-uppercase">{product.category || "N/A"}</p>
+
                         <div className="product-rating mb-3">
-                            {/* Star icons simplified for brevity */}
-                            <i className="fas fa-star text-warning"></i>
-                            <i className="fas fa-star text-warning"></i>
-                            <i className="fas fa-star text-warning"></i>
-                            <i className="fas fa-star-half-alt text-warning"></i>
-                            <span className="text-secondary ms-2 small">
-                                ({product.rating.rate} Stars | {product.rating.count} Reviews)
-                            </span>
+                            <span className="text-warning fw-bold me-2">{rating.rate.toFixed(1)} <i className="fas fa-star small"></i></span>
+                            <span className="text-muted small">({rating.count} reviews)</span>
                         </div>
                         <hr />
+
                         <div className="price-section">
                             <h2 style={styles.productPrice}>
                                 ₹{productPriceINR} /-
@@ -162,7 +187,9 @@ function ProductDetailPage() {
                             </h2>
                             <span className="badge bg-danger fs-6 mb-3">{discountPercentage}% OFF!</span>
                         </div>
-                        <p className="text-muted small">{product.description}</p>
+
+                        <p className="text-muted small">{product.description || "No description available."}</p>
+
                         <div className="d-grid gap-3 d-md-block pt-3 border-top mt-4">
                             <Button variant="warning" className="fw-bold me-3" onClick={handleAddToCart}>
                                 <i className="fas fa-shopping-cart me-2"></i> Add to Cart
@@ -175,20 +202,20 @@ function ProductDetailPage() {
                 </Row>
             </Card>
 
-            {/* Category Products - REMAINS THE SAME */}
-            <h3 className="mb-4 fw-bold">More from this category</h3>
-            {/* Sorting & Filtering */}
-            <Row className="mb-3">
-                <Col md={4}>
+            <h3 className="mb-4 fw-bold">More from the {product.category || 'Same'} category</h3>
+
+            {/* Sorting & Filtering for Similar Products */}
+            <Row className="mb-3 align-items-end">
+                <Col md={4} className="mb-3 mb-md-0">
                     <Form.Group>
-                        <Form.Label>Max Price (₹): ₹{filterPrice.toLocaleString()}</Form.Label>
+                        <Form.Label className="small mb-0">Max Price (₹): <span className="fw-bold">₹{filterPrice.toLocaleString()}</span></Form.Label>
                         <Form.Range min={0} max={100000} step={100} value={filterPrice} onChange={e => setFilterPrice(Number(e.target.value))} />
                     </Form.Group>
                 </Col>
                 <Col md={4}>
                     <Form.Group>
-                        <Form.Label>Sort By:</Form.Label>
-                        <Form.Select value={sortBy} onChange={e => setSortBy(e.target.value)}>
+                        <Form.Label className="small mb-1">Sort By:</Form.Label>
+                        <Form.Select size="sm" value={sortBy} onChange={e => setSortBy(e.target.value)}>
                             <option value="rating">Top Rated</option>
                             <option value="price-asc">Price: Low to High</option>
                             <option value="price-desc">Price: High to Low</option>
@@ -199,32 +226,44 @@ function ProductDetailPage() {
             </Row>
 
             {catLoading ? (
-                <div className="text-center py-3"><Spinner animation="border" /></div>
+                <div className="text-center py-3"><Spinner animation="border" size="sm" /></div>
             ) : catError ? (
-                <Alert variant="danger">{catError}</Alert>
+                <Alert variant="warning">{catError}</Alert>
             ) : filteredAndSortedCategory.length === 0 ? (
                 <Alert variant="info">No other products in this category match your filters.</Alert>
             ) : (
-                <Row xs={1} sm={2} lg={3} className="g-4">
+                <Row xs={1} sm={2} lg={4} className="g-4">
                     {filteredAndSortedCategory.map(p => (
                         <Col key={p.id}>
                             <Card className="h-100 shadow-sm border-0">
-                                <Link to={`/product/${p.id}`} className="text-decoration-none text-dark d-block">
+                                {/* Clicking this link will reload the component with the new product ID */}
+                                <Link to={`/product/${p.id}`} className="text-decoration-none text-dark d-block" onClick={() => window.scrollTo(0, 0)}>
                                     <div className="d-flex justify-content-center align-items-center p-3" style={{ height: '150px' }}>
-                                        <Card.Img src={p.image} style={{ height: '120px', width: 'auto', objectFit: 'contain' }} />
+                                        <Card.Img
+                                            src={p.images || p.image || "https://via.placeholder.com/120"}
+                                            style={{ height: '120px', width: 'auto', objectFit: 'contain' }}
+                                        />
                                     </div>
                                     <Card.Body className="d-flex flex-column">
-                                        <Card.Title className="fs-6 fw-bold mb-1" style={{ minHeight: '40px' }}>{p.title.substring(0, 50)}...</Card.Title>
+                                        <Card.Title className="fs-6 fw-bold mb-1 text-truncate">{(p.name || p.title || "Unnamed Product")}</Card.Title>
                                         <div className="d-flex align-items-center mb-2">
-                                            <span className="text-warning fw-bold me-2">{p.rating.rate} <i className="fas fa-star small"></i></span>
+                                            <span className="text-warning fw-bold me-2">{p.rating.rate.toFixed(1)} <i className="fas fa-star small"></i></span>
                                             <span className="text-muted small">({p.rating.count})</span>
                                         </div>
                                         <Card.Text className="fw-bold text-danger fs-5 mt-auto">₹{p.priceINR}</Card.Text>
-                                        <Button variant="warning" size="sm" className="mt-2" onClick={(e) => {
-                                            e.preventDefault(); // Prevent navigating when clicking add to cart
-                                            dispatch(addToCart({ id: p.id, title: p.title, price: p.priceValue, image: p.image, quantity: 1 }));
-                                            alert(`Added "${p.title}" to cart!`);
-                                        }}>Add to Cart</Button>
+
+                                        {/* This Add to Cart button prevents navigation */}
+                                        <Button
+                                            variant="warning"
+                                            size="sm"
+                                            className="mt-2"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                dispatch(addToCart({ id: p.id, title: p.name || p.title, price: p.priceValue, image: p.images || p.image, quantity: 1 }));
+                                                alert(`Added "${p.name || p.title}" to cart!`);
+                                            }}>
+                                            Add to Cart
+                                        </Button>
                                     </Card.Body>
                                 </Link>
                             </Card>

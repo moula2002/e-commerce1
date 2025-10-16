@@ -19,13 +19,11 @@ function Banner() {
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           
-          // 1. Filter and extract fields based on your Firestore document structure
+          // Filter for active banners
           if (data.status === 'active') { 
             bannerList.push({
               id: doc.id,
-              // Uses 'image' field for the URL
               url: data.image, 
-              // Uses 'bannerName' field for the title
               title: data.bannerName || "Untitled Banner",
             });
           }
@@ -43,8 +41,6 @@ function Banner() {
     fetchBanners();
   }, []); // Run only once on mount
 
-  // --- Conditional Rendering for Loading and Empty State ---
-
   if (loading) {
     return (
       <div className="banner-loading text-center py-5">
@@ -59,7 +55,6 @@ function Banner() {
     return <p className="text-center py-5 text-muted">No active banners found.</p>;
   }
 
-  // --- Main Carousel Rendering (Bootstrap 5) ---
   return (
     <div className="banner-container">
       <div
@@ -81,8 +76,6 @@ function Banner() {
               />
               <div className="carousel-caption d-none d-md-block">
                 <h3>{banner.title}</h3>
-                {/* Button added back from your dummy code */}
-                <button className="btn btn-warning fw-bold mt-2">Shop Now</button>
               </div>
             </div>
           ))}

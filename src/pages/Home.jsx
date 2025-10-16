@@ -1,35 +1,26 @@
 import React from "react";
-import { Container } from "react-bootstrap"; 
+// 🚨 Container is not imported in the original code, but included for typical usage
+import { Container } from "react-bootstrap";
 import "./Home.css";
 import Banner from "../components/Banner";
 import Fashion from "../components/category/Fashion";
-import Accessories from "../components/category/Accessories"; 
-import Cosmetics from "../components/category/Cosmetics"; 
-import Toys from "../components/category/Toys"; 
-import Stationary from "../components/category/Stationary"; 
-import Book from "../components/category/Book"; 
-import PhotoFrame from "../components/category/PhotoFrame"; 
-import Footwears from "../components/category/Footwears"; 
-import Jewellery from "../components/category/Jewellery"; 
-import Mens from "../components/category/Mens"; 
-import Kids from "../components/category/Kids"; 
-import Electronics from "../components/category/Electronics"; 
-import PersonalCare from "../components/category/PersonalCare"; // 🎯 1. Import the PersonalCare component
+import Accessories from "../components/category/Accessories";
+import Cosmetics from "../components/category/Cosmetics";
+import Toys from "../components/category/Toys";
+import Stationary from "../components/category/Stationary";
+import Book from "../components/category/Book";
+import PhotoFrame from "../components/category/PhotoFrame";
+import Footwears from "../components/category/Footwears";
+import Jewellery from "../components/category/Jewellery";
+import Mens from "../components/category/Mens";
+import Kids from "../components/category/Kids";
+import Electronics from "../components/category/Electronics";
+import PersonalCare from "../components/category/PersonalCare";
 
 
 function Home() {
   return (
     <div className="homepage-content">
-
-      {/* 🏠 Header */}
-      <header className="text-center py-5 bg-gradient shadow-lg border-bottom border-warning">
-        <h1 className="display-5 fw-bold text-warning glow-text">
-          Welcome to the Store! 🛍️
-        </h1>
-        <p className="lead text-black">
-          Discover deals that make your shopping smarter and brighter!
-        </p>
-      </header>
 
       {/* 🖼️ Banner */}
       <div className="banner-fade-in">
@@ -41,7 +32,7 @@ function Home() {
         <div className="text-center mb-4 fw-bold text-warning">
           Featured Fashion Category 👗
         </div>
-        <Fashion /> 
+        <Fashion />
       </section>
 
       {/* Accessories section */}
@@ -49,15 +40,15 @@ function Home() {
         <div className="text-center mb-4 fw-bold text-warning">
           Featured Accessories
         </div>
-        <Accessories/> 
+        <Accessories />
       </section>
-      
+
       {/* 💄 Cosmetics section */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
           Featured Cosmetics 💄
         </div>
-        <Cosmetics /> 
+        <Cosmetics />
       </section>
 
       {/* 🧸 Toys section */}
@@ -65,23 +56,23 @@ function Home() {
         <div className="text-center mb-4 fw-bold text-warning">
           Featured Toys 🧸
         </div>
-        <Toys /> 
+        <Toys />
       </section>
-      
+
       {/* ✏️ Stationary section */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
           Featured Stationery ✏️
         </div>
-        <Stationary /> 
+        <Stationary />
       </section>
-      
+
       {/* 📚 Book section */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
           Featured Books 📚
         </div>
-        <Book /> 
+        <Book />
       </section>
 
       {/* 🖼️ Photo Frame section */}
@@ -89,23 +80,23 @@ function Home() {
         <div className="text-center mb-4 fw-bold text-warning">
           Featured Photo Frames 🖼️
         </div>
-        <PhotoFrame /> 
+        <PhotoFrame />
       </section>
-      
+
       {/* 👟 Footwears section */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
           Featured Footwears 👟
         </div>
-        <Footwears /> 
+        <Footwears />
       </section>
-      
+
       {/* 💍 Jewellery section */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
           Featured Jewellery 💎
         </div>
-        <Jewellery /> 
+        <Jewellery />
       </section>
 
       {/* 👔 Men's section */}
@@ -113,32 +104,32 @@ function Home() {
         <div className="text-center mb-4 fw-bold text-warning">
           Featured Men's Clothing 👔
         </div>
-        <Mens /> 
+        <Mens />
       </section>
-      
+
       {/* 👧 Kids section */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
           Featured Kids' Products 🎈
         </div>
-        <Kids /> 
+        <Kids />
       </section>
-      
+
       {/* 💻 Electronics section */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
           Featured Electronics 📱
         </div>
-        <Electronics /> 
+        <Electronics />
       </section>
-      
+
       {/* 🧴 Personal Care section (NEW Section) */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
           Featured Personal Care 🧴
         </div>
         {/* 🎯 2. Render the PersonalCare component */}
-        <PersonalCare /> 
+        <PersonalCare />
       </section>
 
 

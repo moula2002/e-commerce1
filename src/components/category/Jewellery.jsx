@@ -1,11 +1,62 @@
 // src/components/category/Jewellery.jsx
 import React, { useState, useEffect } from 'react';
 import { Container, Spinner, Card, Row, Col } from 'react-bootstrap';
-import { collection, query, where, getDocs } from 'firebase/firestore'; 
+import { collection, query, where, getDocs, limit } from 'firebase/firestore'; 
 import { db } from '../../firebase';
+import { Link } from 'react-router-dom'; 
+
+const ProductCard = ({ product }) => {
+    const [isHovered, setIsHovered] = useState(false);
+    const productColor = product.color || "N/A"; 
+
+    const cardStyle = {
+      transition: "transform 0.3s ease-in-out, boxShadow 0.3s ease-in-out",
+      transform: isHovered ? "scale(1.05)" : "scale(1)", 
+      boxShadow: isHovered
+        ? "0 10px 20px rgba(0, 0, 0, 0.3)" 
+        : "0 0.5rem 1rem rgba(0, 0, 0, 0.15)",
+      zIndex: isHovered ? 10 : 1, 
+      cursor: 'pointer'
+    };
+
+    return (
+        <Col>
+            <Link
+                to={`/product/${product.id}`}
+                style={{ textDecoration: "none", color: "inherit" }} 
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+            >
+                <Card  className="h-100 border-0" style={cardStyle}>
+                    <Card.Img
+                        variant="top"
+                        src={product.image || product.images || "https://via.placeholder.com/200"}
+                        style={{ height: "180px", objectFit: "cover" }}
+                    />
+                    <Card.Body>
+                        <Card.Title className="fs-6 text-truncate text-dark">
+                            {product.name || "Untitled Jewellery"}
+                        </Card.Title>
+                        
+                        <Card.Text className="text-dark small">
+                            Color: <strong style={{ color: productColor === 'Silver' ? 'silver' : 'grey' }}>{productColor}</strong>
+                        </Card.Text>
+
+                        <Card.Text className="text-success fw-bold fs-5 mt-2">
+                            ₹{product.price || "N/A"}
+                        </Card.Text>
+                    </Card.Body>
+                </Card>
+            </Link>
+        </Col>
+    );
+};
+// -------------------------------------------------------------
 
 function Jewellery() {
-  const [category, setCategory] = useState(null);
+  const categoryName = "Jewellery";
+  const fetchLimit = 80; 
+  
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,42 +64,41 @@ function Jewellery() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // 1️⃣ Fetch category by name "Jewellery"
-        const categoryRef = collection(db, 'category');
-        const categoryQuery = query(categoryRef, where('name', '==', 'Jewellery'));
-        const categorySnapshot = await getDocs(categoryQuery);
-
-        if (categorySnapshot.empty) {
-          throw new Error('Jewellery category not found!');
-        }
-
-        const categoryDoc = categorySnapshot.docs[0];
-        const categoryData = { id: categoryDoc.id, ...categoryDoc.data() };
-        setCategory(categoryData);
-
-        // 2️⃣ Fetch products belonging to this category
         const productsRef = collection(db, 'products');
-        const productsQuery = query(productsRef, where('categoryId', '==', categoryData.id));
+        const productsQuery = query(
+            productsRef, 
+            where('category', '==', categoryName),
+            limit(fetchLimit) 
+        );
+        
         const productsSnapshot = await getDocs(productsQuery);
+
+        if (productsSnapshot.empty) {
+          console.warn(`No products found for category: ${categoryName}`);
+          setProducts([]);
+          setLoading(false);
+          return;
+        }
 
         const fetchedProducts = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setProducts(fetchedProducts);
 
       } catch (err) {
         console.error('Error fetching Jewellery data:', err);
-        setError(err.message);
+        setError("Failed to load Jewellery products. Please check console.");
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, []); // [] dependency array means it runs once on mount
 
+  // --- UI Logic ---
   if (loading) return (
     <Container className="text-center my-5">
       <Spinner animation="border" variant="warning" />
-      <p>Loading Jewellery Category...</p>
+      <p>Loading {categoryName} Products...</p>
     </Container>
   );
 
@@ -60,45 +110,22 @@ function Jewellery() {
 
   return (
     <Container className="my-5 text-center">
-      <h2 className="fw-bold text-warning mb-4">{category?.name || "Jewellery"} Collection 💍</h2>
-
-      {category?.image && (
-        <img
-          src={category.image}
-          alt={category.name}
-          className="img-fluid rounded shadow-sm mb-3"
-          style={{ maxWidth: '400px', maxHeight: '250px', objectFit: 'cover' }}
-        />
-      )}
+      <h2 className="fw-bold text-dark mb-4">{categoryName} Collection 💍</h2>
 
       <p className="text-dark mb-5">
-        {category?.description || "Adorn yourself with elegance and sparkle from our stunning jewellery collection!"}
+        Adorn yourself with elegance and sparkle from our stunning {categoryName} collection! 
+        (Showing {products.length} products)
       </p>
-
 
       {products.length > 0 ? (
         <Row xs={1} md={2} lg={4} className="g-4">
           {products.map(product => (
-            <Col key={product.id}>
-              <Card className="h-100 shadow-lg border-0 bg-dark text-white">
-                <Card.Img 
-                  variant="top" 
-                  src={product.image || 'placeholder.jpg'} 
-                  style={{ height: '150px', objectFit: 'cover' }} 
-                />
-                <Card.Body>
-                  <Card.Title className="fs-6 text-truncate text-warning">{product.name || 'Untitled Jewellery'}</Card.Title>
-                  <Card.Text className="text-light fw-bold">
-                    {product.price ? `₹${product.price}` : 'Price N/A'}
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
+            <ProductCard key={product.id} product={product} />
           ))}
         </Row>
       ) : (
         <div className="p-4 bg-secondary bg-opacity-25 rounded">
-          <p className="text-dark fw-bold mb-0">No products found for the {category?.name || 'Jewellery'} category yet.</p>
+          <p className="text-dark fw-bold mb-0">No products found for the {categoryName} category yet.</p>
         </div>
       )}
     </Container>
