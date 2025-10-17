@@ -57,14 +57,6 @@ function ProductSuggestions({ currentProductId, category }) {
     );
   }
 
-  if (error || suggestions.length === 0) {
-    return (
-      <Alert variant="info" className="text-center small">
-        No similar products found in this category.
-      </Alert>
-    );
-  }
-
   return (
     <div className="mt-5 pt-3 border-top">
       <h4 className="mb-4 fw-bold">People Also Viewed</h4>

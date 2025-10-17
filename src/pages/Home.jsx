@@ -33,7 +33,7 @@ function Home() {
 
       {/* 👗 Fashion Section (show 5 items + Show More button) */}
       <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-warning">
+        <div className="text-center mb-4 fw-bold text-dark">
           Featured Fashion Category 
         </div>
         <Container>
@@ -43,7 +43,7 @@ function Home() {
 
         {/* 💍 Accessories Section (show 5 items + Show More button) */}
       <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-warning">
+        <div className="text-center mb-4 fw-bold text-dark">
           Featured Accessories Category 
         </div>
         <Container>
@@ -53,7 +53,7 @@ function Home() {
 
       {/* 💄 Cosmetics (Using full component) */}
       <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-warning">
+        <div className="text-center mb-4 fw-bold text-dark">
           Featured Cosmetics 💄
         </div>
         <Cosmetics />
@@ -61,7 +61,7 @@ function Home() {
 
         {/* 🧸 Toys Section (show 5 items + Show More button) */}
       <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-warning">
+        <div className="text-center mb-4 fw-bold text-dark">
           Featured Toys Category 
         </div>
         <Container>
@@ -72,7 +72,7 @@ function Home() {
 
         {/* ✏️ Stationary Section (show 5 items + Show More button) */}
       <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-warning">
+        <div className="text-center mb-4 fw-bold text-dark">
           Featured Stationary Category 
         </div>
         <Container>
@@ -83,7 +83,7 @@ function Home() {
 
       {/* 📚 Books (Using full component) */}
       <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-warning">
+        <div className="text-center mb-4 fw-bold text-dark">
           Featured Books 📚
         </div>
         <Book />
@@ -92,7 +92,7 @@ function Home() {
 
         {/* 🖼️ Photo Frame Section (show 5 items + Show More button) */}
       <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-warning">
+        <div className="text-center mb-4 fw-bold text-dark">
           Featured Photo Frame Category 
         </div>
         <Container>
@@ -103,7 +103,7 @@ function Home() {
 
       {/* 👟 Footwears (Using full component) */}
       <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-warning">
+        <div className="text-center mb-4 fw-bold text-dark">
           Featured Footwears 👟
         </div>
         <Footwears />
@@ -111,7 +111,7 @@ function Home() {
 
         {/* ✨ Jewellery Section (show 5 items + Show More button) */}
       <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-warning">
+        <div className="text-center mb-4 fw-bold text-dark">
           Featured Jewellery Category 
         </div>
         <Container>
@@ -122,7 +122,7 @@ function Home() {
       
         {/* 👨 Mens Section (show 5 items + Show More button) */}
       <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-warning">
+        <div className="text-center mb-4 fw-bold text-dark">
           Featured Mens Category 
         </div>
         <Container>
@@ -133,7 +133,7 @@ function Home() {
     
 {/* 👧 Kids Section (show 5 items + Show More button) */}
       <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-warning">
+        <div className="text-center mb-4 fw-bold text-dark">
           Featured Kids Category 
         </div>
         <Container>
@@ -144,7 +144,7 @@ function Home() {
 
       {/* 💻 Electronics (Using full component) */}
       <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-warning">
+        <div className="text-center mb-4 fw-bold text-dark">
           Featured Electronics 📱
         </div>
         <Electronics />
@@ -152,7 +152,7 @@ function Home() {
 
       {/* 🧴 Personal Care Section (show 5 items + Show More button) */}
       <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-warning">
+        <div className="text-center mb-4 fw-bold text-dark">
           Featured Personal Care Category 
         </div>
         <Container>
@@ -164,7 +164,7 @@ function Home() {
 
       {/* 🌈 Footer */}
       <footer className="text-center py-5 bg-dark text-white mt-5 footer-scale-up border-top border-warning">
-        <h2 className="fw-bold text-warning">End of Today’s Best Deals!</h2>
+        <h2 className="fw-bold text-danger">End of Today’s Best Deals!</h2>
         <p className="lead text-secondary">
           Keep exploring for more offers and check back tomorrow for fresh deals.
         </p>

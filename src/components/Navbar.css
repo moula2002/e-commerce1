@@ -1,259 +1,242 @@
-/* -------------------- GLOBAL COLORS -------------------- */
+/* 🔥 GLOBAL COLORS (Amazon/Flipkart-like Dark Theme) */
 :root {
-  --accent-color: #ff9900;
-  --accent-light: #ffc84d;
-  --bg-dark: #0a0e14;
-  --bg-darker: #1c1f2a;
-  --text-white: #ffffff;
-  --text-light: #ffffffb3;
+    --amazon-blue: #131921; /* Main Navbar Background */
+    --amazon-light-blue: #232f3e; /* Secondary/Hover Background */
+    --amazon-orange: #ff9900; /* Primary Accent Color */
+    --amazon-dark-orange: #f3a847; /* Search Button Color */
+    --text-white: #ffffff;
+    --text-light: #ffffffb3;
+    --text-dark: #111;
 }
 
 /* -------------------- BASE STYLES -------------------- */
 body {
-  font-family: "Poppins", Arial, sans-serif;
-  background-color: var(--bg-dark);
-  position:sticky;
-  margin: 0;
-  padding: 0;
-  color: var(--text-white);
+    font-family: "Poppins", Arial, sans-serif;
+    background-color: var(--amazon-light-blue);
+    margin: 0;
+    padding: 0;
+    color: var(--text-white);
 }
 
 /* -------------------- NAVBAR -------------------- */
 .navbar-custom {
-  background: linear-gradient(135deg, var(--bg-dark), var(--bg-darker));
-  padding: 0.6rem 1.2rem;
-  transition: all 0.3s ease;
-  z-index: 1000;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  
-}
-
-.navbar-custom.scrolled {
-  background: #0a0e14;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    /* Solid Amazon Dark Blue background */
+    background-color: var(--amazon-blue); 
+    padding: 8px 0; 
+    transition: all 0.3s ease;
+    z-index: 1020; /* Ensure navbar is above banner/second header */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .navbar-brand-custom {
-  font-weight: 700;
-  font-size: 1.6rem;
-  text-decoration: none;
-  transition: transform 0.3s ease;
+    font-weight: 700;
+    font-size: 1.6rem;
+    transition: transform 0.2s ease;
 }
 
 .navbar-brand-custom:hover {
-  transform: scale(1.08);
+    transform: scale(1.05); 
+    color: var(--text-white);
 }
 
-.brand-white {
-  color: #ffffff;
-}
+.brand-white { color: var(--text-white); }
+.brand-orange { color: var(--amazon-orange); }
 
-.brand-orange {
-  color: var(--accent-color);
-}
-
-/* -------------------- SEARCH BAR -------------------- */
-.search-bar-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
-.search-input {
-  border-radius: 50px;
-  border: 2px solid var(--accent-color);
-  padding: 8px 16px;
-  width: 260px;
-  outline: none;
-  transition: all 0.3s ease;
-  font-size: 15px;
-  background: #fff;
-  color: #000;
-}
-
-.search-input:focus {
-  border-color: var(--accent-light);
-  box-shadow: 0 0 10px rgba(255, 153, 0, 0.5);
-}
-
-.search-btn {
-  background-color: var(--accent-color);
-  color: #000;
-  font-weight: 600;
-  border-radius: 50px;
-  padding: 8px 16px;
-  border: none;
-  margin-left: 6px;
-  transition: background-color 0.3s ease;
-}
-
-.search-btn:hover {
-  background-color: var(--accent-light);
+.footer-logo-img {
+    height: 35px; 
 }
 
 /* -------------------- LOCATION -------------------- */
-/* -------------------- LOCATION MODAL -------------------- */
-.location-modal .modal-content {
-  background: var(--bg-darker);
-  color: var(--text-white);
-  border-radius: 15px;
-  box-shadow: 0 0 25px rgba(255, 153, 0, 0.3);
-  border: 1px solid rgba(255, 153, 0, 0.2);
+
+.location {
+    font-size: 0.85rem;
+    line-height: 1.2;
+    padding: 5px 8px; 
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    display: flex;
+    flex-direction: column;
 }
 
-.location-modal .modal-header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.location-modal .modal-footer {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.location-modal .form-control {
-  background-color: #fff;
-  color: #000;
-  border-radius: 8px;
-  border: 2px solid var(--accent-color);
-}
-
-.location-modal .form-control:focus {
-  box-shadow: 0 0 10px rgba(255, 153, 0, 0.4);
-  border-color: var(--accent-light);
-}
-
-.location-modal .btn-warning {
-  font-weight: 600;
+.location:hover {
+    border-color: rgba(255, 255, 255, 0.5); 
 }
 
 /* -------------------- ACCOUNT & CART -------------------- */
 .account-button,
 .cart-button {
-  font-weight: 600;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  white-space: nowrap;
+    font-weight: 600;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+    background: transparent;
+    color: var(--text-white);
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
 }
 
-.account-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.cart-button {
-  border: 1px solid var(--accent-color);
-  background: transparent;
-  color: var(--text-white);
-}
-
+.account-button:hover,
 .cart-button:hover {
-  background-color: var(--accent-color);
-  color: #000;
+    border-color: var(--text-white) !important; 
+    background-color: var(--amazon-light-blue); 
 }
 
 .cart-count {
-  background: var(--accent-color);
-  color: #000;
-  border-radius: 50%;
-  padding: 2px 6px;
-  margin-left: 6px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  transition: transform 0.2s ease;
+    background-color: #f08804; 
+    color: var(--text-dark);
+    font-size: 0.75rem;
+    padding: 1px 6px;
+    border-radius: 50%;
+    margin-left: 8px;
+    font-weight: bold;
+    min-width: 20px; 
+    text-align: center;
 }
 
-.cart-count:hover {
-  transform: scale(1.15);
-}
-
-/* -------------------- ANIMATIONS -------------------- */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* -------------------- RESPONSIVE -------------------- */
-@media (max-width: 992px) {
-  .search-bar-container {
-    justify-content: flex-start;
-  }
-
-  .search-input {
-    width: 100%;
-  }
-
-  .account-button,
-  .cart-button {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-
-  .navbar-custom {
-    padding: 0.4rem 1rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .navbar-brand-custom {
-    font-size: 1.3rem;
-  }
-
-  .search-input {
-    font-size: 14px;
-    padding: 6px 14px;
-  }
-
-  .search-btn {
-    padding: 6px 14px;
-    font-size: 14px;
-  }
-}
-
-/* In ./Navbar.css */
-
-/* search-bar-container-ஐ ரிலேட்டிவ்-ஆக அமைக்கவும் */
+/* -------------------- SEARCH BAR -------------------- */
 .search-bar-container {
-    position: relative; 
-    /* தேவையெனில் அதிகபட்ச அகலத்தை அமைக்கலாம் */
-    max-width: 500px; 
+    position: relative;
+    max-width: 700px; 
+    flex-grow: 1;
+    margin: 0 15px;
 }
 
-/* ஆலோசனைகள் டிராப் டவுன் */
+.search-form {
+    display: flex;
+    width: 100%;
+}
+
+.search-input {
+    border-radius: 4px 0 0 4px; 
+    border: 3px solid transparent; 
+    height: 40px; 
+    font-size: 1rem;
+    background-color: var(--text-white);
+    color: var(--text-dark);
+    padding-left: 15px;
+    flex-grow: 1;
+    border-right: none; 
+}
+
+.search-input:focus {
+    border-color: var(--amazon-orange); 
+    box-shadow: 0 0 0 1px var(--amazon-orange);
+    z-index: 100;
+    border-right: none;
+}
+
+.search-btn {
+    background-color: var(--amazon-dark-orange); 
+    border-radius: 0 4px 4px 0; 
+    border: 1px solid var(--amazon-dark-orange);
+    color: var(--text-dark); 
+    padding: 0 18px;
+    height: 40px; 
+    font-size: 1rem;
+    font-weight: bold;
+    min-width: 50px; 
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.search-btn:hover {
+    background-color: var(--amazon-orange); 
+    border-color: var(--amazon-orange);
+    color: var(--text-dark);
+}
+
+/* -------------------- SEARCH SUGGESTIONS DROP DOWN (FIXED Z-INDEX) -------------------- */
+
 .suggestions-dropdown {
     position: absolute;
-    top: 100%; /* Search Bar-க்குச் சரியாகக் கீழே வைக்கவும் */
-    left: 0;
-    /* முழு தேடல் பகுதியின் அகலத்திற்கு அமைக்கவும் (இன்புட் + பட்டன்) */
     width: 100%; 
-    z-index: 1050; /* மற்ற எல்லாவற்றிற்கும் மேலே வைக்க */
-    border: 1px solid #ccc;
-    max-height: 300px; /* ஸ்க்ரோல் செய்யக்கூடிய உயரத்தை வரம்பிட */
+    z-index: 99999; 
+    top: 40px; 
+    max-height: 350px;
     overflow-y: auto;
-}
-
-.suggestions-dropdown ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    background-color: #fff;
+    border: 1px solid var(--amazon-orange);
+    border-top: none; 
+    border-radius: 0 0 4px 4px; 
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .suggestion-item {
     cursor: pointer;
-    color: #333;
+    color: var(--text-dark);
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee; 
+    transition: background-color 0.1s;
     font-size: 0.95rem;
-    transition: background-color 0.2s;
-    /* கீபோர்டு நேவிகேஷனுக்காக: */
-    outline: none; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
 }
 
 .suggestion-item:hover,
-.suggestion-item:focus { /* focus-ம் சேர்க்கப்பட்டுள்ளது */
-    background-color: #fff3cd; /* warning variant-க்கு ஒத்த நிறம் */
-    font-weight: bold;
+.suggestion-item:focus {
+    background-color: #fff8e8; 
+    font-weight: 500;
 }
 
+/* Custom Dropdown Animation */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* -------------------- LOCATION MODAL -------------------- */
+.location-modal .modal-content {
+    background: var(--amazon-light-blue);
+    color: var(--text-white);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.location-modal .form-control {
+    background-color: #fff;
+    color: #000;
+    border-radius: 4px;
+    border: 1px solid var(--amazon-orange);
+}
+
+.location-modal .btn-warning {
+    background-color: var(--amazon-orange);
+    border-color: var(--amazon-orange);
+    color: #000;
+    font-weight: 600;
+}
+
+
+/* -------------------- RESPONSIVE -------------------- */
+@media (max-width: 992px) {
+    .search-bar-container {
+        max-width: 100%;
+        margin: 10px 0;
+    }
+    .location {
+        display: none; /* Hide location on small screens */
+    }
+    /* Mobile Account and Cart buttons */
+    .account-button,
+    .cart-button {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+        margin-right: 5px !important;
+    }
+    /* Hide full Account text on mobile */
+    .d-lg-none .account-button span {
+        display: none; 
+    }
+}

@@ -7,22 +7,27 @@ import { addToCart } from "../redux/cartSlice"; // Adjust path as needed
 // 🚨 FIREBASE IMPORTS
 import { db } from "../firebase"; // Adjust path as needed
 import { doc, getDoc, collection, getDocs, query, where, limit } from "firebase/firestore";
+// 🎯 CRITICAL: Import the listener for auth state changes
+import { getAuth, onAuthStateChanged } from "firebase/auth"; 
 
-// Component for suggestions (can be replaced with the ProductSuggestions component above)
+// Component for suggestions
 import ProductSuggestions from "../pages/ProductSuggestions"; // Adjust path as needed
 
-const EXCHANGE_RATE = 1; // Assuming Firebase prices are already in INR or conversion is 1
+const EXCHANGE_RATE = 1; 
+const auth = getAuth(); // Initialize Firebase Auth
 
 function ProductDetailPage() {
     const { id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    // 🎯 NEW STATE: Track Auth Status reliably
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isAuthReady, setIsAuthReady] = useState(false); // To ensure we wait for Firebase
+
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    // State for Similar Products (Firebase based, similar to the main ProductDetailPage logic)
     const [categoryProducts, setCategoryProducts] = useState([]);
     const [catLoading, setCatLoading] = useState(true);
     const [catError, setCatError] = useState(null);
@@ -35,6 +40,16 @@ function ProductDetailPage() {
         productImageCol: { borderRight: "1px solid #eee", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" },
         productPrice: { fontSize: "2.2rem", fontWeight: 800, color: "#dc3545", marginTop: "15px", marginBottom: "15px" },
     };
+
+    // --- CRITICAL FIX: Auth State Listener ---
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setIsLoggedIn(!!user); // true if user is logged in, false otherwise
+            setIsAuthReady(true); // Now we know the state
+        });
+
+        return () => unsubscribe(); // Cleanup the listener
+    }, []);
 
     // --- 1. Fetch Main Product Details ---
     useEffect(() => {
@@ -64,18 +79,15 @@ function ProductDetailPage() {
         fetchProduct();
     }, [id]);
 
-    // --- 2. Fetch Similar Category Products (Firebase) ---
+    // --- 2. Fetch Similar Category Products (remains the same) ---
     useEffect(() => {
         if (!product || !product.category) return;
-
         const fetchCategoryProducts = async () => {
             try {
                 setCatLoading(true);
                 setCatError(null);
 
                 const productsRef = collection(db, "products");
-
-                // Query for similar products in the same category
                 const q = query(
                     productsRef,
                     where("category", "==", product.category),
@@ -95,9 +107,7 @@ function ProductDetailPage() {
                         rating: data.rating || { rate: 4.0, count: 100 }
                     };
                 });
-
                 setCategoryProducts(fetchedProducts.filter(p => p.id !== product.id));
-
             } catch (err) {
                 console.error("🔥 Error fetching category products:", err);
                 setCatError(err.message);
@@ -105,7 +115,6 @@ function ProductDetailPage() {
                 setCatLoading(false);
             }
         };
-
         fetchCategoryProducts();
     }, [product]);
 
@@ -125,12 +134,22 @@ function ProductDetailPage() {
         alert(`Added "${product.name || product.title}" to cart! (₹${priceINR.toFixed(0)})`);
     };
 
+    // ✅ FIXED: Buy Now checks the reliable 'isLoggedIn' state
     const handleBuyNow = () => {
-        handleAddToCart();
-        navigate("/checkout");
+        if (!product) return;
+        
+        handleAddToCart(); // Add to cart first
+
+        if (isLoggedIn) {
+            // If logged in, proceed to checkout
+            navigate("/checkout");
+        } else {
+            // If NOT logged in, navigate to the login page, passing /checkout as the redirect destination
+            navigate("/login", { state: { from: "/checkout" } });
+        }
     };
 
-    // --- Filtering and Sorting Logic for Similar Products (uses useMemo for efficiency) ---
+    // --- Filtering and Sorting Logic ---
     const filteredAndSortedCategory = useMemo(() => {
         let list = [...categoryProducts];
         list = list.filter(p => p.priceValue <= filterPrice);
@@ -146,13 +165,13 @@ function ProductDetailPage() {
     }, [categoryProducts, sortBy, filterPrice]);
 
     // --- Render Loading / Error States ---
-    if (loading) return <div className="text-center py-5"><Spinner animation="border" variant="primary" /></div>;
+    // Wait for both product data and auth status before rendering
+    if (loading || !isAuthReady) return <div className="text-center py-5"><Spinner animation="border" variant="primary" /></div>;
     if (error) return <Alert variant="danger" className="mt-4 text-center">{error}</Alert>;
     if (!product) return <p className="text-center py-5">No product found for this ID.</p>;
 
     // --- Data Preparation for Display ---
     const productPriceINR = ((product.price || 0) * EXCHANGE_RATE).toFixed(0);
-    // Simple mock calculation for original price
     const originalPriceINR = ((product.price * 1.5) * EXCHANGE_RATE).toFixed(0); 
     const discountPercentage = (((originalPriceINR - productPriceINR) / originalPriceINR) * 100).toFixed(0);
     const rating = product.rating || { rate: 4.0, count: 100 };
@@ -160,7 +179,6 @@ function ProductDetailPage() {
     // --- Main Render ---
     return (
         <Container className="py-4">
-
             {/* Main Product Detail Card */}
             <Card style={styles.productDetailContainer} className="p-4 mb-5">
                 <Row>
@@ -175,7 +193,6 @@ function ProductDetailPage() {
                     <Col md={7}>
                         <h2 className="fw-bold">{product.name || product.title || "Product Name"}</h2>
                         <p className="text-primary fw-semibold text-uppercase">{product.category || "N/A"}</p>
-
                         <div className="product-rating mb-3">
                             <span className="text-warning fw-bold me-2">{rating.rate.toFixed(1)} <i className="fas fa-star small"></i></span>
                             <span className="text-muted small">({rating.count} reviews)</span>
@@ -188,9 +205,7 @@ function ProductDetailPage() {
                             </h2>
                             <span className="badge bg-danger fs-6 mb-3">{discountPercentage}% OFF!</span>
                         </div>
-
                         <p className="text-muted small">{product.description || "No description available."}</p>
-
                         <div className="d-grid gap-3 d-md-block pt-3 border-top mt-4">
                             <Button variant="warning" className="fw-bold me-3" onClick={handleAddToCart}>
                                 <i className="fas fa-shopping-cart me-2"></i> Add to Cart
@@ -204,7 +219,6 @@ function ProductDetailPage() {
             </Card>
 
             <h3 className="mb-4 fw-bold">More from the {product.category || 'Same'} category (Firebase)</h3>
-
             {/* Sorting & Filtering for Similar Products */}
             <Row className="mb-3 align-items-end">
                 <Col md={4} className="mb-3 mb-md-0">
@@ -237,7 +251,6 @@ function ProductDetailPage() {
                     {filteredAndSortedCategory.map(p => (
                         <Col key={p.id}>
                             <Card className="h-100 shadow-sm border-0">
-                                {/* Link that reloads the component with the new product ID */}
                                 <Link to={`/product/${p.id}`} className="text-decoration-none text-dark d-block" onClick={() => window.scrollTo(0, 0)}>
                                     <div className="d-flex justify-content-center align-items-center p-3" style={{ height: '150px' }}>
                                         <Card.Img
@@ -252,8 +265,6 @@ function ProductDetailPage() {
                                             <span className="text-muted small">({p.rating.count})</span>
                                         </div>
                                         <Card.Text className="fw-bold text-danger fs-5 mt-auto">₹{p.priceINR}</Card.Text>
-
-                                        {/* Button to add to cart without navigating */}
                                         <Button
                                             variant="warning"
                                             size="sm"
@@ -273,14 +284,13 @@ function ProductDetailPage() {
                 </Row>
             )}
 
-            {/* Product Suggestions (using a separate component for a different look/feel) */}
+            {/* Product Suggestions */}
             {product && (
                 <ProductSuggestions 
                     currentProductId={product.id} 
                     category={product.category} 
                 />
             )}
-
         </Container>
     );
 }

@@ -89,7 +89,7 @@ function HomePhotoFrameSection() {
           {/* 🔹 Show More Button */}
           <div className="mt-4">
             <Link to="/photoframe">
-              <Button variant="warning" size="lg" className="px-4 fw-bold">
+              <Button variant="success" size="lg" className="px-4 fw-bold">
                 Show More →
               </Button>
             </Link>

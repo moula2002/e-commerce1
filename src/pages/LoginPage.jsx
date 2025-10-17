@@ -2,52 +2,48 @@ import React, { useState } from "react";
 import { Button, Form, Alert } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 // 🎯 Firestore functions for document operations
-import { doc, getDoc, setDoc } from "firebase/firestore"; 
+import { doc, getDoc, setDoc } from "firebase/firestore";
 // 🎯 Firebase Auth functions
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
-// 🎯 Import your initialized Firebase instances (assuming they are exported from this path)
-import { db } from "../firebase"; 
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth"; // ✅ Added signOut
+// 🎯 Import your initialized Firebase instances 
+import { db } from "../firebase";
 import "../pages/LoginPage.css"
 
 // Initialize Firebase Auth
-const auth = getAuth(); 
-
-// ❌ DUMMY DATA REMOVED
-// const FAKE_EMAIL = "test@example.com";
-// const FAKE_PASSWORD = "password123";
-// const TARGET_USER_ID = "3tSmrTzPyZfgVn1lQdG2HqYnBKt2"; 
+const auth = getAuth();
 
 // Inline Styles
 const styles = {
-    loginContainer: {
-        padding: '30px',
-        backgroundColor: '#fff',
-        borderRadius: '12px',
-        position: 'relative', 
-    },
-    loginCloseBtn: {
-        position: 'absolute',
-        top: '10px',
-        right: '15px',
-        fontSize: '28px',
-        cursor: 'pointer',
-        color: '#6c757d',
-        border: 'none',
-        backgroundColor: 'transparent',
-        lineHeight: '1',
-    }
+  loginContainer: {
+    padding: '30px',
+    backgroundColor: '#fff',
+    borderRadius: '12px',
+    position: 'relative',
+  },
+  loginCloseBtn: {
+    position: 'absolute',
+    top: '10px',
+    right: '15px',
+    fontSize: '28px',
+    cursor: 'pointer',
+    color: '#6c757d',
+    border: 'none',
+    backgroundColor: 'transparent',
+    lineHeight: '1',
+  }
 };
 
 export default function AuthPage({ onClose }) {
   const navigate = useNavigate();
   const location = useLocation();
+  // ✅ Reads the 'from' path sent by ProductDetailPage: /checkout
   const from = location.state?.from || "/";
 
   const [isLogin, setIsLogin] = useState(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null); 
+  const [error, setError] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
 
   // ------------------------------------------------------------------
@@ -66,10 +62,10 @@ export default function AuthPage({ onClose }) {
 
       const userData = userSnapshot.data();
       const userWithId = {
-          id: userSnapshot.id, // This is the user's UID
-          ...userData
+        id: userSnapshot.id, // This is the user's UID
+        ...userData
       };
-      
+
       setUserDetails(userWithId);
       return userWithId;
 
@@ -80,69 +76,89 @@ export default function AuthPage({ onClose }) {
     }
   };
 
+  // ------------------------------------------------------------------
+  // 3. Handle Logout Action 
+  // ------------------------------------------------------------------
+  const handleLogout = async () => {
+    setError(null);
+    try {
+      await signOut(auth); // Sign out the user
+      setUserDetails(null); // Clear local user state
+
+      alert("You have been successfully logged out!");
+
+      if (onClose) {
+        onClose(); // Close modal if used as one
+      } else {
+        navigate("/"); // Navigate to home page
+      }
+
+    } catch (logoutError) {
+      console.error("Firebase Logout Error:", logoutError);
+      setError("Failed to log out. Please try refreshing the page.");
+    }
+  };
+
 
   // ------------------------------------------------------------------
   // 2. Handle Form Submission (Login/Signup)
   // ------------------------------------------------------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); 
+    setError(null);
     setUserDetails(null);
 
     if (isLogin) {
       // ----- LOGIN LOGIC -----
       try {
-          // 2a. Authenticate with Firebase Auth
-          const userCredential = await signInWithEmailAndPassword(auth, email, password);
-          const userId = userCredential.user.uid;
-          
-          alert(`Login Successful! Fetching profile...`); 
-          
-          // 2b. Fetch profile data from Firestore using the UID
-          const user = await fetchUserById(userId);
-          
-          if (user) {
-              if (onClose) {
-                  onClose();
-              } else {
-                  // Redirect to the intended page
-                  navigate(from, { replace: true }); 
-              }
+        // 2a. Authenticate with Firebase Auth
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const userId = userCredential.user.uid;
+
+        alert(`Login Successful! Fetching profile...`);
+
+        // 2b. Fetch profile data from Firestore using the UID
+        const user = await fetchUserById(userId);
+
+        if (user) {
+          if (onClose) {
+            onClose();
+          } else {
+            // ✅ Navigates to the intended page (e.g., /checkout)
+            navigate(from, { replace: true });
           }
+        }
       } catch (authError) {
-          console.error("Firebase Login Error:", authError.message);
-          // Standard Firebase error codes can be handled here for better messages
-          setError(`Login failed: Invalid email or password.`);
+        console.error("Firebase Login Error:", authError.message);
+        setError(`Login failed: Invalid email or password.`);
       }
-      
+
     } else {
       // ----- SIGNUP LOGIC -----
       try {
-          // 2a. Create user in Firebase Auth
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          const userId = userCredential.user.uid;
+        // 2a. Create user in Firebase Auth
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const userId = userCredential.user.uid;
 
-          // 2b. Create corresponding profile document in Firestore
-          await setDoc(doc(db, "users", userId), { 
-            name: name,
-            email: email,
-            // Add other initial fields from your schema (e.g., contactNo, gender, wallet, etc.)
-            contactNo: "", 
-            gender: "",
-            customerID: userId, // Match your schema (customerID)
-            profileImage: null,
-            referredBy: null
-          });
-          
-          alert(`Signup successful! Welcome ${name}. You can now log in.`);
-          
-          // Switch to login form
-          setIsLogin(true); 
+        // 2b. Create corresponding profile document in Firestore
+        await setDoc(doc(db, "users", userId), {
+          name: name,
+          email: email,
+          contactNo: "",
+          gender: "",
+          customerID: userId,
+          profileImage: null,
+          referredBy: null
+        });
+
+        alert(`Signup successful! Welcome ${name}. You can now log in.`);
+
+        // Switch to login form
+        setIsLogin(true);
 
       } catch (authError) {
-          console.error("Firebase Signup Error:", authError.message);
-          // Handle specific errors like 'auth/email-already-in-use'
-          setError(`Signup failed: ${authError.message.replace('Firebase: ', '')}`);
+        console.error("Firebase Signup Error:", authError.message);
+        setError(`Signup failed: ${authError.message.replace('Firebase: ', '')}`);
       }
     }
   };
@@ -152,86 +168,98 @@ export default function AuthPage({ onClose }) {
     setName("");
     setEmail("");
     setPassword("");
-    setError(null); 
+    setError(null);
   };
 
   const goHome = () => {
-    navigate("/"); 
-    if (onClose) onClose(); 
+    navigate("/");
+    if (onClose) onClose();
   };
 
   return (
     <div style={styles.loginContainer}>
-      
+
       {onClose && (
-          <button style={styles.loginCloseBtn} onClick={onClose} aria-label="Close">
-              ✕
-          </button>
+        <button style={styles.loginCloseBtn} onClick={onClose} aria-label="Close">
+          ✕
+        </button>
       )}
-      
+
       <h2 className="text-center mb-4">{isLogin ? "Login" : "Signup"}</h2>
 
-      <Form onSubmit={handleSubmit}>
-        
-        {/* Display Error Message */}
-        {error && <Alert variant="danger">{error}</Alert>}
+      {userDetails ? (
+        // --- Logged In View ---
+        <div className="text-center">
+          {/* Display fetched user details (optional) */}
+          <div className="mt-3 p-3 border rounded bg-success bg-opacity-10 mb-4">
+            <h5 className="text-success">You are logged in!</h5>
+            <p className="mb-1"><strong>Name:</strong> {userDetails.name}</p>
+            <p className="mb-1"><strong>Email:</strong> {userDetails.email}</p>
+          </div>
+          {/* ✅ Logout Button */}
+          <Button
+            variant="danger"
+            onClick={handleLogout}
+            className="w-100 mb-3"
+          >
+            <i className="fas fa-sign-out-alt me-2"></i> Log Out
+          </Button>
+        </div>
 
-        {!isLogin && (
-          <Form.Group className="mb-3" controlId="formName">
-            <Form.Label>Full Name *</Form.Label>
+      ) : (
+        // --- Login/Signup Form View ---
+        <Form onSubmit={handleSubmit}>
+
+          {/* Display Error Message */}
+          {error && <Alert variant="danger">{error}</Alert>}
+
+          {!isLogin && (
+            <Form.Group className="mb-3" controlId="formName">
+              <Form.Label>Full Name *</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter full name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </Form.Group>
+          )}
+
+          <Form.Group className="mb-3" controlId="formEmail">
+            <Form.Label>Email address *</Form.Label>
             <Form.Control
-              type="text"
-              placeholder="Enter full name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              type="email"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </Form.Group>
-        )}
 
-        <Form.Group className="mb-3" controlId="formEmail">
-          <Form.Label>Email address *</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </Form.Group>
+          <Form.Group className="mb-3" controlId="formPassword">
+            <Form.Label>Password *</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Password (min 6 characters)"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={6}
+            />
+          </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formPassword">
-          <Form.Label>Password *</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Password (min 6 characters)"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            minLength={6} // Firebase Auth requires at least 6 characters
-          />
-        </Form.Group>
+          <Button variant="bt btn-warning" type="submit" className="w-100 mb-3">
+            {isLogin ? "Login" : "Signup"}
+          </Button>
 
-        <Button variant="bt btn-warning" type="submit" className="w-100 mb-3">
-          {isLogin ? "Login" : "Signup"}
-        </Button>
-      </Form>
-
-      {/* Display fetched user details (optional, for state verification) */}
-      {userDetails && (
-        <div className="mt-3 p-3 border rounded bg-success bg-opacity-10">
-          <h5 className="text-success">Logged In User Profile:</h5>
-          <p className="mb-1"><strong>UID:</strong> {userDetails.id}</p>
-          <p className="mb-1"><strong>Name:</strong> {userDetails.name}</p>
-          <p className="mb-1"><strong>Email:</strong> {userDetails.email}</p>
-        </div>
+          <div className="text-center mt-2">
+            <Button variant="link" onClick={toggleForm}>
+              {isLogin ? "Don't have an account? Signup" : "Already have an account? Login"}
+            </Button>
+          </div>
+        </Form>
       )}
-
-      <div className="text-center mt-2">
-        <Button variant="link" onClick={toggleForm}>
-          {isLogin ? "Don't have an account? Signup" : "Already have an account? Login"}
-        </Button>
-      </div>
 
       <div className="text-center mt-3">
         <Button variant="secondary" onClick={goHome}>

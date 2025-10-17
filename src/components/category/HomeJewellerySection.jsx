@@ -2,35 +2,71 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Spinner, Button } from "react-bootstrap";
 import { db } from "../../firebase";
-import { collection, query, where, orderBy, limit, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
-
-// ✏️ Extract color from description if missing
-const extractColorFromDescription = (description) => {
-  if (!description || typeof description !== "string") return "N/A";
-  const match = description.match(/color:\s*([a-zA-Z]+)/i);
-  return match ? match[1] : "N/A";
-};
 
 function HomeJewellerySection() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // ✅ Inline styles (same as HomeStationarySection)
+  const styles = {
+    imageContainer: {
+      width: "100%",
+      height: "250px",
+      overflow: "hidden",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "#f8f9fa",
+      borderRadius: "10px 10px 0 0",
+    },
+    productImage: {
+      width: "100%",
+      height: "100%",
+      objectFit: "contain",
+      transition: "transform 0.3s ease",
+      backgroundColor: "#fff",
+      padding: "5px",
+    },
+    productCard: {
+      border: "none",
+      borderRadius: "10px",
+      overflow: "hidden",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+      transition: "transform 0.3s ease",
+      backgroundColor: "#ffffff",
+    },
+  };
+
   useEffect(() => {
     const fetchJewelleryProducts = async () => {
+      setLoading(true);
       try {
+        const categoryName = "Jewellery";
+        const productLimit = 5;
+
         const productsRef = collection(db, "products");
-        const q = query(
-          productsRef,
-          where("category", "==", "Jewellery"),
-          orderBy("name"),
-          limit(5)
-        );
+        const q = query(productsRef, where("category", "==", categoryName));
         const snapshot = await getDocs(q);
-        const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+        let data = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        // 🔀 Shuffle products randomly
+        for (let i = data.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [data[i], data[j]] = [data[j], data[i]];
+        }
+
+        // 🧩 Limit results
+        data = data.slice(0, productLimit);
+
         setProducts(data);
       } catch (err) {
-        console.error("Error fetching Jewellery preview:", err);
+        console.error("🔥 Error fetching random jewellery:", err);
       } finally {
         setLoading(false);
       }
@@ -38,6 +74,13 @@ function HomeJewellerySection() {
 
     fetchJewelleryProducts();
   }, []);
+
+  // 📝 Utility: Extract color from description if missing
+  const extractColorFromDescription = (description) => {
+    if (!description || typeof description !== "string") return "N/A";
+    const match = description.match(/color:\s*([a-zA-Z]+)/i);
+    return match ? match[1] : "N/A";
+  };
 
   return (
     <Container className="my-5 text-center">
@@ -52,27 +95,38 @@ function HomeJewellerySection() {
               const productColor = product.color || extractColorFromDescription(product.description);
               return (
                 <Col key={product.id}>
-                  {/* 🚨 FIX: Wrap the entire card content in a Link */}
                   <Link
                     to={`/product/${product.id}`}
-                    className="text-decoration-none d-block h-100 text-dark"
-                    onClick={() => window.scrollTo(0, 0)} // Scroll to top when navigating
+                    className="text-decoration-none d-block"
                   >
-                    <Card className="product-card h-100 shadow-sm border-0">
-                      <div className="image-container">
+                    <Card
+                      className="h-100 shadow-sm border-0 product-card"
+                      style={styles.productCard}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.querySelector("img").style.transform =
+                          "scale(1.03)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.querySelector("img").style.transform =
+                          "scale(1)")
+                      }
+                    >
+                      {/* 🖼 Image Container */}
+                      <div style={styles.imageContainer}>
                         <Card.Img
                           variant="top"
                           src={
                             product.image ||
                             product.images ||
-                            "https://via.placeholder.com/200x200.png?text=No+Image"
+                            "https://via.placeholder.com/250x300.png?text=No+Image"
                           }
-                          alt={product.name || "Unnamed Jewellery"}
-                          style={{ objectFit: "contain", height: "200px" }}
+                          alt={product.name || "Unnamed Product"}
+                          style={styles.productImage}
                         />
                       </div>
+
                       <Card.Body>
-                        <Card.Title className="fs-6 text-truncate">
+                        <Card.Title className="fs-6 text-truncate text-dark">
                           {product.name || "Unnamed Jewellery"}
                         </Card.Title>
                         <Card.Text className="text-secondary small">
@@ -95,7 +149,7 @@ function HomeJewellerySection() {
           {/* 🔹 Show More Button */}
           <div className="mt-4">
             <Link to="/jewellery">
-              <Button variant="warning" size="lg" className="px-4 fw-bold">
+              <Button variant="success" size="lg" className="px-4 fw-bold">
                 Show More →
               </Button>
             </Link>
