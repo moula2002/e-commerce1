@@ -12,9 +12,8 @@ import Footer from "./features/footer/Footer";
 import HomePage from "./pages/Home";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import CustomerSupportCenter from "./pages/CustomerService";
-import CategoryPage from "./pages/CategoryPage";
 import AuthPage from "./pages/LoginPage";
-
+import CategoryPage from "./pages/CategoryPage";
 
 // ✅ Cart & Checkout
 import CartPage from "./components/cartPage/CartPage";
@@ -85,7 +84,8 @@ const AppContent = () => {
           <Route path="/mens" element={<Mens />} />
           <Route path="/kids" element={<Kids />} />
           <Route path="/electronics" element={<Electronics />} />
-          <Route path="/personalcare" element={<PersonalCare />} />
+          {/* 🐛 FIXED: Corrected path to match SecondHeader.js and conventional URL slug */}
+          <Route path="/personal-care" element={<PersonalCare />} />
 
           {/* 🔹 Footer Policy Pages */}
           <Route path="/return-policy" element={<ReturnPolicy />} />

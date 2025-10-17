@@ -1,21 +1,25 @@
+// src/pages/Home.jsx
 import React from "react";
-// 🚨 Container is not imported in the original code, but included for typical usage
 import { Container } from "react-bootstrap";
 import "./Home.css";
 import Banner from "../components/Banner";
-import Fashion from "../components/category/Fashion";
-import Accessories from "../components/category/Accessories";
+
+// ✅ Use the new Fashion preview component instead of full Fashion page
+import HomeFashionSection from "../components/category/HomeFashionSection";
+import HomeAccessoriesSection from "../components/category/HomeAccessoriesSection";
+import HomeToysSection from "../components/category/HomeToysSection";
+import HomeStationarySection from "../components/category/HomeStationarySection";
+import HomePhotoFrameSection from "../components/category/HomePhotoFrameSection";
+import HomeJewellerySection from "../components/category/HomeJewellerySection";
+import HomeMensSection from "../components/category/HomeMensSection";
+import HomeKidsSection from "../components/category/HomeKidsSection";
+import HomePersonalCareSection from "../components/category/HomePersonalCareSection";
+
+// Other categories (These should probably be HomePreview components as well, but kept as is for now)
 import Cosmetics from "../components/category/Cosmetics";
-import Toys from "../components/category/Toys";
-import Stationary from "../components/category/Stationary";
 import Book from "../components/category/Book";
-import PhotoFrame from "../components/category/PhotoFrame";
 import Footwears from "../components/category/Footwears";
-import Jewellery from "../components/category/Jewellery";
-import Mens from "../components/category/Mens";
-import Kids from "../components/category/Kids";
 import Electronics from "../components/category/Electronics";
-import PersonalCare from "../components/category/PersonalCare";
 
 
 function Home() {
@@ -27,23 +31,27 @@ function Home() {
         <Banner />
       </div>
 
-      {/* 👗 Fashion Section */}
+      {/* 👗 Fashion Section (show 5 items + Show More button) */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
-          Featured Fashion Category 👗
+          Featured Fashion Category 
         </div>
-        <Fashion />
+        <Container>
+          <HomeFashionSection />
+        </Container>
       </section>
 
-      {/* Accessories section */}
+        {/* 💍 Accessories Section (show 5 items + Show More button) */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
-          Featured Accessories
+          Featured Accessories Category 
         </div>
-        <Accessories />
+        <Container>
+          <HomeAccessoriesSection />
+        </Container>
       </section>
 
-      {/* 💄 Cosmetics section */}
+      {/* 💄 Cosmetics (Using full component) */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
           Featured Cosmetics 💄
@@ -51,23 +59,29 @@ function Home() {
         <Cosmetics />
       </section>
 
-      {/* 🧸 Toys section */}
+        {/* 🧸 Toys Section (show 5 items + Show More button) */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
-          Featured Toys 🧸
+          Featured Toys Category 
         </div>
-        <Toys />
+        <Container>
+          <HomeToysSection />
+        </Container>
       </section>
 
-      {/* ✏️ Stationary section */}
+
+        {/* ✏️ Stationary Section (show 5 items + Show More button) */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
-          Featured Stationery ✏️
+          Featured Stationary Category 
         </div>
-        <Stationary />
+        <Container>
+          <HomeStationarySection />
+        </Container>
       </section>
 
-      {/* 📚 Book section */}
+
+      {/* 📚 Books (Using full component) */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
           Featured Books 📚
@@ -75,15 +89,19 @@ function Home() {
         <Book />
       </section>
 
-      {/* 🖼️ Photo Frame section */}
+
+        {/* 🖼️ Photo Frame Section (show 5 items + Show More button) */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
-          Featured Photo Frames 🖼️
+          Featured Photo Frame Category 
         </div>
-        <PhotoFrame />
+        <Container>
+          <HomePhotoFrameSection/>
+        </Container>
       </section>
 
-      {/* 👟 Footwears section */}
+
+      {/* 👟 Footwears (Using full component) */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
           Featured Footwears 👟
@@ -91,31 +109,40 @@ function Home() {
         <Footwears />
       </section>
 
-      {/* 💍 Jewellery section */}
+        {/* ✨ Jewellery Section (show 5 items + Show More button) */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
-          Featured Jewellery 💎
+          Featured Jewellery Category 
         </div>
-        <Jewellery />
+        <Container>
+          <HomeJewellerySection/>
+        </Container>
       </section>
 
-      {/* 👔 Men's section */}
+      
+        {/* 👨 Mens Section (show 5 items + Show More button) */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
-          Featured Men's Clothing 👔
+          Featured Mens Category 
         </div>
-        <Mens />
-      </section>
+        <Container>
+          <HomeMensSection/>
+        </Container>
+      </section>   
 
-      {/* 👧 Kids section */}
+    
+{/* 👧 Kids Section (show 5 items + Show More button) */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
-          Featured Kids' Products 🎈
+          Featured Kids Category 
         </div>
-        <Kids />
+        <Container>
+          <HomeKidsSection/>
+        </Container>
       </section>
 
-      {/* 💻 Electronics section */}
+
+      {/* 💻 Electronics (Using full component) */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
           Featured Electronics 📱
@@ -123,15 +150,17 @@ function Home() {
         <Electronics />
       </section>
 
-      {/* 🧴 Personal Care section (NEW Section) */}
+      {/* 🧴 Personal Care Section (show 5 items + Show More button) */}
       <section className="mt-5">
         <div className="text-center mb-4 fw-bold text-warning">
-          Featured Personal Care 🧴
+          Featured Personal Care Category 
         </div>
-        {/* 🎯 2. Render the PersonalCare component */}
-        <PersonalCare />
+        <Container>
+          <HomePersonalCareSection/>
+        </Container>
       </section>
 
+      
 
       {/* 🌈 Footer */}
       <footer className="text-center py-5 bg-dark text-white mt-5 footer-scale-up border-top border-warning">

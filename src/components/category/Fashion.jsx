@@ -1,13 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { Container, Spinner, Row, Col, Card } from "react-bootstrap";
-import { db } from "../../firebase";
-import { collection, getDocs, query, limit, where } from "firebase/firestore"; // 👈 where filter-ஐ import செய்யவும்
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { Container, Spinner, Row, Col, Card, Alert } from "react-bootstrap";
+import { db } from "../../firebase"; // Adjust path as needed
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  limit,
+  startAfter,
+} from "firebase/firestore";
 import { Link } from "react-router-dom";
 
-// 🎨 Utility function to extract color from description if 'color' field is missing
+// 🎨 Utility function
 const extractColorFromDescription = (description) => {
-  if (!description || typeof description !== 'string') return "N/A";
-  // Example: finding "color: Purple" in the description string
+  if (!description || typeof description !== "string") return "N/A";
   const match = description.match(/color:\s*([a-zA-Z]+)/i);
   return match ? match[1] : "N/A";
 };
@@ -19,8 +26,10 @@ const ProductCard = ({ product }) => {
 
   const cardStyle = {
     transition: "transform 0.3s ease-in-out, boxShadow 0.3s ease-in-out",
-    transform: isHovered ? "scale(1.05)" : "scale(1)", // Zoom effect
-    boxShadow: isHovered ? "0 10px 20px rgba(0, 0, 0, 0.2)" : "0 0.5rem 1rem rgba(0, 0, 0, 0.15)",
+    transform: isHovered ? "scale(1.05)" : "scale(1)",
+    boxShadow: isHovered
+      ? "0 10px 20px rgba(0, 0, 0, 0.2)"
+      : "0 0.5rem 1rem rgba(0, 0, 0, 0.15)",
     zIndex: isHovered ? 10 : 1,
   };
 
@@ -36,14 +45,17 @@ const ProductCard = ({ product }) => {
           <Card.Img
             variant="top"
             src={product.images || product.image || "https://via.placeholder.com/200"}
-            style={{ height: "200px", objectFit: "initial" }}
+            style={{ height: "200px", objectFit: "contain" }}
           />
           <Card.Body>
             <Card.Title className="fs-6 text-truncate text-dark">
               {product.name || "Unnamed Product"}
             </Card.Title>
             <Card.Text className="text-secondary small">
-              Color: <strong style={{ color: productColor !== 'N/A' ? 'black' : 'grey' }}>{productColor}</strong>
+              Color:{" "}
+              <strong style={{ color: productColor !== "N/A" ? "black" : "grey" }}>
+                {productColor}
+              </strong>
             </Card.Text>
             <Card.Text className="text-success fw-bold fs-5 mt-2">
               ₹{product.price || "N/A"}
@@ -55,77 +67,144 @@ const ProductCard = ({ product }) => {
   );
 };
 
+// -------------------------------------------------------------
 function Fashion() {
   const categoryName = "Fashion";
+  const PAGE_SIZE = 8;
   const [products, setProducts] = useState([]);
+  const [lastVisible, setLastVisible] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const observer = useRef();
 
+  // 🧠 Initial Fetch (Runs once on component mount)
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchInitialProducts = async () => {
       try {
+        setLoading(true);
         const productsRef = collection(db, "products");
-        const productsQuery = query(
+        const q = query(
           productsRef,
           where("category", "==", categoryName),
-          limit(20)
+          orderBy("name"),
+          limit(PAGE_SIZE)
         );
-        const productSnapshot = await getDocs(productsQuery);
-        if (productSnapshot.empty) {
-          console.warn(`No products found in category: ${categoryName}`);
-        }
-        const fetchedProducts = productSnapshot.docs.map((doc) => ({
+        const snapshot = await getDocs(q);
+        const fetched = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-        console.log(`🛍 Limited ${categoryName} Products fetched:`, fetchedProducts);
-        setProducts(fetchedProducts);
+        setProducts(fetched);
+        setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
+        if (snapshot.docs.length < PAGE_SIZE) setHasMore(false);
       } catch (err) {
-        console.error(`🔥 Error fetching ${categoryName} products:`, err);
-        setError(err.message);
+        console.error("🔥 Error fetching products:", err);
       } finally {
         setLoading(false);
       }
     };
-    fetchProducts();
+
+    fetchInitialProducts();
   }, []);
 
-  // 🌀 Loading UI...
-  if (loading) {
-    return (
-      <Container className="text-center my-5">
-        <Spinner animation="border" variant="primary" />
-        <p>Loading {categoryName} Products...</p>
-      </Container>
-    );
-  }
+  // 🌀 Load More (Pagination)
+  const loadMore = useCallback(async () => {
+    if (!lastVisible || loadingMore || !hasMore) return;
 
-  // ⚠️ Error UI...
-  if (error) {
-    return (
-      <Container className="text-center my-5 text-danger">
-        <p>{error}</p>
-      </Container>
-    );
-  }
+    try {
+      setLoadingMore(true);
+      const productsRef = collection(db, "products");
+      const nextQuery = query(
+        productsRef,
+        where("category", "==", categoryName),
+        orderBy("name"),
+        startAfter(lastVisible),
+        limit(PAGE_SIZE)
+      );
 
-  // ✅ Success UI
+      const snapshot = await getDocs(nextQuery);
+      const newProducts = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      if (newProducts.length === 0) {
+        setHasMore(false);
+        return;
+      }
+
+      setProducts((prev) => [...prev, ...newProducts]);
+      setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
+      if (snapshot.docs.length < PAGE_SIZE) setHasMore(false);
+    } catch (err) {
+      console.error("Error loading more products:", err);
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [lastVisible, loadingMore, hasMore]);
+
+  // 👁️ Infinite Scroll Observer
+  const lastProductRef = useCallback(
+    (node) => {
+      if (loadingMore || loading) return;
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          loadMore();
+        }
+      });
+
+      if (node) observer.current.observe(node);
+    },
+    [loadMore, hasMore, loadingMore, loading]
+  );
+
   return (
     <Container className="my-5 text-center">
       <h2 className="fw-bold text-dark mb-4">{categoryName} Products 🛍️</h2>
       <p className="text-muted mb-5">
-        Discover the latest trends in **{categoryName.toLowerCase()}**!
+        Discover the latest trends in <strong>{categoryName.toLowerCase()}</strong>!
       </p>
-      {products.length > 0 ? (
-        <Row xs={1} md={2} lg={4} className="g-4">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </Row>
+
+      {/* 🌀 Initial Loading */}
+      {loading ? (
+        <div className="text-center">
+          <Spinner animation="border" variant="primary" />
+          <p>Loading {categoryName} products...</p>
+        </div>
+      ) : products.length > 0 ? (
+        <>
+          <Row xs={1} md={2} lg={4} className="g-4">
+            {products.map((product, index) => {
+              // Attach observer reference to the last product for infinite scroll trigger
+              const isLastElement = index === products.length - 1;
+              const ref = isLastElement ? lastProductRef : null;
+
+              return (
+                <div ref={ref} key={product.id}>
+                  <ProductCard product={product} />
+                </div>
+              );
+            })}
+          </Row>
+
+          {/* Bottom loader */}
+          {loadingMore && (
+            <div className="text-center my-4">
+              <Spinner animation="grow" variant="secondary" />
+              <p>Loading more...</p>
+            </div>
+          )}
+          {!hasMore && (
+            <p className="text-muted mt-4">🎉 You’ve reached the end!</p>
+          )}
+        </>
       ) : (
         <div className="p-4 bg-warning bg-opacity-10 rounded">
           <p className="text-warning fw-bold mb-0">
-            No products found in the **{categoryName}** category.
+            No products found in {categoryName}.
           </p>
         </div>
       )}

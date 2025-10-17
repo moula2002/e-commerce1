@@ -214,3 +214,46 @@ body {
   }
 }
 
+/* In ./Navbar.css */
+
+/* search-bar-container-ஐ ரிலேட்டிவ்-ஆக அமைக்கவும் */
+.search-bar-container {
+    position: relative; 
+    /* தேவையெனில் அதிகபட்ச அகலத்தை அமைக்கலாம் */
+    max-width: 500px; 
+}
+
+/* ஆலோசனைகள் டிராப் டவுன் */
+.suggestions-dropdown {
+    position: absolute;
+    top: 100%; /* Search Bar-க்குச் சரியாகக் கீழே வைக்கவும் */
+    left: 0;
+    /* முழு தேடல் பகுதியின் அகலத்திற்கு அமைக்கவும் (இன்புட் + பட்டன்) */
+    width: 100%; 
+    z-index: 1050; /* மற்ற எல்லாவற்றிற்கும் மேலே வைக்க */
+    border: 1px solid #ccc;
+    max-height: 300px; /* ஸ்க்ரோல் செய்யக்கூடிய உயரத்தை வரம்பிட */
+    overflow-y: auto;
+}
+
+.suggestions-dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.suggestion-item {
+    cursor: pointer;
+    color: #333;
+    font-size: 0.95rem;
+    transition: background-color 0.2s;
+    /* கீபோர்டு நேவிகேஷனுக்காக: */
+    outline: none; 
+}
+
+.suggestion-item:hover,
+.suggestion-item:focus { /* focus-ம் சேர்க்கப்பட்டுள்ளது */
+    background-color: #fff3cd; /* warning variant-க்கு ஒத்த நிறம் */
+    font-weight: bold;
+}
+

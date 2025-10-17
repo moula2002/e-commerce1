@@ -2,17 +2,18 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Spinner, Alert, Card, Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../redux/cartSlice";
+import { addToCart } from "../redux/cartSlice"; // Adjust path as needed
 
 // 🚨 FIREBASE IMPORTS
-// Adjust the path to 'db' based on your file structure (e.g., "../firebase")
-import { db } from "../firebase";
+import { db } from "../firebase"; // Adjust path as needed
 import { doc, getDoc, collection, getDocs, query, where, limit } from "firebase/firestore";
 
-const EXCHANGE_RATE = 1;
+// Component for suggestions (can be replaced with the ProductSuggestions component above)
+import ProductSuggestions from "../pages/ProductSuggestions"; // Adjust path as needed
+
+const EXCHANGE_RATE = 1; // Assuming Firebase prices are already in INR or conversion is 1
 
 function ProductDetailPage() {
-    // Get product ID from URL params
     const { id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -21,7 +22,7 @@ function ProductDetailPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // State for Similar Products
+    // State for Similar Products (Firebase based, similar to the main ProductDetailPage logic)
     const [categoryProducts, setCategoryProducts] = useState([]);
     const [catLoading, setCatLoading] = useState(true);
     const [catError, setCatError] = useState(null);
@@ -35,9 +36,9 @@ function ProductDetailPage() {
         productPrice: { fontSize: "2.2rem", fontWeight: 800, color: "#dc3545", marginTop: "15px", marginBottom: "15px" },
     };
 
-    // --- 1. Fetch Main Product Details (Runs on ID change) ---
+    // --- 1. Fetch Main Product Details ---
     useEffect(() => {
-        window.scrollTo(0, 0); // Scroll to top when product ID changes
+        window.scrollTo(0, 0);
         const fetchProduct = async () => {
             try {
                 setLoading(true);
@@ -63,7 +64,7 @@ function ProductDetailPage() {
         fetchProduct();
     }, [id]);
 
-    // --- 2. Fetch Similar Category Products (Runs after main product is loaded) ---
+    // --- 2. Fetch Similar Category Products (Firebase) ---
     useEffect(() => {
         if (!product || !product.category) return;
 
@@ -74,10 +75,11 @@ function ProductDetailPage() {
 
                 const productsRef = collection(db, "products");
 
+                // Query for similar products in the same category
                 const q = query(
                     productsRef,
                     where("category", "==", product.category),
-                    limit(10) // Fetch maximum 10 similar products
+                    limit(10) 
                 );
 
                 const querySnapshot = await getDocs(q);
@@ -94,7 +96,6 @@ function ProductDetailPage() {
                     };
                 });
 
-                // Filter out the current product
                 setCategoryProducts(fetchedProducts.filter(p => p.id !== product.id));
 
             } catch (err) {
@@ -129,7 +130,7 @@ function ProductDetailPage() {
         navigate("/checkout");
     };
 
-    // --- Filtering and Sorting Logic for Similar Products ---
+    // --- Filtering and Sorting Logic for Similar Products (uses useMemo for efficiency) ---
     const filteredAndSortedCategory = useMemo(() => {
         let list = [...categoryProducts];
         list = list.filter(p => p.priceValue <= filterPrice);
@@ -151,7 +152,8 @@ function ProductDetailPage() {
 
     // --- Data Preparation for Display ---
     const productPriceINR = ((product.price || 0) * EXCHANGE_RATE).toFixed(0);
-    const originalPriceINR = ((product.price * 1.5) * EXCHANGE_RATE).toFixed(0);
+    // Simple mock calculation for original price
+    const originalPriceINR = ((product.price * 1.5) * EXCHANGE_RATE).toFixed(0); 
     const discountPercentage = (((originalPriceINR - productPriceINR) / originalPriceINR) * 100).toFixed(0);
     const rating = product.rating || { rate: 4.0, count: 100 };
 
@@ -179,7 +181,6 @@ function ProductDetailPage() {
                             <span className="text-muted small">({rating.count} reviews)</span>
                         </div>
                         <hr />
-
                         <div className="price-section">
                             <h2 style={styles.productPrice}>
                                 ₹{productPriceINR} /-
@@ -202,7 +203,7 @@ function ProductDetailPage() {
                 </Row>
             </Card>
 
-            <h3 className="mb-4 fw-bold">More from the {product.category || 'Same'} category</h3>
+            <h3 className="mb-4 fw-bold">More from the {product.category || 'Same'} category (Firebase)</h3>
 
             {/* Sorting & Filtering for Similar Products */}
             <Row className="mb-3 align-items-end">
@@ -236,7 +237,7 @@ function ProductDetailPage() {
                     {filteredAndSortedCategory.map(p => (
                         <Col key={p.id}>
                             <Card className="h-100 shadow-sm border-0">
-                                {/* Clicking this link will reload the component with the new product ID */}
+                                {/* Link that reloads the component with the new product ID */}
                                 <Link to={`/product/${p.id}`} className="text-decoration-none text-dark d-block" onClick={() => window.scrollTo(0, 0)}>
                                     <div className="d-flex justify-content-center align-items-center p-3" style={{ height: '150px' }}>
                                         <Card.Img
@@ -252,7 +253,7 @@ function ProductDetailPage() {
                                         </div>
                                         <Card.Text className="fw-bold text-danger fs-5 mt-auto">₹{p.priceINR}</Card.Text>
 
-                                        {/* This Add to Cart button prevents navigation */}
+                                        {/* Button to add to cart without navigating */}
                                         <Button
                                             variant="warning"
                                             size="sm"
@@ -270,6 +271,14 @@ function ProductDetailPage() {
                         </Col>
                     ))}
                 </Row>
+            )}
+
+            {/* Product Suggestions (using a separate component for a different look/feel) */}
+            {product && (
+                <ProductSuggestions 
+                    currentProductId={product.id} 
+                    category={product.category} 
+                />
             )}
 
         </Container>

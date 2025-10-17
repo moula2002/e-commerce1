@@ -1,7 +1,9 @@
-// src/components/ProductSuggestions.js
 import React, { useState, useEffect } from "react";
 import { Row, Col, Card, Spinner, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
+
+// Note: This component uses FakeStoreAPI for suggestions, unlike the main components
+// which use Firebase.
 
 function ProductSuggestions({ currentProductId, category }) {
   const [suggestions, setSuggestions] = useState([]);
@@ -16,16 +18,17 @@ function ProductSuggestions({ currentProductId, category }) {
         setLoading(true);
         setError(null);
         
+        // Using FakeStoreAPI for fetching suggestions
         const response = await fetch(`https://fakestoreapi.com/products/category/${category}`);
         
         if (!response.ok) throw new Error("Failed to fetch suggestions");
         
         const data = await response.json();
-        const exchangeRate = 83; // USD to INR
+        const exchangeRate = 1; // USD to INR conversion rate (set to 1 for simplicity here, but should be accurate in a real app)
 
         const filteredSuggestions = data
-          .filter((product) => product.id !== currentProductId)
-          .slice(0, 4) 
+          .filter((product) => product.id !== currentProductId) // Exclude current product
+          .slice(0, 4) // Limit to 4 suggestions
           .map((product) => ({
             id: product.id,
             image: product.image,
@@ -68,7 +71,8 @@ function ProductSuggestions({ currentProductId, category }) {
       <Row className="g-4">
         {suggestions.map((item) => (
           <Col xs={6} md={3} key={item.id}>
-            <Link to={`/product/${item.id}`} className="text-decoration-none text-dark d-block h-100">
+            {/* Navigates to the new product detail page */}
+            <Link to={`/product/${item.id}`} className="text-decoration-none text-dark d-block h-100" onClick={() => window.scrollTo(0, 0)}>
               <Card className="shadow-sm h-100 product-suggestion-card text-center">
                 <div className="d-flex justify-content-center align-items-center p-3" style={{ height: '150px' }}>
                     <Card.Img 

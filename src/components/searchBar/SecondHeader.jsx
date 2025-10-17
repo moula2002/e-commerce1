@@ -15,7 +15,7 @@ const SecondHeader = () => {
         { name: "Accessories", icon: FaGem, path: "/accessories" },
         { name: "Cosmetics", icon: FaSmile, path: "/cosmetics" },
         { name: "Toys", icon: FaBoxOpen, path: "/toys" },
-        { name: "Stationary", icon: FaTools, path: "/Stationary" },
+        { name: "Stationary", icon: FaTools, path: "/stationary" },
         { name: "Book", icon: FaBook, path: "/book" },
         { name: "Photo Frame", icon: FaHandHoldingHeart, path: "/photoframe" },
         { name: "Footwears", icon: FaShoePrints, path: "/footwears" },
@@ -23,7 +23,8 @@ const SecondHeader = () => {
         { name: "Mens", icon: FaUser, path: "/mens" },
         { name: "Kids", icon: FaChild, path: "/kids" },
         { name: "Electronics", icon: FaLaptop, path: "/electronics" },
-        { name: "Personal Care", icon: FaRedo, path: "/personalcare" },
+        // 🐛 FIXED: Path changed to /personal-care to match common URL conventions and App.js
+        { name: "Personal Care", icon: FaRedo, path: "/personal-care" }, 
         { name: "Customer Service", icon: FaTimes, path: "/support" }
     ];
 
