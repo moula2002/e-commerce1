@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// Removed ToastContainer, Toast from react-bootstrap import as we're using a custom approach for style
 import { Button, Form, Alert, ToastContainer, Toast } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 // 🎯 Firestore functions for document operations
@@ -8,12 +7,12 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 // 🎯 Import your initialized Firebase instances 
 import { db } from "../firebase"; // Assuming you have firebase.js in the parent directory
-import "../pages/LoginPage.css" // The CSS for @keyframes animation is still REQUIRED here
+import "../pages/LoginPage.css" // Import the CSS for styling and animations
 
 // Initialize Firebase Auth
 const auth = getAuth();
 
-// Inline Styles (Updated to include Toast colors/styles)
+// Inline Styles (kept for close button position)
 const styles = {
   loginContainer: {
     padding: '30px',
@@ -31,18 +30,13 @@ const styles = {
     border: 'none',
     backgroundColor: 'transparent',
     lineHeight: '1',
-  },
-    // Define the colors/backgrounds we will use for the Toast via inline styles
-    toastBackgrounds: {
-        danger: '#dc3545', // Red for Logout
-        success: '#198754', // Green for Signup Success
-        info: '#0dcaf0', // Blue for Login Loading
-    }
+  }
 };
 
 export default function AuthPage({ onClose }) {
   const navigate = useNavigate();
   const location = useLocation();
+  // Reads the 'from' path for redirection after login (e.g., /checkout)
   const from = location.state?.from || "/";
 
   const [isLogin, setIsLogin] = useState(true);
@@ -55,7 +49,7 @@ export default function AuthPage({ onClose }) {
   // State for custom Toast/Notification
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [toastVariant, setToastVariant] = useState("success"); // Holds 'danger', 'success', 'info'
+  const [toastVariant, setToastVariant] = useState("success");
 
   // Function to show a custom toast notification
   const displayToast = (message, variant = 'success') => {
@@ -63,15 +57,6 @@ export default function AuthPage({ onClose }) {
     setToastVariant(variant);
     setShowToast(true);
   };
-
-  // Helper function to get the correct background color inline
-  const getToastBgStyle = () => ({
-    backgroundColor: styles.toastBackgrounds[toastVariant] || styles.toastBackgrounds.success,
-    color: 'white',
-    borderRadius: '8px',
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)', // Inline box shadow
-    border: 'none',
- });
 
   // ------------------------------------------------------------------
   // 1. Fetch user details by Document ID (UID)
@@ -210,7 +195,7 @@ export default function AuthPage({ onClose }) {
 
   return (
     <>
-      {/* 1. Full-page wrapper for CSS background/centering (Requires external CSS) */}
+      {/* 1. Full-page wrapper for CSS background/centering */}
       <div className="auth-page-wrapper"> 
         {/* 2. Inner login box container */}
         <div style={styles.loginContainer} className="login-container"> 
@@ -231,6 +216,7 @@ export default function AuthPage({ onClose }) {
                 <p className="mb-1"><strong>Name:</strong> {userDetails.name}</p>
                 <p className="mb-1"><strong>Email:</strong> {userDetails.email}</p>
               </div>
+              {/* Logout Button triggers the animated toast */}
               <Button
                 variant="danger"
                 onClick={handleLogout}
@@ -302,25 +288,17 @@ export default function AuthPage({ onClose }) {
         </div>
       </div>
 
-      {/* 3. Custom Toast/Notification Component */}
-      <ToastContainer 
-           style={{ 
-               position: 'fixed', 
-               top: 0, 
-               right: 0, 
-               padding: '1rem',
-               zIndex: 1080 
-           }} 
-       >
+      {/* 3. Custom Toast/Notification Component - Placed outside the wrapper to overlay content */}
+      <ToastContainer className="p-3" position="top-end" style={{ zIndex: 1080 }}>
         <Toast
           show={showToast}
           onClose={() => setShowToast(false)}
-          delay={1500} 
+          delay={1500} // Hide after 1.5 seconds (matches handleLogout setTimeout)
           autohide
-          className="fade-in-out" // Animation class must remain external
-          style={getToastBgStyle()} // ✅ INLINE CSS for background and appearance
+          bg={toastVariant} // dynamic color: 'danger' for logout, 'success'/'info' for login/signup
+          className="text-white fade-in-out" // Custom animation class
         >
-          <Toast.Body style={{ fontWeight: 500 }}>
+          <Toast.Body>
             {toastMessage}
           </Toast.Body>
         </Toast>

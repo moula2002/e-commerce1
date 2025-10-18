@@ -163,12 +163,12 @@ function Home() {
       
 
       {/* 🌈 Footer */}
-      <footer className="text-center py-5 bg-dark text-white mt-5 footer-scale-up border-top border-warning">
+      {/* <footer className="text-center py-5 bg-dark text-white mt-5 footer-scale-up border-top border-warning">
         <h2 className="fw-bold text-danger">End of Today’s Best Deals!</h2>
         <p className="lead text-secondary">
           Keep exploring for more offers and check back tomorrow for fresh deals.
         </p>
-      </footer>
+      </footer> */}
     </div>
   );
 }

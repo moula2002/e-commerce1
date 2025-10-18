@@ -13,7 +13,7 @@ const Footer = () => {
           <div className="col-md-3 col-sm-6 mb-4">
             <div className="d-flex align-items-center mb-3">
               <img src="/Sadhanacart1.png" alt="SadhanaCart Logo" className="footer-logo-img me-2" />
-              <h5 className="mb-0 footer-logo-text">SadhanaCart</h5>
+              <h5 className="mb-0 footer-logo-text">Sadhana <span style={{color:"orangered"}}>Cart</span></h5>
             </div>
             <h6 className="footer-heading mb-2">About Us</h6>
             <p className="footer-text mb-4">

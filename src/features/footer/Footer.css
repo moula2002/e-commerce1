@@ -1,72 +1,96 @@
+
+
+
 /* Footer.css */
 
-/* Custom dark color found in the screenshot */
+/* Define a keyframe animation for a subtle bounce/wiggle effect */
+@keyframes buttonWiggle {
+  0%, 100% {
+    transform: translateY(-5px) scale(1.05);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.07); /* Deeper lift in the middle */
+  }
+  25%, 75% {
+    transform: translateY(-5px) scale(1.03);
+  }
+}
+
+/* Custom dark color for the footer background */
 .footer {
-  background-color: #212529; /* A deep, dark blue-gray */
+  background-color: #1a1a1a;
   color: #fff;
-  position: relative; /* Needed for the scroll-to-top button positioning */
+  padding-bottom: 30px;
 }
 
-/* Styling for Headings (Call Us, Mail Us, Useful Links, Located At, About Us) */
+/* Styling for Headings */
 .footer-heading {
-  color: #fff; 
-  font-size: 1.1rem; /* Slightly larger than list items */
+  color: #fff;
+  font-size: 1.1rem;
   font-weight: 600;
-  margin-top: 1.5rem; /* Space above sub-headings like Mail Us */
+  margin-top: 0;
+  margin-bottom: 10px;
 }
 
-/* Special heading for the main "About Us" section in column 1 */
 .col-md-3:first-child .footer-heading {
-    margin-top: 0.5rem; /* Reduce top margin for the first column's heading */
+  margin-top: 0.5rem;
 }
 
 /* Logo and text styling */
 .footer-logo-img {
-  width: 30px; 
+  width: 30px;
   height: 30px;
   object-fit: contain;
 }
 
 .footer-logo-text {
-    font-weight: bold;
-    color: #ffc107; /* Use a strong color if the logo text is not part of the image */
+  font-weight: bold;
+  /* Teal/Turquoise accent color */
+  color: skyblue;
 }
 
-/* General body text style (About Us description, Working Hours, Address) */
-.footer-text, 
-.footer-address {
+/* General body text style */
+.footer-text,
+.footer-address,
+.col-md-3 p {
   font-size: 0.9rem;
   line-height: 1.6;
-  color: #b0b0b0; /* Light gray for body text */
+  color: #b0b0b0;
 }
 
 /* Copyright text style */
 .footer-copyright {
   font-size: 0.85rem;
-  color: #b0b0b0;
+  color: #888;
   line-height: 1.5;
 }
 
-/* Link styling (Useful Links, phone, email) */
+/* Link styling */
 .list-unstyled a,
 .col-md-3 p a {
   font-size: 0.95rem;
-  color: #b0b0b0 !important; /* Ensure links are light gray */
+  color: #b0b0b0 !important;
   text-decoration: none;
-  transition: color 0.2s;
+  /* ANIMATION: Enhanced transitions for multiple properties */
+  transition: color 0.3s ease-in-out, transform 0.2s ease-out, font-size 0.1s;
 }
 
 .list-unstyled a:hover,
 .col-md-3 p a:hover {
-  color: #ffc107 !important; /* Orange/Warning color on hover */
+  /* Teal/Turquoise accent color on hover */
+  color: #008080 !important;
+  /* ANIMATION: Noticeable slide and subtle scale up */
+  transform: translateX(8px) scale(1.02);
+  font-weight: 500; /* Makes the text look bolder/more important */
 }
 
 /* Registered Office text color */
 .text-warning {
-  color: #ffc107 !important; /* Ensure a distinct orange/yellow color */
+  color: #008080 !important;
+  font-weight: 700 !important;
 }
 
-/* Scroll-to-top button styling (to match the visual element in the screenshot) */
+/* Scroll-to-top button styling */
 .scroll-to-top-container {
   position: absolute;
   right: 20px;
@@ -74,20 +98,24 @@
 }
 
 .scroll-to-top-btn {
-  background-color: #ffc107; /* Orange background */
-  color: #212529; /* Dark text/icon color */
-  width: 40px;
-  height: 40px;
+  background-color: #008080;
+  color: #fff;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   cursor: pointer;
-  transition: background-color 0.3s;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  /* ANIMATION: Important for smooth transitions */
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  box-shadow: 0 0 12px rgba(0, 128, 128, 0.6);
 }
 
 .scroll-to-top-btn:hover {
-  background-color: #e0a800;
+  background-color: #006666;
+  /* ANIMATION: Apply the keyframe animation */
+  animation: buttonWiggle 0.8s infinite;
+  box-shadow: 0 8px 20px rgba(0, 128, 128, 0.8);
 }

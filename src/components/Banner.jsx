@@ -24,7 +24,6 @@ function Banner() {
             bannerList.push({
               id: doc.id,
               url: data.image, 
-              title: data.bannerName || "Untitled Banner",
             });
           }
         });
@@ -71,7 +70,7 @@ function Banner() {
             >
               <img
                 src={banner.url}
-                className="d-block w-100 banner-image"
+                className="d-block w-100 h-80 banner-image"
                 alt={banner.title}
               />
               <div className="carousel-caption d-none d-md-block">

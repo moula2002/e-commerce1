@@ -1,53 +1,88 @@
-/* 🔥 GLOBAL COLORS (Amazon/Flipkart-like Dark Theme) */
+/* 🔥 GLOBAL COLORS (Shopclues-like Theme) */
 :root {
-    --amazon-blue: #131921; /* Main Navbar Background */
-    --amazon-light-blue: #232f3e; /* Secondary/Hover Background */
-    --amazon-orange: #ff9900; /* Primary Accent Color */
-    --amazon-dark-orange: #f3a847; /* Search Button Color */
+    --shopclues-main-bg: #ffffff; /* Main Navbar Background */
+    --shopclues-red-orange: #ff6e40; /* Primary Accent Color (Search Button) */
+    --shopclues-dark-red: #d94b15; /* Hover color for search/cart */
+    --shopclues-teal-light: #00a69a; /* Secondary Header Color (for SecondHeader.js) */
+    --text-dark: #333333; /* Dark text for a white background */
+    --text-grey: #666666;
     --text-white: #ffffff;
-    --text-light: #ffffffb3;
-    --text-dark: #111;
 }
 
 /* -------------------- BASE STYLES -------------------- */
 body {
     font-family: "Poppins", Arial, sans-serif;
-    background-color: var(--amazon-light-blue);
+    /* Removed dark background-color, as navbar is now white */
     margin: 0;
     padding: 0;
-    color: var(--text-white);
+    color: var(--text-dark); /* Default text color is dark */
 }
+
+/* -------------------- TOP BAR (New addition for Sell with Us etc.) -------------------- */
+/* Assuming a top-bar component or element is added above the main Navbar in HTML */
+.top-bar-custom {
+    background-color: #f0f0f0; 
+    color: #666; 
+    font-size: 0.8rem; 
+    padding: 3px 15px;
+    text-align: right;
+    border-bottom: 1px solid #e0e0e0;
+}
+
 
 /* -------------------- NAVBAR -------------------- */
 .navbar-custom {
-    /* Solid Amazon Dark Blue background */
-    background-color: var(--amazon-blue); 
+    /* Solid White background */
+    background-color: var(--shopclues-main-bg); 
     padding: 8px 0; 
     transition: all 0.3s ease;
-    z-index: 1020; /* Ensure navbar is above banner/second header */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1020;
+    /* Use a light grey border for distinction */
+    border-bottom: 1px solid #e0e0e0; 
 }
 
-.navbar-brand-custom {
-    font-weight: 700;
+/* SHOPCLUES Logo Style */
+.shopclues-logo {
+    font-weight: 900;
     font-size: 1.6rem;
+    color: var(--text-dark) !important; /* Logo text color */
     transition: transform 0.2s ease;
+    text-decoration: none;
 }
 
-.navbar-brand-custom:hover {
+.shopclues-logo:hover {
     transform: scale(1.05); 
-    color: var(--text-white);
+    color: var(--text-dark) !important;
 }
 
-.brand-white { color: var(--text-white); }
-.brand-orange { color: var(--amazon-orange); }
 
-.footer-logo-img {
-    height: 35px; 
+/* -------------------- LOCATION/LINKS -------------------- */
+/* General styles for navbar links/buttons to blend in like the screenshot */
+.nav-link-custom,
+.account-button,
+.cart-button {
+    color: var(--text-grey) !important;
+    font-size: 0.9rem;
+    padding: 5px 10px !important;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    transition: all 0.2s;
+    background: none !important; /* Ensure no default button background */
 }
 
-/* -------------------- LOCATION -------------------- */
+/* Hover effect on links/icons */
+.nav-link-custom:hover,
+.account-button:hover,
+.cart-button:hover {
+    color: var(--shopclues-dark-red) !important; /* Hover color changes to dark red */
+    border-color: #f0f0f0 !important; 
+    background-color: #f9f9f9 !important; 
+}
 
+/* Location Text Style (Share Location) */
 .location {
     font-size: 0.85rem;
     line-height: 1.2;
@@ -57,42 +92,42 @@ body {
     cursor: pointer;
     transition: border-color 0.2s;
     display: flex;
-    flex-direction: column;
+    flex-direction: row; /* Aligned horizontally as per image */
+    align-items: center;
+    color: var(--text-dark); 
 }
 
 .location:hover {
-    border-color: rgba(255, 255, 255, 0.5); 
+    border-color: #e0e0e0; 
 }
 
-/* -------------------- ACCOUNT & CART -------------------- */
-.account-button,
+/* -------------------- ACCOUNT & CART ICONS -------------------- */
+
 .cart-button {
-    font-weight: 600;
-    border: 1px solid transparent;
-    transition: all 0.2s;
-    background: transparent;
-    color: var(--text-white);
-    padding: 6px 12px;
-    display: flex;
-    align-items: center;
-}
-
-.account-button:hover,
-.cart-button:hover {
-    border-color: var(--text-white) !important; 
-    background-color: var(--amazon-light-blue); 
+    /* Ensures cart is styled as a link/icon group */
+    text-decoration: none;
 }
 
 .cart-count {
-    background-color: #f08804; 
-    color: var(--text-dark);
-    font-size: 0.75rem;
-    padding: 1px 6px;
+    background-color: var(--shopclues-dark-red); 
+    color: var(--text-white);
+    font-size: 0.7rem;
+    padding: 1px 5px;
     border-radius: 50%;
-    margin-left: 8px;
+    margin-left: 5px;
     font-weight: bold;
-    min-width: 20px; 
+    min-width: 18px; 
     text-align: center;
+    position: relative;
+    top: -8px; /* Slightly lift the count badge */
+    right: -8px;
+}
+/* Style for the full cart button when cart count is displayed */
+.cart-button .cart-count {
+    /* Resetting position for the final Cart label */
+    position: static;
+    top: 0;
+    right: 0;
 }
 
 /* -------------------- SEARCH BAR -------------------- */
@@ -110,10 +145,10 @@ body {
 
 .search-input {
     border-radius: 4px 0 0 4px; 
-    border: 3px solid transparent; 
+    border: 1px solid #ccc; 
     height: 40px; 
     font-size: 1rem;
-    background-color: var(--text-white);
+    background-color: #f5f5f5; /* Light grey input background */
     color: var(--text-dark);
     padding-left: 15px;
     flex-grow: 1;
@@ -121,32 +156,35 @@ body {
 }
 
 .search-input:focus {
-    border-color: var(--amazon-orange); 
-    box-shadow: 0 0 0 1px var(--amazon-orange);
+    /* Use the red-orange as the focus highlight */
+    border-color: var(--shopclues-red-orange); 
+    box-shadow: 0 0 0 1px var(--shopclues-red-orange);
     z-index: 100;
     border-right: none;
+    background-color: var(--text-white); /* White background on focus */
 }
 
 .search-btn {
-    background-color: var(--amazon-dark-orange); 
+    /* Shopclues Red/Orange button */
+    background-color: var(--shopclues-red-orange); 
     border-radius: 0 4px 4px 0; 
-    border: 1px solid var(--amazon-dark-orange);
-    color: var(--text-dark); 
-    padding: 0 18px;
+    border: 1px solid var(--shopclues-red-orange);
+    color: var(--text-white); /* White text on button */
+    padding: 0 20px;
     height: 40px; 
     font-size: 1rem;
     font-weight: bold;
-    min-width: 50px; 
+    min-width: 100px; /* Wider button for 'SEARCH' text */
     transition: background-color 0.2s, border-color 0.2s;
 }
 
 .search-btn:hover {
-    background-color: var(--amazon-orange); 
-    border-color: var(--amazon-orange);
-    color: var(--text-dark);
+    background-color: var(--shopclues-dark-red); 
+    border-color: var(--shopclues-dark-red);
+    color: var(--text-white);
 }
 
-/* -------------------- SEARCH SUGGESTIONS DROP DOWN (FIXED Z-INDEX) -------------------- */
+/* -------------------- SEARCH SUGGESTIONS DROP DOWN -------------------- */
 
 .suggestions-dropdown {
     position: absolute;
@@ -156,7 +194,7 @@ body {
     max-height: 350px;
     overflow-y: auto;
     background-color: #fff;
-    border: 1px solid var(--amazon-orange);
+    border: 1px solid var(--shopclues-red-orange);
     border-top: none; 
     border-radius: 0 0 4px 4px; 
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
@@ -174,50 +212,37 @@ body {
     text-overflow: ellipsis;
 }
 
-.suggestion-item:last-child {
-    border-bottom: none;
-}
-
 .suggestion-item:hover,
 .suggestion-item:focus {
     background-color: #fff8e8; 
     font-weight: 500;
 }
 
-/* Custom Dropdown Animation */
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 /* -------------------- LOCATION MODAL -------------------- */
 .location-modal .modal-content {
-    background: var(--amazon-light-blue);
-    color: var(--text-white);
+    background: var(--shopclues-main-bg);
+    color: var(--text-dark);
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .location-modal .form-control {
-    background-color: #fff;
+    background-color: #f5f5f5;
     color: #000;
     border-radius: 4px;
-    border: 1px solid var(--amazon-orange);
+    border: 1px solid #ccc;
 }
 
 .location-modal .btn-warning {
-    background-color: var(--amazon-orange);
-    border-color: var(--amazon-orange);
-    color: #000;
+    background-color: var(--shopclues-red-orange);
+    border-color: var(--shopclues-red-orange);
+    color: var(--text-white);
     font-weight: 600;
 }
-
+.location-modal .btn-warning:hover {
+    background-color: var(--shopclues-dark-red);
+    border-color: var(--shopclues-dark-red);
+}
 
 /* -------------------- RESPONSIVE -------------------- */
 @media (max-width: 992px) {
@@ -225,18 +250,17 @@ body {
         max-width: 100%;
         margin: 10px 0;
     }
-    .location {
-        display: none; /* Hide location on small screens */
+    
+    /* Ensure mobile menu links look right on a white background */
+    .navbar-collapse .nav-link-custom {
+        color: var(--text-dark) !important;
+        justify-content: start; /* Align text left in mobile menu */
     }
-    /* Mobile Account and Cart buttons */
-    .account-button,
-    .cart-button {
-        font-size: 0.9rem;
-        padding: 6px 10px;
-        margin-right: 5px !important;
-    }
-    /* Hide full Account text on mobile */
-    .d-lg-none .account-button span {
+    /* Hide the text labels for the icons and only show the icons themselves on small screens */
+    .nav-link-custom span:not(.cart-count) {
         display: none; 
+    }
+    .nav-link-custom i {
+        margin-right: 0 !important;
     }
 }
