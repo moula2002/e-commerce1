@@ -7,11 +7,11 @@ import { Link } from "react-router-dom";
 
 // 🎨 DEFINE CONSTANTS FOR AESTHETIC CONSISTENCY
 const PRIMARY_TEXT_COLOR = "#101010";
-const ACCENT_COLOR = "#198754"; // ✅ same green tone as Toys
+const ACCENT_COLOR = "#198754"; // Green accent for jewellery
 const SALE_COLOR = "#dc3545";
 const WHITE_COLOR = "#FFFFFF";
 
-// 🎨 STYLING SYSTEM (Same as HomeToysSection)
+// 🎨 STYLING SYSTEM (Modified for Mobile Responsiveness)
 const customStyles = {
   sectionContainer: {
     backgroundColor: WHITE_COLOR,
@@ -84,6 +84,7 @@ const customStyles = {
     color: "#adb5bd",
   },
   header: {
+    // Desktop size
     fontSize: "3.5rem",
     fontWeight: "900",
     color: PRIMARY_TEXT_COLOR,
@@ -91,6 +92,8 @@ const customStyles = {
     display: "inline-block",
     position: "relative",
     paddingBottom: "18px",
+    
+    // **MOBILE FONT SIZE ADJUSTMENT** (Removed from inline style object to be applied dynamically in the component)
   },
   headerUnderline: {
     content: '""',
@@ -111,6 +114,7 @@ const customStyles = {
     backgroundColor: ACCENT_COLOR,
     borderColor: ACCENT_COLOR,
     padding: "0.6rem 1rem",
+    // **MOBILE FONT SIZE ADJUSTMENT** (Removed from inline style object to be applied dynamically in the component)
   },
   viewDealButtonHover: {
     backgroundColor: "#218838",
@@ -127,6 +131,7 @@ const customStyles = {
     fontSize: "1.3rem",
     padding: "0.8rem 4rem",
     boxShadow: `0 8px 25px ${PRIMARY_TEXT_COLOR}40`,
+    // **MOBILE FONT SIZE ADJUSTMENT** (Removed from inline style object to be applied dynamically in the component)
   },
   exploreButtonHover: {
     backgroundColor: ACCENT_COLOR,
@@ -136,7 +141,7 @@ const customStyles = {
   },
 };
 
-// 🌟 Hover Effects
+// 🌟 Hover Effects (No changes needed)
 const handleCardMouseEnter = (e) => {
   e.currentTarget.style.transform = "translateY(-12px)";
   e.currentTarget.style.boxShadow = "0 25px 50px rgba(0, 0, 0, 0.2)";
@@ -151,20 +156,32 @@ const handleViewDealMouseEnter = (e) => {
   Object.assign(e.currentTarget.style, customStyles.viewDealButtonHover);
 };
 const handleViewDealMouseLeave = (e) => {
-  Object.assign(e.currentTarget.style, customStyles.viewDealButton);
-  e.currentTarget.style.transform = "none";
-  e.currentTarget.style.boxShadow = "none";
+  // Reapply base styles without the hover-specific transform/shadow
+  Object.assign(e.currentTarget.style, {
+    ...customStyles.viewDealButton,
+    transform: 'none',
+    boxShadow: 'none',
+    // Preserve dynamic mobile styles on re-application
+    fontSize: window.innerWidth <= 576 ? '0.9rem' : '1rem', 
+    padding: window.innerWidth <= 576 ? "0.5rem 0.8rem" : "0.6rem 1rem",
+  });
 };
 const handleExploreMouseEnter = (e) => {
   Object.assign(e.currentTarget.style, customStyles.exploreButtonHover);
 };
 const handleExploreMouseLeave = (e) => {
-  Object.assign(e.currentTarget.style, customStyles.exploreButton);
-  e.currentTarget.style.transform = "none";
-  e.currentTarget.style.boxShadow = customStyles.exploreButton.boxShadow;
+  // Reapply base styles without the hover-specific transform/shadow
+  Object.assign(e.currentTarget.style, {
+    ...customStyles.exploreButton,
+    transform: 'none',
+    boxShadow: customStyles.exploreButton.boxShadow,
+    // Preserve dynamic mobile styles on re-application
+    fontSize: window.innerWidth <= 576 ? '1rem' : '1.3rem',
+    padding: window.innerWidth <= 576 ? '0.7rem 2rem' : '0.8rem 4rem',
+  });
 };
 
-// 🖼️ Helper Functions
+// 🖼️ Helper Functions (No changes needed)
 const getProductImageSource = (product) => {
   if (typeof product.image === "string" && product.image.trim() !== "") {
     return product.image;
@@ -183,7 +200,7 @@ const calculateDiscount = (price, originalPrice) => {
   return 0;
 };
 
-// 🌟 Dummy Product Generator
+// 🌟 Dummy Product Generator (No changes needed)
 const generateDummyProduct = (index) => {
   const basePrice = Math.floor(Math.random() * 2000) + 1500;
   const discountFactor = Math.random() * 0.5 + 0.3;
@@ -209,8 +226,17 @@ const generateDummyProduct = (index) => {
 function HomeJewellerySection() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  // State to track window width for dynamic inline styling
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
+    // Logic to handle window resize and update state
+    const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener('resize', handleResize);
+    
     const fetchJewellery = async () => {
       setLoading(true);
       try {
@@ -248,14 +274,40 @@ function HomeJewellerySection() {
     };
 
     fetchJewellery();
+    
+    // Cleanup function
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Determine if it's a mobile screen (Bootstrap's sm breakpoint is 576px)
+  const isMobile = windowWidth <= 576;
+  
+  // Dynamic styles based on screen size
+  const headerStyle = {
+    ...customStyles.header,
+    fontSize: isMobile ? '2.0rem' : '3.5rem',
+    letterSpacing: isMobile ? '-1px' : '-1.8px',
+    lineHeight: isMobile ? '1.2' : 'normal',
+  };
+  
+  const viewDealButtonStyle = {
+    ...customStyles.viewDealButton,
+    fontSize: isMobile ? '0.9rem' : '1rem', 
+    padding: isMobile ? "0.5rem 0.8rem" : "0.6rem 1rem",
+  };
+  
+  const exploreButtonStyle = {
+    ...customStyles.exploreButton,
+    fontSize: isMobile ? '1rem' : '1.3rem',
+    padding: isMobile ? '0.7rem 2rem' : '0.8rem 4rem',
+  };
 
   return (
     <Container fluid style={{ backgroundColor: "#f8f9fa" }}>
       <Container className="py-5" style={customStyles.sectionContainer}>
-        {/* 🌟 HEADER */}
+        {/* 🌟 HEADER - Use responsive classes and dynamic inline styles */}
         <div className="text-center mb-5">
-          <h3 style={customStyles.header}>
+          <h3 style={headerStyle}>
             ELEGANT <span style={{ color: ACCENT_COLOR }}>JEWELLERY SALE</span>
             <div style={customStyles.headerUnderline}></div>
           </h3>
@@ -327,7 +379,8 @@ function HomeJewellerySection() {
 
                           <Button
                             variant="success"
-                            style={customStyles.viewDealButton}
+                            // Apply dynamic style object
+                            style={viewDealButtonStyle} 
                             className="w-100 mt-3 text-uppercase"
                             onMouseEnter={handleViewDealMouseEnter}
                             onMouseLeave={handleViewDealMouseLeave}
@@ -342,11 +395,12 @@ function HomeJewellerySection() {
               })}
             </Row>
 
-            {/* 🚀 CTA BUTTON */}
+            {/* 🚀 CTA BUTTON - Use responsive classes and dynamic inline styles */}
             <div className="text-center mt-5 pt-4">
               <Link to="/jewellery">
                 <Button
-                  style={customStyles.exploreButton}
+                  // Apply dynamic style object
+                  style={exploreButtonStyle} 
                   size="lg"
                   className="fw-bold"
                   onMouseEnter={handleExploreMouseEnter}
