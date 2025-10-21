@@ -1,229 +1,38 @@
-/* Container styling */
-.login-container {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 40px 30px;
-  background: linear-gradient(145deg, #1f2233, #262940);
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-  color: #fff;
-  position: relative;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.flipkart-auth-wrapper {
+  min-height: 100vh;
+  background-color: #f1f3f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Close button */
-.login-close-btn {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  font-size: 22px;
-  font-weight: bold;
-  color: #ff9900;
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: color 0.3s ease, transform 0.2s ease;
+.auth-box {
+  width: 850px;
+  max-width: 95%;
+  background: white;
 }
 
-.login-close-btn:hover {
-  color: #ffc84d;
-  transform: rotate(90deg);
+.auth-left {
+  background-color: #2874f0;
 }
 
-/* Title */
-.login-container h2 {
-  color: #ff9900;
-  text-align: center;
-  font-weight: 700;
-  margin-bottom: 25px;
+.auth-left h2 {
+  font-size: 1.6rem;
 }
 
-/* Inputs */
-.login-container .form-control {
-  background-color: #2a2d42;
-  border: 1px solid #44475a;
-  border-radius: 8px;
-  color: #fff;
-  padding: 12px 15px;
-  font-size: 15px;
-  margin-bottom: 15px;
+.auth-left p {
+  font-size: 0.95rem;
 }
 
-.login-container .form-control:focus {
-  border-color: #ff9900;
-  box-shadow: 0 0 10px rgba(255, 153, 0, 0.5);
-  background-color: #2a2d42;
+button.btn-link {
+  text-decoration: none !important;
 }
 
-/* Primary button */
-button.btn-primary {
-  background-color: #ff9900;
-  border: none;
-  border-radius: 8px;
-  padding: 12px;
-  font-weight: 600;
-  font-size: 16px;
+@media (max-width: 768px) {
+  .auth-left {
+    display: none;
+  }
+  .auth-box {
+    width: 100%;
+  }
 }
-
-button.btn-primary:hover {
-  background-color: #ffc84d;
-  color: #1f2233;
-}
-
-/* Outline button (toggle login/signup) */
-button.btn-outline-primary {
-  color: #ff9900;
-  border-color: #ff9900;
-  border-radius: 8px;
-  padding: 10px 15px;
-}
-
-button.btn-outline-primary:hover {
-  background-color: #ffc84d;
-  color: #1f2233;
-  border-color: #ffc84d;
-}
-
-/* Home button */
-button.btn-secondary {
-  background-color: #44475a;
-  color: #ff9900;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 15px;
-  font-weight: 600;
-}
-
-button.btn-secondary:hover {
-  background-color: #555b72;
-  color: #ffc84d;
-}
-
-
-
-/* 1. Container Styling */
-.login-container {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 40px 30px;
-  /* Dark Blue Gradient Background */
-  background: linear-gradient(145deg, #1f2233, #262940); 
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-  color: #fff;
-  position: relative;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* 2. Close Button */
-.login-close-btn {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  font-size: 22px;
-  font-weight: bold;
-  color: #ff9900; /* Neon Orange */
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: color 0.3s ease, transform 0.2s ease;
-  z-index: 10;
-}
-
-.login-close-btn:hover {
-  color: #ffc84d;
-  transform: rotate(90deg) scale(1.1);
-}
-
-/* 3. Title Styling */
-.login-container h2 {
-  color: #ff9900; /* Neon Orange */
-  font-weight: 700;
-  margin-bottom: 25px !important; 
-}
-
-/* 4. Form Label Styling */
-.login-container label.form-label {
-    color: #c9c9c9; /* Light grey for labels */
-    font-size: 0.95rem;
-    font-weight: 500;
-    margin-bottom: 5px;
-}
-
-/* 5. Inputs (React-Bootstrap's .form-control) - FROSTED GLASS STYLE */
-.login-container .form-control {
-  /* White translucent background (Frosted effect) */
-  background-color: rgba(255, 255, 255, 0.1); 
-  border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  
-  border-radius: 8px;
-  color: #fff; 
-  padding: 12px 15px;
-  font-size: 15px;
-  transition: all 0.3s ease;
-}
-
-/* Input Focus Glow */
-.login-container .form-control:focus {
-  border-color: #ff9900; /* Neon border */
-  box-shadow: 0 0 10px rgba(255, 153, 0, 0.8); 
-  background-color: rgba(255, 255, 255, 0.2); 
-  color: #fff;
-}
-
-/* Ensure placeholder text is visible */
-.login-container .form-control::placeholder {
-  color: rgba(255, 255, 255, 0.6);
-}
-
-
-/* 6. Primary Button (React-Bootstrap's .btn-primary) */
-.login-container .btn-primary {
-  background-color: #ff9900; /* Neon Orange */
-  border: none;
-  border-radius: 8px;
-  padding: 12px;
-  font-weight: 600;
-  font-size: 16px;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.login-container .btn-primary:hover {
-  background-color: #ffc84d; /* Lighter Orange */
-  color: #1f2233; /* Dark text on hover */
-}
-
-/* 7. Link/Toggle Button (React-Bootstrap's .btn-link) */
-.login-container .btn-link {
-    color: #ff9900;
-    font-weight: 500;
-    text-decoration: none;
-    padding: 0;
-    margin-bottom: 5px;
-    transition: color 0.3s;
-}
-
-.login-container .btn-link:hover {
-    color: #ffc84d;
-    text-decoration: underline;
-}
-
-/* 8. Secondary Button (Home Button) */
-.login-container .btn-secondary {
-  /* Frosted background for secondary action */
-  background-color: rgba(255, 255, 255, 0.1); 
-  color: #fff; 
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
-  padding: 10px 15px;
-  font-weight: 600;
-  transition: all 0.3s;
-}
-
-.login-container .btn-secondary:hover {
-  background-color: rgba(255, 255, 255, 0.2); 
-  color: #ff9900; /* Neon text on hover */
-}
-

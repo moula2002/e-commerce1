@@ -264,3 +264,96 @@ body {
         margin-right: 0 !important;
     }
 }
+
+
+/* --- Login Success Modal Styles (Attractive UI) --- */
+
+/* Targets the main Bootstrap modal container for size control */
+.login-success-modal .modal-dialog {
+    max-width: 400px; 
+}
+
+/* Targets the modal content box for styling */
+.login-success-modal .modal-content {
+    border: none;
+    border-radius: 1rem; /* Highly rounded corners */
+    overflow: hidden; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); /* Deep shadow for pop effect */
+}
+
+/* Customizing the body content with a subtle gradient */
+.login-success-modal .modal-body {
+    padding: 2.5rem 1.5rem; /* Extra padding */
+    position: relative;
+    /* Soft success-themed background gradient */
+    background: linear-gradient(145deg, #f0fff0, #ffffff); 
+}
+
+/* Styling the icon container */
+.login-success-modal .text-success {
+    color: #28a745 !important; /* A slightly darker, richer green */
+}
+
+/* Styling the icon itself (Checkmark in a circle) */
+.login-success-modal .fa-check-circle {
+    font-size: 4.5rem !important; /* Large, prominent icon */
+    background: #e9f7eb; /* Very light green circle background */
+    border-radius: 50%;
+    padding: 0.5rem;
+    /* ⭐ Apply the custom CSS bounce animation */
+    animation: success-bounce 0.8s ease-out; 
+}
+
+/* Highlight the user name with a strong color */
+.login-success-modal .text-primary {
+    color: #007bff !important; 
+}
+
+/* * ⭐ KEYFRAMES FOR THE ICON BOUNCE ANIMATION 
+ * This makes the icon 'pop' into view when the modal appears.
+ */
+@keyframes success-bounce {
+    0% { transform: scale(0.5); opacity: 0; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); }
+}
+
+
+/* --- Logout Success Modal Styles (Red/Warning) --- */
+
+.logout-success-modal .modal-dialog {
+    max-width: 400px;
+}
+
+.logout-success-modal .modal-content {
+    border: none;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    background-color: #ffffff;
+}
+
+.logout-success-modal .modal-body {
+    padding: 2.5rem 1.5rem; 
+    position: relative;
+    /* Subtle red gradient background */
+    background: linear-gradient(145deg, #f8d7da, #ffffff); 
+}
+
+.logout-success-modal .text-danger {
+    color: #dc3545 !important; 
+}
+
+.logout-success-modal .fa-sign-out-alt {
+    font-size: 4.5rem !important;
+    background: #f5c6cb; 
+    border-radius: 50%;
+    padding: 0.5rem;
+    transform-origin: center;
+}
+
+.logout-success-modal h4 {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    color: #dc3545; 
+}

@@ -5,100 +5,101 @@ import { db } from "../../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
 
-// 🎨 DEFINE CONSTANTS FOR AESTHETIC CONSISTENCY
-const PRIMARY_TEXT_COLOR = "#101010";
-const ACCENT_COLOR = "#198754"; // Green accent for accessories
-const SALE_COLOR = "#dc3545";   // Bootstrap red
+// 🎨 DEFINE CONSTANTS FOR MODERN AESTHETICS
+const PRIMARY_TEXT_COLOR = "#101010"; // Near-Black
+const ACCENT_COLOR = "#198754"; // Green accent (Original for Accessories)
+const SALE_COLOR = "#dc3545";       // Bootstrap Red
 const WHITE_COLOR = "#FFFFFF";
 
-// 🎨 STYLING SYSTEM (Modified for Mobile Responsiveness)
+// 🎨 Custom CSS for this component (HEIGHT REDUCED & MOBILE OPTIMIZED)
 const customStyles = {
+  // --- SECTION CONTAINER STYLE ---
   sectionContainer: {
     backgroundColor: WHITE_COLOR,
     borderRadius: "25px",
-    padding: "5.5rem 2rem",
+    padding: "3rem 1rem", // ⬇️ HEIGHT REDUCTION: Reduced vertical and horizontal padding (was 5.5rem 2rem)
     boxShadow: "0 15px 50px rgba(0, 0, 0, 0.08)",
   },
+
+  // --- CARD & IMAGE STYLES ---
   productCard: {
     border: "1px solid #e9ecef",
-    borderRadius: "18px",
+    borderRadius: "15px", // 📱 MOBILE: Reduced border radius
     overflow: "hidden",
-    boxShadow: "0 10px 30px rgba(0, 0, 0, 0.08)",
-    transition: "all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)",
+    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.05)", // 📱 MOBILE: Reduced shadow
+    transition: "all 0.3s ease", // ⬇️ FASTER TRANSITION
     backgroundColor: WHITE_COLOR,
     cursor: "pointer",
     height: "100%",
-    position: 'relative',
+    position: "relative",
   },
-  imageContainer: {
+  // 🖼️ FIXED: IMAGE CONTAINER STYLE (HEIGHT REDUCED)
+  imageContainer: (isMobile) => ({
     width: "100%",
-    height: "300px",
+    height: isMobile ? "180px" : "220px", // ⬇️ HEIGHT REDUCTION: Desktop reduced to 220px (was 300px), Mobile 180px
     overflow: "hidden",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#f8f9fa",
-  },
+  }),
+  // 🖼️ FIXED: IMAGE PADDING REDUCED
   productImage: {
     maxWidth: "100%",
     maxHeight: "100%",
     objectFit: "contain",
-    transition: "transform 0.4s ease-in-out",
-    padding: "5px",
+    transition: "transform 0.3s ease-in-out",
+    padding: "3px", // ⬇️ PADDING REDUCED
   },
+
+  // 🔥 DISCOUNT BADGE STYLE
   discountBadge: {
-    position: 'absolute',
-    top: '15px',
-    right: '15px',
+    position: "absolute",
+    top: "8px",   // ⬇️ HEIGHT REDUCTION: Adjusted position
+    right: "8px", // ⬇️ HEIGHT REDUCTION: Adjusted position
     backgroundColor: SALE_COLOR,
     color: WHITE_COLOR,
-    padding: '0.4rem 0.8rem',
-    borderRadius: '50px',
-    fontSize: '1rem',
-    fontWeight: '900',
+    padding: "0.2rem 0.5rem", // ⬇️ HEIGHT REDUCTION: Reduced padding (was 0.4rem 0.8rem)
+    borderRadius: "50px",
+    fontSize: "0.75rem", // ⬇️ HEIGHT REDUCTION: Reduced font size (was 1rem)
+    fontWeight: "900",
     zIndex: 10,
-    boxShadow: '0 4px 10px rgba(220, 53, 69, 0.4)',
-    letterSpacing: '0.5px',
+    boxShadow: "0 2px 5px rgba(220, 53, 69, 0.3)",
+    letterSpacing: "0.5px",
   },
+
+  // --- TEXT & PRICE STYLES ---
   brandText: {
-    fontSize: "0.85rem",
+    fontSize: "0.75rem", // ⬇️ HEIGHT REDUCTION: Reduced font size (was 0.85rem)
     fontWeight: "600",
     color: ACCENT_COLOR,
-    marginBottom: "2px",
+    marginBottom: "1px", // ⬇️ HEIGHT REDUCTION: Reduced margin (was 2px)
     letterSpacing: "0.5px",
   },
   title: {
-    fontSize: "1.2rem",
+    fontSize: "1rem", // ⬇️ HEIGHT REDUCTION: Reduced font size (was 1.2rem)
     fontWeight: "700",
     color: PRIMARY_TEXT_COLOR,
-    marginBottom: "8px",
+    marginBottom: "4px", // ⬇️ HEIGHT REDUCTION: Reduced margin (was 8px)
   },
   price: {
-    fontSize: "1.8rem",
+    fontSize: "1.4rem", // ⬇️ HEIGHT REDUCTION: Reduced font size (was 1.8rem)
     fontWeight: "900",
     color: SALE_COLOR,
     letterSpacing: "-0.5px",
   },
   originalPrice: {
-    fontSize: "1rem",
+    fontSize: "0.8rem", // ⬇️ HEIGHT REDUCTION: Reduced font size (was 1rem)
     color: "#adb5bd",
   },
   header: {
-    // Desktop size
-    fontSize: "3.5rem",
+    fontSize: "2.5rem", // ⬇️ HEIGHT REDUCTION: Reduced font size (was 3.5rem)
     fontWeight: "900",
     color: PRIMARY_TEXT_COLOR,
-    letterSpacing: "-1.8px",
+    letterSpacing: "-1.5px",
     display: "inline-block",
     position: "relative",
-    paddingBottom: "18px",
-   
-    // **MOBILE FONT SIZE ADJUSTMENT**
-    '@media (max-width: 576px)': {
-      fontSize: '2.0rem', // Reduced font size for mobile
-      letterSpacing: '-1px',
-      lineHeight: '1.2',
-    },
+    paddingBottom: "12px",
   },
   headerUnderline: {
     content: '""',
@@ -106,138 +107,112 @@ const customStyles = {
     bottom: 0,
     left: "50%",
     transform: "translateX(-50%)",
-    width: "120px",
-    height: "4px",
+    width: "100px",
+    height: "3px",
     backgroundColor: ACCENT_COLOR,
     borderRadius: "2px",
   },
   viewDealButton: {
     transition: "all 0.3s ease",
-    borderRadius: "8px",
-    fontSize: "1rem",
+    borderRadius: "6px", // ⬇️ HEIGHT REDUCTION: Reduced border radius
+    fontSize: "0.9rem", // ⬇️ HEIGHT REDUCTION: Reduced font size
     fontWeight: "700",
     backgroundColor: ACCENT_COLOR,
     borderColor: ACCENT_COLOR,
-    padding: "0.6rem 1rem",
-    // **MOBILE FONT SIZE ADJUSTMENT**
-    '@media (max-width: 576px)': {
-      fontSize: '0.9rem', 
-      padding: "0.5rem 0.8rem",
-    },
+    padding: "0.4rem 0.8rem", // ⬇️ HEIGHT REDUCTION: Reduced padding
   },
   viewDealButtonHover: {
     backgroundColor: SALE_COLOR,
     borderColor: SALE_COLOR,
-    transform: 'translateY(-2px)',
+    transform: "translateY(-2px)",
     boxShadow: `0 5px 15px ${SALE_COLOR}80`,
   },
   exploreButton: {
     backgroundColor: PRIMARY_TEXT_COLOR,
-    color: 'white',
+    color: "white",
     borderColor: PRIMARY_TEXT_COLOR,
-    transition: 'all 0.3s ease-in-out',
-    borderRadius: '50px',
-    fontSize: '1.3rem',
-    padding: '0.8rem 4rem',
+    transition: "all 0.3s ease-in-out",
+    borderRadius: "50px",
+    fontSize: "1.1rem", // ⬇️ HEIGHT REDUCTION: Reduced font size (was 1.3rem)
+    padding: "0.6rem 3rem", // ⬇️ HEIGHT REDUCTION: Reduced padding (was 0.8rem 4rem)
     boxShadow: `0 8px 25px ${PRIMARY_TEXT_COLOR}40`,
-    // **MOBILE FONT SIZE ADJUSTMENT**
-    '@media (max-width: 576px)': {
-      fontSize: '1rem',
-      padding: '0.7rem 2rem',
-    },
   },
   exploreButtonHover: {
     backgroundColor: ACCENT_COLOR,
     borderColor: ACCENT_COLOR,
-    transform: 'scale(1.05)',
-    boxShadow: `0 8px 25px ${ACCENT_COLOR}60`,
+    transform: "scale(1.03)", // 📱 MOBILE: Reduced scale
+    boxShadow: `0 5px 15px ${ACCENT_COLOR}60`, // 📱 MOBILE: Reduced shadow
   },
 };
 
-// 🌟 Hover Effects Logic (No changes needed here, as they reference customStyles)
+// 💅 Hover Effects Logic (ADJUSTED FOR LESS LIFT/SHADOW)
 const handleCardMouseEnter = (e) => {
-  e.currentTarget.style.transform = "translateY(-12px)";
-  e.currentTarget.style.boxShadow = "0 25px 50px rgba(0, 0, 0, 0.2)";
-  e.currentTarget.querySelector("img").style.transform = "scale(1.05)";
+  e.currentTarget.style.transform = "translateY(-8px)"; // ⬇️ REDUCED LIFT (was -12px)
+  e.currentTarget.style.boxShadow = "0 20px 40px rgba(0, 0, 0, 0.15)"; // ⬇️ REDUCED SHADOW (was 0.2)
+  e.currentTarget.querySelector("img").style.transform = "scale(1.03)"; // ⬇️ REDUCED SCALE (was 1.05)
 };
-
 const handleCardMouseLeave = (e) => {
   e.currentTarget.style.transform = "translateY(0)";
   e.currentTarget.style.boxShadow = customStyles.productCard.boxShadow;
   e.currentTarget.querySelector("img").style.transform = "scale(1)";
 };
-
 const handleViewDealMouseEnter = (e) => {
   Object.assign(e.currentTarget.style, customStyles.viewDealButtonHover);
 };
 const handleViewDealMouseLeave = (e) => {
-  // Reapply base styles without the hover-specific transform/shadow
   Object.assign(e.currentTarget.style, {
     ...customStyles.viewDealButton,
-    transform: 'none',
-    boxShadow: 'none',
+    transform: "none",
+    boxShadow: "none",
   });
 };
-
 const handleExploreMouseEnter = (e) => {
   Object.assign(e.currentTarget.style, customStyles.exploreButtonHover);
 };
-
 const handleExploreMouseLeave = (e) => {
-  // Reapply base styles without the hover-specific transform/shadow
   Object.assign(e.currentTarget.style, {
     ...customStyles.exploreButton,
-    transform: 'none',
+    transform: "none",
     boxShadow: customStyles.exploreButton.boxShadow,
   });
 };
 
-// ... (getProductImageSource, calculateDiscount, generateDummyProduct - NO CHANGES)
-
+// Helper functions (Unchanged logic)
 const getProductImageSource = (product) => {
-  if (typeof product.image === 'string' && product.image.trim() !== '') {
-    return product.image;
-  }
-  if (Array.isArray(product.images) && product.images.length > 0) {
-    return product.images[0];
-  }
+  if (typeof product.image === "string" && product.image.trim() !== "") return product.image;
+  if (Array.isArray(product.images) && product.images.length > 0) return product.images[0];
   return "https://placehold.co/300x380/e0e0e0/555?text=NO+IMAGE";
 };
-
 const calculateDiscount = (price, originalPrice) => {
-  if (originalPrice > price) {
-    const discount = ((originalPrice - price) / originalPrice) * 100;
-    return Math.round(discount);
-  }
+  if (originalPrice > price) return Math.round(((originalPrice - price) / originalPrice) * 100);
   return 0;
 };
-
-// 🌟 Dummy Product Generator
 const generateDummyProduct = (index) => {
-  const basePrice = Math.floor(Math.random() * 1000) + 1000;
+  const basePrice = Math.floor(Math.random() * 800) + 1500; // Adjusted base price to match Fashion section feel
   const discountFactor = Math.random() * 0.5 + 0.3;
   const finalPrice = Math.floor(basePrice * discountFactor);
-  let guaranteedOriginalPrice = basePrice;
-  let guaranteedFinalPrice = finalPrice;
-
-  if (guaranteedOriginalPrice <= guaranteedFinalPrice) {
-    guaranteedOriginalPrice = guaranteedFinalPrice + Math.floor(Math.random() * 500) + 500;
-  }
-
+  const originalPrice = basePrice <= finalPrice ? finalPrice + Math.floor(Math.random() * 500) + 500 : basePrice; // Ensure discount
   return {
     id: `accessory-dummy-${index}`,
     name: `Stylish Accessory ${index + 1}`,
     brand: "TRENDY WEAR",
-    price: guaranteedFinalPrice,
-    originalPrice: guaranteedOriginalPrice,
+    price: finalPrice,
+    originalPrice: originalPrice,
     image: `https://picsum.photos/seed/accessory${index}/300/300`,
   };
 };
 
-// 👜 MAIN COMPONENT
+// Main Component
 function HomeAccessoriesSection() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 576);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 576);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchAccessories = async () => {
@@ -256,11 +231,9 @@ function HomeAccessoriesSection() {
           originalPrice: doc.data().originalPrice ? Number(doc.data().originalPrice) : 999,
         }));
 
-        while (data.length < productLimit) {
-          data.push(generateDummyProduct(data.length));
-        }
+        // Shuffle and limit to the display count
+        while (data.length < productLimit) data.push(generateDummyProduct(data.length));
 
-        // Shuffle
         for (let i = data.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [data[i], data[j]] = [data[j], data[i]];
@@ -269,47 +242,42 @@ function HomeAccessoriesSection() {
 
         setProducts(data);
       } catch (err) {
-        console.warn("⚠️ Firebase fetch failed, using dummy products:", err);
+        console.warn("Firebase fetch failed, using dummy products:", err);
         setProducts(Array.from({ length: 4 }, (_, i) => generateDummyProduct(i)));
       } finally {
         setLoading(false);
       }
     };
-
     fetchAccessories();
   }, []);
 
   return (
-    <Container fluid style={{ backgroundColor: '#f8f9fa' }}>
-      <Container className="py-5" style={customStyles.sectionContainer}>
-        {/* 🌟 HEADER - Use responsive classes and inline styles */}
-        <div className="text-center mb-5">
-          {/* Apply responsive inline styles for the header text */}
-          <h3 
-            style={{
-              ...customStyles.header,
-              fontSize: window.innerWidth <= 576 ? '2.0rem' : '3.5rem',
-              letterSpacing: window.innerWidth <= 576 ? '-1px' : '-1.8px',
-              lineHeight: window.innerWidth <= 576 ? '1.2' : 'normal',
-            }}
-          >
+    <Container fluid style={{ backgroundColor: "#f8f9fa" }}>
+      <Container className="py-4" style={customStyles.sectionContainer}> {/* ⬇️ HEIGHT REDUCTION: py-5 changed to py-4 */}
+        
+        {/* 🌟 ATTRACTIVE HEADER (MODIFIED TO BE COMPACT) */}
+        <div className="text-center mb-3 mb-md-4"> {/* ⬇️ HEIGHT REDUCTION: mb-5 reduced to mb-3 */}
+          <h3 style={customStyles.header}>
             ACCESSORIZE YOUR LOOK <span style={{ color: ACCENT_COLOR }}>IN STYLE</span>
+            {/* Custom Underline Element (from Fashion section) */}
             <div style={customStyles.headerUnderline}></div>
           </h3>
-          <p className="text-muted mt-3 fs-5 fw-light">
+          <p className="text-muted mt-2 fs-6 fw-light d-none d-sm-block"> {/* ⬇️ HEIGHT REDUCTION: Font size reduced, hidden on small screens */}
             Discover premium accessories that elevate every outfit.
           </p>
         </div>
 
-        {/* 👜 PRODUCT GRID */}
+        {/* -------------------- PRODUCT CARDS -------------------- */}
+
         {loading ? (
-          <div className="text-center py-5">
+          <div className="text-center py-4"> {/* ⬇️ HEIGHT REDUCTION: py-5 changed to py-4 */}
             <Spinner animation="border" variant="success" />
             <p className="mt-2 text-muted fs-6">Loading trending accessories...</p>
           </div>
         ) : (
           <>
-            <Row xs={2} sm={2} md={3} lg={4} className="g-4 justify-content-center">
+            {/* 🎯 KEY MOBILE ADJUSTMENT: xs={2} means 2 columns on extra small screens. g-2 reduces gutter. */}
+            <Row xs={2} sm={2} md={3} lg={4} className="g-2 g-md-3 justify-content-center"> {/* ⬇️ HEIGHT REDUCTION: g-4 changed to g-2 g-md-3 */}
               {products.map((product) => {
                 const discountPercent = calculateDiscount(product.price, product.originalPrice);
                 return (
@@ -321,54 +289,31 @@ function HomeAccessoriesSection() {
                         onMouseEnter={handleCardMouseEnter}
                         onMouseLeave={handleCardMouseLeave}
                       >
-                        {discountPercent > 0 && (
-                          <Badge style={customStyles.discountBadge}>
-                            -{discountPercent}% OFF
-                          </Badge>
-                        )}
-                        <div style={customStyles.imageContainer}>
+                        {discountPercent > 0 && <Badge style={customStyles.discountBadge}>-{discountPercent}% OFF</Badge>}
+                        {/* 🖼 IMAGE CONTAINER with dynamic height */}
+                        <div style={customStyles.imageContainer(isMobile)}>
                           <Card.Img
                             variant="top"
                             src={getProductImageSource(product)}
                             alt={product.name}
                             style={customStyles.productImage}
-                            onError={(e) => {
-                              e.target.onerror = null;
-                              e.target.src = "https://placehold.co/300x380/e0e0e0/555?text=Image+Error";
-                            }}
+                            onError={(e) => e.target.src = "https://placehold.co/300x380/e0e0e0/555?text=Image+Error"}
                           />
                         </div>
-
-                        <Card.Body className="text-start p-3 d-flex flex-column">
-                          <p style={customStyles.brandText} className="text-uppercase">
-                            {product.brand || "Exclusive Accessory"}
-                          </p>
-                          <Card.Title style={customStyles.title} className="text-truncate">
-                            {product.name}
-                          </Card.Title>
-
-                          <div className="d-flex align-items-baseline justify-content-between mt-auto pt-2">
-                            <Card.Text style={customStyles.price} className="me-2">
-                              ₹{product.price}
-                            </Card.Text>
+                        {/* 🎯 MOBILE ADJUSTMENT: Reduced padding for card body */}
+                        <Card.Body className="text-start p-2 p-md-3 d-flex flex-column"> {/* ⬇️ HEIGHT REDUCTION: p-3 changed to p-2 p-md-3 */}
+                          <p style={customStyles.brandText} className="text-uppercase">{product.brand}</p>
+                          <Card.Title style={customStyles.title} className="text-truncate">{product.name}</Card.Title>
+                          <div className="d-flex align-items-baseline justify-content-between mt-auto pt-1 pt-md-2"> {/* ⬇️ HEIGHT REDUCTION: pt-2 changed to pt-1 */}
+                            <Card.Text style={customStyles.price}>₹{product.price}</Card.Text>
                             {product.originalPrice > product.price && (
-                              <small
-                                style={customStyles.originalPrice}
-                                className="text-decoration-line-through"
-                              >
-                                ₹{product.originalPrice}
-                              </small>
+                              <small style={customStyles.originalPrice} className="text-decoration-line-through">₹{product.originalPrice}</small>
                             )}
                           </div>
-
                           <Button
                             variant="success"
-                            style={{
-                              ...customStyles.viewDealButton,
-                              fontSize: window.innerWidth <= 576 ? '0.9rem' : '1rem', 
-                              padding: window.innerWidth <= 576 ? "0.5rem 0.8rem" : "0.6rem 1rem",
-                            }}
-                            className="w-100 mt-3 text-uppercase"
+                            style={customStyles.viewDealButton} // Using unified custom style
+                            className="w-100 mt-2 text-uppercase" // ⬇️ HEIGHT REDUCTION: mt-3 changed to mt-2
                             onMouseEnter={handleViewDealMouseEnter}
                             onMouseLeave={handleViewDealMouseLeave}
                           >
@@ -382,16 +327,12 @@ function HomeAccessoriesSection() {
               })}
             </Row>
 
-            {/* 🚀 CTA BUTTON */}
-            <div className="text-center mt-5 pt-4">
+            {/* 🚀 CALL TO ACTION BUTTON */}
+            <div className="text-center mt-4 pt-3"> {/* ⬇️ HEIGHT REDUCTION: pt-4 changed to pt-3 */}
               <Link to="/accessories">
                 <Button
-                  style={{
-                    ...customStyles.exploreButton,
-                    fontSize: window.innerWidth <= 576 ? '1rem' : '1.3rem',
-                    padding: window.innerWidth <= 576 ? '0.7rem 2rem' : '0.8rem 4rem',
-                  }}
-                  size="lg"
+                  style={customStyles.exploreButton}
+                  size="md" // ⬇️ HEIGHT REDUCTION: size="lg" changed to size="md" (custom styles control actual size)
                   className="fw-bold"
                   onMouseEnter={handleExploreMouseEnter}
                   onMouseLeave={handleExploreMouseLeave}

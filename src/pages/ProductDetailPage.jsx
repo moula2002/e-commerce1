@@ -16,23 +16,39 @@ import ProductSuggestions from "../pages/ProductSuggestions"; // Adjust path as 
 const EXCHANGE_RATE = 1; 
 const auth = getAuth(); // Initialize Firebase Auth
 
+// --- MOCK COD/PAYMENT LOGIC (For demonstration) ---
+// In a real app, 'codIsAvailable' would be determined dynamically based on location/product.
+const MOCK_COD_AVAILABLE = true; 
+const MOCK_PAYMENT_OPTIONS = [
+    { value: "online", label: "Online Payment" },
+    { value: "cod", label: "Cash on Delivery" }
+];
+// ----------------------------------------------------
+
 function ProductDetailPage() {
     const { id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    // 🎯 NEW STATE: Track Auth Status reliably
+    // 🎯 Auth State
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isAuthReady, setIsAuthReady] = useState(false); // To ensure we wait for Firebase
+    const [isAuthReady, setIsAuthReady] = useState(false); 
 
+    // 📦 Product Data States
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [categoryProducts, setCategoryProducts] = useState([]);
     const [catLoading, setCatLoading] = useState(true);
     const [catError, setCatError] = useState(null);
+    
+    // ⚙️ Filtering/Sorting States
     const [sortBy, setSortBy] = useState("rating");
     const [filterPrice, setFilterPrice] = useState(50000);
+
+    // ✅ NEW STATE FOR PAYMENT METHOD (Mirrors the COD status in the image)
+    const [selectedPayment, setSelectedPayment] = useState(MOCK_COD_AVAILABLE ? "cod" : "online");
+    const [codIsAvailable, setCodIsAvailable] = useState(MOCK_COD_AVAILABLE);
 
     const styles = {
         productDetailContainer: { borderRadius: "12px", boxShadow: "0 8px 25px rgba(0,0,0,0.15)", marginTop: "25px" },
@@ -41,14 +57,14 @@ function ProductDetailPage() {
         productPrice: { fontSize: "2.2rem", fontWeight: 800, color: "#dc3545", marginTop: "15px", marginBottom: "15px" },
     };
 
-    // --- CRITICAL FIX: Auth State Listener ---
+    // --- Auth State Listener ---
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
-            setIsLoggedIn(!!user); // true if user is logged in, false otherwise
-            setIsAuthReady(true); // Now we know the state
+            setIsLoggedIn(!!user); 
+            setIsAuthReady(true); 
         });
 
-        return () => unsubscribe(); // Cleanup the listener
+        return () => unsubscribe(); 
     }, []);
 
     // --- 1. Fetch Main Product Details ---
@@ -68,6 +84,9 @@ function ProductDetailPage() {
 
                 const data = { id: productSnap.id, ...productSnap.data() };
                 setProduct(data);
+                
+                // In a real application, you would check Pincode here to update codIsAvailable
+                // Example: setCodIsAvailable(await checkPincodeForCOD(pincode)); 
 
             } catch (err) {
                 console.error("🔥 Error fetching product details:", err);
@@ -79,7 +98,7 @@ function ProductDetailPage() {
         fetchProduct();
     }, [id]);
 
-    // --- 2. Fetch Similar Category Products (remains the same) ---
+    // --- 2. Fetch Similar Category Products ---
     useEffect(() => {
         if (!product || !product.category) return;
         const fetchCategoryProducts = async () => {
@@ -134,22 +153,31 @@ function ProductDetailPage() {
         alert(`Added "${product.name || product.title}" to cart! (₹${priceINR.toFixed(0)})`);
     };
 
-    // ✅ FIXED: Buy Now checks the reliable 'isLoggedIn' state
+    // ✅ COD/Buy Now Logic
     const handleBuyNow = () => {
         if (!product) return;
         
-        handleAddToCart(); // Add to cart first
+        // In most e-commerce flows, Buy Now adds the item to cart temporarily 
+        // before redirecting. We keep it for consistency.
+        handleAddToCart(); 
 
+        // 1. Check for COD availability if COD is selected (like the "COD Not Available" line in the image)
+        if (selectedPayment === 'cod' && !codIsAvailable) {
+            alert("Cash on Delivery is currently unavailable for this item/location. Please select an online payment option.");
+            return;
+        }
+
+        // 2. Redirect logic: Navigate to checkout or login (with redirect)
         if (isLoggedIn) {
-            // If logged in, proceed to checkout
-            navigate("/checkout");
+            // Logged in: Go directly to checkout, passing payment method
+            navigate("/checkout", { state: { paymentMethod: selectedPayment } });
         } else {
-            // If NOT logged in, navigate to the login page, passing /checkout as the redirect destination
-            navigate("/login", { state: { from: "/checkout" } });
+            // Not logged in: Go to login, passing checkout as the desired next page
+            navigate("/login", { state: { from: "/checkout", paymentMethod: selectedPayment } });
         }
     };
 
-    // --- Filtering and Sorting Logic ---
+    // --- Filtering and Sorting Logic for Similar Products ---
     const filteredAndSortedCategory = useMemo(() => {
         let list = [...categoryProducts];
         list = list.filter(p => p.priceValue <= filterPrice);
@@ -165,7 +193,6 @@ function ProductDetailPage() {
     }, [categoryProducts, sortBy, filterPrice]);
 
     // --- Render Loading / Error States ---
-    // Wait for both product data and auth status before rendering
     if (loading || !isAuthReady) return <div className="text-center py-5"><Spinner animation="border" variant="primary" /></div>;
     if (error) return <Alert variant="danger" className="mt-4 text-center">{error}</Alert>;
     if (!product) return <p className="text-center py-5">No product found for this ID.</p>;
@@ -206,6 +233,38 @@ function ProductDetailPage() {
                             <span className="badge bg-danger fs-6 mb-3">{discountPercentage}% OFF!</span>
                         </div>
                         <p className="text-muted small">{product.description || "No description available."}</p>
+                        
+                        {/* 🎯 Payment Option Selector (similar to the image's Analog/Digital selection) */}
+                        <div className="mb-4 pt-3 border-top">
+                            <h5 className="fs-6 fw-bold">Select Payment Option:</h5>
+                            <div className="d-flex gap-2">
+                                {MOCK_PAYMENT_OPTIONS.map(option => (
+                                    <Button
+                                        key={option.value}
+                                        variant={selectedPayment === option.value ? "primary" : "outline-secondary"}
+                                        size="sm"
+                                        onClick={() => setSelectedPayment(option.value)}
+                                        // Disable COD button if not available
+                                        disabled={option.value === 'cod' && !codIsAvailable}
+                                    >
+                                        {option.label}
+                                    </Button>
+                                ))}
+                            </div>
+                            <small className="text-muted mt-2 d-block">
+                                {selectedPayment === 'cod' ? (
+                                    <span className={codIsAvailable ? "text-success fw-bold" : "text-danger fw-bold"}>
+                                        <i className={`fas ${codIsAvailable ? 'fa-check-circle' : 'fa-times-circle'} me-1`}></i>
+                                        {codIsAvailable ? "Cash on Delivery Available" : "Cash on Delivery Not Available for this item"}
+                                    </span>
+                                ) : (
+                                    <span className="text-success"><i className="fas fa-lock me-1"></i> Secure Online Payment Selected</span>
+                                )}
+                            </small>
+                        </div>
+                        <hr />
+                        {/* END Payment Option Selector */}
+
                         <div className="d-grid gap-3 d-md-block pt-3 border-top mt-4">
                             <Button variant="warning" className="fw-bold me-3" onClick={handleAddToCart}>
                                 <i className="fas fa-shopping-cart me-2"></i> Add to Cart
@@ -218,7 +277,9 @@ function ProductDetailPage() {
                 </Row>
             </Card>
 
+            {/* --- More from Category Section --- */}
             <h3 className="mb-4 fw-bold">More from the {product.category || 'Same'} category (Firebase)</h3>
+            
             {/* Sorting & Filtering for Similar Products */}
             <Row className="mb-3 align-items-end">
                 <Col md={4} className="mb-3 mb-md-0">
@@ -294,5 +355,4 @@ function ProductDetailPage() {
         </Container>
     );
 }
-
 export default ProductDetailPage;

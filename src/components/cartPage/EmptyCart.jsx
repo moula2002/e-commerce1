@@ -46,15 +46,6 @@ const EmptyCart = () => {
           <img src={EMPTY_CART_IMAGE_URL} alt="Empty Cart" />
         </div>
 
-        <h2>Your Cart is empty</h2>
-        <p className="shop-deals" onClick={handleShopDeals} style={{ cursor: 'pointer', color: '#007bff' }}>Shop today’s deals</p>
-
-        <div className="cart-empty-buttons">
-          {/* Updated to use handleSignIn */}
-          <button className="signin-btn" onClick={handleSignIn}>Login in</button>
-          
-        </div>
-
         <p className="cart-empty-footer">
           The price and availability of items are subject to change. The shopping
           cart is a temporary place to store a list of your items and reflects
