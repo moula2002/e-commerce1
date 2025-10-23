@@ -1,10 +1,15 @@
 /* 🔥 GLOBAL COLORS (Shopclues-like Theme) */
 :root {
-    --shopclues-main-bg: #ffffff; /* Main Navbar Background */
-    --shopclues-red-orange: #ff6e40; /* Primary Accent Color (Search Button) */
-    --shopclues-dark-red: #d94b15; /* Hover color for search/cart */
-    --shopclues-teal-light: #00a69a; /* Secondary Header Color (for SecondHeader.js) */
-    --text-dark: #333333; /* Dark text for a white background */
+    --shopclues-main-bg: #ffffff;
+    /* Main Navbar Background */
+    --shopclues-red-orange: #ff6e40;
+    /* Primary Accent Color (Search Button) */
+    --shopclues-dark-red: #d94b15;
+    /* Hover color for search/cart */
+    --shopclues-teal-light: #00a69a;
+    /* Secondary Header Color (for SecondHeader.js) */
+    --text-dark: #333333;
+    /* Dark text for a white background */
     --text-grey: #666666;
     --text-white: #ffffff;
 }
@@ -12,18 +17,16 @@
 /* -------------------- BASE STYLES -------------------- */
 body {
     font-family: "Poppins", Arial, sans-serif;
-    /* Removed dark background-color, as navbar is now white */
     margin: 0;
     padding: 0;
-    color: var(--text-dark); /* Default text color is dark */
+    color: var(--text-dark);
 }
 
 /* -------------------- TOP BAR (New addition for Sell with Us etc.) -------------------- */
-/* Assuming a top-bar component or element is added above the main Navbar in HTML */
 .top-bar-custom {
-    background-color: #f0f0f0; 
-    color: #666; 
-    font-size: 0.8rem; 
+    background-color: #f0f0f0;
+    color: #666;
+    font-size: 0.8rem;
     padding: 3px 15px;
     text-align: right;
     border-bottom: 1px solid #e0e0e0;
@@ -33,25 +36,26 @@ body {
 /* -------------------- NAVBAR -------------------- */
 .navbar-custom {
     /* Solid White background */
-    background-color: var(--shopclues-main-bg); 
-    padding: 8px 0; 
+    background-color: var(--shopclues-main-bg);
+    padding: 8px 0;
     transition: all 0.3s ease;
     z-index: 1020;
     /* Use a light grey border for distinction */
-    border-bottom: 1px solid #e0e0e0; 
+    border-bottom: 1px solid #e0e0e0;
 }
 
 /* SHOPCLUES Logo Style */
 .shopclues-logo {
     font-weight: 900;
     font-size: 1.6rem;
-    color: var(--text-dark) !important; /* Logo text color */
+    color: var(--text-dark) !important;
+    /* Logo text color */
     transition: transform 0.2s ease;
     text-decoration: none;
 }
 
 .shopclues-logo:hover {
-    transform: scale(1.05); 
+    transform: scale(1.05);
     color: var(--text-dark) !important;
 }
 
@@ -70,35 +74,37 @@ body {
     border: 1px solid transparent;
     border-radius: 4px;
     transition: all 0.2s;
-    background: none !important; /* Ensure no default button background */
+    background: none !important;
 }
 
 /* Hover effect on links/icons */
 .nav-link-custom:hover,
 .account-button:hover,
 .cart-button:hover {
-    color: var(--shopclues-dark-red) !important; /* Hover color changes to dark red */
-    border-color: #f0f0f0 !important; 
-    background-color: #f9f9f9 !important; 
+    color: var(--shopclues-dark-red) !important;
+    /* Hover color changes to dark red */
+    border-color: #f0f0f0 !important;
+    background-color: #f9f9f9 !important;
 }
 
 /* Location Text Style (Share Location) */
 .location {
     font-size: 0.85rem;
     line-height: 1.2;
-    padding: 5px 8px; 
+    padding: 5px 8px;
     border: 1px solid transparent;
     border-radius: 4px;
     cursor: pointer;
     transition: border-color 0.2s;
     display: flex;
-    flex-direction: row; /* Aligned horizontally as per image */
+    flex-direction: row;
+    /* Aligned horizontally as per image */
     align-items: center;
-    color: var(--text-dark); 
+    color: var(--text-dark);
 }
 
 .location:hover {
-    border-color: #e0e0e0; 
+    border-color: #e0e0e0;
 }
 
 /* -------------------- ACCOUNT & CART ICONS -------------------- */
@@ -109,19 +115,21 @@ body {
 }
 
 .cart-count {
-    background-color: var(--shopclues-dark-red); 
+    background-color: var(--shopclues-dark-red);
     color: var(--text-white);
     font-size: 0.7rem;
     padding: 1px 5px;
     border-radius: 50%;
     margin-left: 5px;
     font-weight: bold;
-    min-width: 18px; 
+    min-width: 18px;
     text-align: center;
     position: relative;
-    top: -8px; /* Slightly lift the count badge */
+    top: -8px;
+    /* Slightly lift the count badge */
     right: -8px;
 }
+
 /* Style for the full cart button when cart count is displayed */
 .cart-button .cart-count {
     /* Resetting position for the final Cart label */
@@ -133,7 +141,7 @@ body {
 /* -------------------- SEARCH BAR -------------------- */
 .search-bar-container {
     position: relative;
-    max-width: 700px; 
+    max-width: 700px;
     flex-grow: 1;
     margin: 0 15px;
 }
@@ -144,42 +152,46 @@ body {
 }
 
 .search-input {
-    border-radius: 4px 0 0 4px; 
-    border: 1px solid #ccc; 
-    height: 40px; 
+    border-radius: 4px 0 0 4px;
+    border: 1px solid #ccc;
+    height: 40px;
     font-size: 1rem;
-    background-color: #f5f5f5; /* Light grey input background */
+    background-color: #f5f5f5;
+    /* Light grey input background */
     color: var(--text-dark);
     padding-left: 15px;
     flex-grow: 1;
-    border-right: none; 
+    border-right: none;
 }
 
 .search-input:focus {
     /* Use the red-orange as the focus highlight */
-    border-color: var(--shopclues-red-orange); 
+    border-color: var(--shopclues-red-orange);
     box-shadow: 0 0 0 1px var(--shopclues-red-orange);
     z-index: 100;
     border-right: none;
-    background-color: var(--text-white); /* White background on focus */
+    background-color: var(--text-white);
+    /* White background on focus */
 }
 
 .search-btn {
     /* Shopclues Red/Orange button */
-    background-color: var(--shopclues-red-orange); 
-    border-radius: 0 4px 4px 0; 
+    background-color: var(--shopclues-red-orange);
+    border-radius: 0 4px 4px 0;
     border: 1px solid var(--shopclues-red-orange);
-    color: var(--text-white); /* White text on button */
+    color: var(--text-white);
+    /* White text on button */
     padding: 0 20px;
-    height: 40px; 
+    height: 40px;
     font-size: 1rem;
     font-weight: bold;
-    min-width: 100px; /* Wider button for 'SEARCH' text */
+    min-width: 100px;
+    /* Wider button for 'SEARCH' text */
     transition: background-color 0.2s, border-color 0.2s;
 }
 
 .search-btn:hover {
-    background-color: var(--shopclues-dark-red); 
+    background-color: var(--shopclues-dark-red);
     border-color: var(--shopclues-dark-red);
     color: var(--text-white);
 }
@@ -188,15 +200,15 @@ body {
 
 .suggestions-dropdown {
     position: absolute;
-    width: 100%; 
-    z-index: 99999; 
-    top: 40px; 
+    width: 100%;
+    z-index: 99999;
+    top: 40px;
     max-height: 350px;
     overflow-y: auto;
     background-color: #fff;
     border: 1px solid var(--shopclues-red-orange);
-    border-top: none; 
-    border-radius: 0 0 4px 4px; 
+    border-top: none;
+    border-radius: 0 0 4px 4px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -204,7 +216,7 @@ body {
     cursor: pointer;
     color: var(--text-dark);
     padding: 10px 15px;
-    border-bottom: 1px solid #eee; 
+    border-bottom: 1px solid #eee;
     transition: background-color 0.1s;
     font-size: 0.95rem;
     white-space: nowrap;
@@ -214,7 +226,7 @@ body {
 
 .suggestion-item:hover,
 .suggestion-item:focus {
-    background-color: #fff8e8; 
+    background-color: #fff8e8;
     font-weight: 500;
 }
 
@@ -239,9 +251,25 @@ body {
     color: var(--text-white);
     font-weight: 600;
 }
+
 .location-modal .btn-warning:hover {
     background-color: var(--shopclues-dark-red);
     border-color: var(--shopclues-dark-red);
+}
+
+
+/* -------------------- SECOND HEADER (Sticky Logic) -------------------- */
+
+/* 🔥 நீங்கள் கேட்ட Sticky Header-க்கான முக்கியமான குறியீடு இதுதான் */
+.second-header-custom {
+    background-color: var(--shopclues-teal-light); /* உங்கள் தீமில் உள்ள பச்சை நிறம் */
+    color: var(--text-white);
+    padding: 10px 0;
+    /* STICKY PROPERTIES */
+    position: sticky; /* ஒட்டும் நிலைக்கு மாற்றுகிறது */
+    top: 0;          /* ஸ்கிரீனின் மேல் விளிம்பில் ஒட்டுகிறது */
+    z-index: 1000;   /* மற்ற content-ஐ விட மேலே வைக்கிறது */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* லேசான shadow ஒட்டும்போது அழகாக இருக்கும் */
 }
 
 /* -------------------- RESPONSIVE -------------------- */
@@ -250,16 +278,19 @@ body {
         max-width: 100%;
         margin: 10px 0;
     }
-    
+
     /* Ensure mobile menu links look right on a white background */
     .navbar-collapse .nav-link-custom {
         color: var(--text-dark) !important;
-        justify-content: start; /* Align text left in mobile menu */
+        justify-content: start;
+        /* Align text left in mobile menu */
     }
+
     /* Hide the text labels for the icons and only show the icons themselves on small screens */
     .nav-link-custom span:not(.cart-count) {
-        display: none; 
+        display: none;
     }
+
     .nav-link-custom i {
         margin-right: 0 !important;
     }
@@ -270,52 +301,68 @@ body {
 
 /* Targets the main Bootstrap modal container for size control */
 .login-success-modal .modal-dialog {
-    max-width: 400px; 
+    max-width: 400px;
 }
 
 /* Targets the modal content box for styling */
 .login-success-modal .modal-content {
     border: none;
-    border-radius: 1rem; /* Highly rounded corners */
-    overflow: hidden; 
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); /* Deep shadow for pop effect */
+    border-radius: 1rem;
+    /* Highly rounded corners */
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    /* Deep shadow for pop effect */
 }
 
 /* Customizing the body content with a subtle gradient */
 .login-success-modal .modal-body {
-    padding: 2.5rem 1.5rem; /* Extra padding */
+    padding: 2.5rem 1.5rem;
+    /* Extra padding */
     position: relative;
     /* Soft success-themed background gradient */
-    background: linear-gradient(145deg, #f0fff0, #ffffff); 
+    background: linear-gradient(145deg, #f0fff0, #ffffff);
 }
 
 /* Styling the icon container */
 .login-success-modal .text-success {
-    color: #28a745 !important; /* A slightly darker, richer green */
+    color: #28a745 !important;
+    /* A slightly darker, richer green */
 }
 
 /* Styling the icon itself (Checkmark in a circle) */
 .login-success-modal .fa-check-circle {
-    font-size: 4.5rem !important; /* Large, prominent icon */
-    background: #e9f7eb; /* Very light green circle background */
+    font-size: 4.5rem !important;
+    /* Large, prominent icon */
+    background: #e9f7eb;
+    /* Very light green circle background */
     border-radius: 50%;
     padding: 0.5rem;
     /* ⭐ Apply the custom CSS bounce animation */
-    animation: success-bounce 0.8s ease-out; 
+    animation: success-bounce 0.8s ease-out;
 }
 
 /* Highlight the user name with a strong color */
 .login-success-modal .text-primary {
-    color: #007bff !important; 
+    color: #007bff !important;
 }
 
 /* * ⭐ KEYFRAMES FOR THE ICON BOUNCE ANIMATION 
  * This makes the icon 'pop' into view when the modal appears.
  */
 @keyframes success-bounce {
-    0% { transform: scale(0.5); opacity: 0; }
-    50% { transform: scale(1.1); opacity: 1; }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 
@@ -334,19 +381,19 @@ body {
 }
 
 .logout-success-modal .modal-body {
-    padding: 2.5rem 1.5rem; 
+    padding: 2.5rem 1.5rem;
     position: relative;
     /* Subtle red gradient background */
-    background: linear-gradient(145deg, #f8d7da, #ffffff); 
+    background: linear-gradient(145deg, #f8d7da, #ffffff);
 }
 
 .logout-success-modal .text-danger {
-    color: #dc3545 !important; 
+    color: #dc3545 !important;
 }
 
 .logout-success-modal .fa-sign-out-alt {
     font-size: 4.5rem !important;
-    background: #f5c6cb; 
+    background: #f5c6cb;
     border-radius: 50%;
     padding: 0.5rem;
     transform-origin: center;
@@ -355,5 +402,5 @@ body {
 .logout-success-modal h4 {
     font-size: 1.5rem;
     margin-top: 1rem;
-    color: #dc3545; 
+    color: #dc3545;
 }

@@ -1,10 +1,10 @@
 // src/pages/Home.jsx
 import React from "react";
-import { Container } from "react-bootstrap";
-import "./Home.css";
+import { Container, Row, Col, Button } from "react-bootstrap";
+import "./Home.css"
 import Banner from "../components/Banner";
 
-// ✅ Use the new Fashion preview component instead of full Fashion page
+// Category Previews
 import HomeFashionSection from "../components/category/HomeFashionSection";
 import HomeAccessoriesSection from "../components/category/HomeAccessoriesSection";
 import HomeToysSection from "../components/category/HomeToysSection";
@@ -15,160 +15,112 @@ import HomeMensSection from "../components/category/HomeMensSection";
 import HomeKidsSection from "../components/category/HomeKidsSection";
 import HomePersonalCareSection from "../components/category/HomePersonalCareSection";
 
-// Other categories (These should probably be HomePreview components as well, but kept as is for now)
+// Full Components
 import Cosmetics from "../components/category/Cosmetics";
 import Book from "../components/category/Book";
 import Footwears from "../components/category/Footwears";
 import Electronics from "../components/category/Electronics";
 
-
 function Home() {
   return (
     <div className="homepage-content">
 
-      {/* 🖼️ Banner */}
-      <div className="banner-fade-in">
+      {/* ===== Hero Banner ===== */}
+      <section className="banner-fade-in mb-5">
         <Banner />
-      </div>
+      </section>
 
-      {/* 👗 Fashion Section (show 5 items + Show More button) */}
-      <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-dark">
-          Featured Fashion Category 
-        </div>
+      {/* ===== Fashion Section ===== */}
+      <section className="category-section mb-5">
         <Container>
           <HomeFashionSection />
         </Container>
       </section>
 
-        {/* 💍 Accessories Section (show 5 items + Show More button) */}
-      <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-dark">
-          Featured Accessories Category 
-        </div>
+      {/* ===== Accessories Section ===== */}
+      <section className="category-section mb-5">
         <Container>
           <HomeAccessoriesSection />
         </Container>
       </section>
 
-      {/* 💄 Cosmetics (Using full component) */}
-      <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-dark">
-          Featured Cosmetics 💄
-        </div>
-        <Cosmetics />
+      {/* ===== Cosmetics ===== */}
+      <section className="category-section mb-5">
+        <Container>
+          <Cosmetics />
+        </Container>
       </section>
 
-        {/* 🧸 Toys Section (show 5 items + Show More button) */}
-      <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-dark">
-          Featured Toys Category 
-        </div>
+      {/* ===== Toys ===== */}
+      <section className="category-section mb-5">
         <Container>
           <HomeToysSection />
         </Container>
       </section>
 
-
-        {/* ✏️ Stationary Section (show 5 items + Show More button) */}
-      <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-dark">
-          Featured Stationary Category 
-        </div>
+      {/* ===== Stationary ===== */}
+      <section className="category-section mb-5">
         <Container>
           <HomeStationarySection />
         </Container>
       </section>
 
-
-      {/* 📚 Books (Using full component) */}
-      <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-dark">
-          Featured Books 📚
-        </div>
-        <Book />
-      </section>
-
-
-        {/* 🖼️ Photo Frame Section (show 5 items + Show More button) */}
-      <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-dark">
-          Featured Photo Frame Category 
-        </div>
+      {/* ===== Books ===== */}
+      <section className="category-section mb-5">
         <Container>
-          <HomePhotoFrameSection/>
+          <Book />
         </Container>
       </section>
 
-
-      {/* 👟 Footwears (Using full component) */}
-      <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-dark">
-          Featured Footwears 👟
-        </div>
-        <Footwears />
-      </section>
-
-        {/* ✨ Jewellery Section (show 5 items + Show More button) */}
-      <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-dark">
-          Featured Jewellery Category 
-        </div>
+      {/* ===== Photo Frames ===== */}
+      <section className="category-section mb-5">
         <Container>
-          <HomeJewellerySection/>
+          <HomePhotoFrameSection />
         </Container>
       </section>
 
-      
-        {/* 👨 Mens Section (show 5 items + Show More button) */}
-      <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-dark">
-          Featured Mens Category 
-        </div>
+      {/* ===== Footwears ===== */}
+      <section className="category-section mb-5">
         <Container>
-          <HomeMensSection/>
-        </Container>
-      </section>   
-
-    
-{/* 👧 Kids Section (show 5 items + Show More button) */}
-      <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-dark">
-          Featured Kids Category 
-        </div>
-        <Container>
-          <HomeKidsSection/>
+          <Footwears />
         </Container>
       </section>
 
-
-      {/* 💻 Electronics (Using full component) */}
-      <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-dark">
-          Featured Electronics 📱
-        </div>
-        <Electronics />
-      </section>
-
-      {/* 🧴 Personal Care Section (show 5 items + Show More button) */}
-      <section className="mt-5">
-        <div className="text-center mb-4 fw-bold text-dark">
-          Featured Personal Care Category 
-        </div>
+      {/* ===== Jewellery ===== */}
+      <section className="category-section mb-5">
         <Container>
-          <HomePersonalCareSection/>
+          <HomeJewellerySection />
         </Container>
       </section>
 
-      
+      {/* ===== Mens ===== */}
+      <section className="category-section mb-5">
+        <Container>
+          <HomeMensSection />
+        </Container>
+      </section>
 
-      {/* 🌈 Footer */}
-      {/* <footer className="text-center py-5 bg-dark text-white mt-5 footer-scale-up border-top border-warning">
-        <h2 className="fw-bold text-danger">End of Today’s Best Deals!</h2>
-        <p className="lead text-secondary">
-          Keep exploring for more offers and check back tomorrow for fresh deals.
-        </p>
-      </footer> */}
+      {/* ===== Kids ===== */}
+      <section className="category-section mb-5">
+        <Container>
+          <HomeKidsSection />
+        </Container>
+      </section>
+
+      {/* ===== Electronics ===== */}
+      <section className="category-section mb-5">
+        <Container>
+          <Electronics />
+        </Container>
+      </section>
+
+      {/* ===== Personal Care ===== */}
+      <section className="category-section mb-5">
+        <Container>
+          <HomePersonalCareSection />
+        </Container>
+      </section>
+
     </div>
   );
 }

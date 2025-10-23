@@ -1,13 +1,13 @@
 /* 🔥 Shopclues-Specific Colors */
 :root {
     /* Main color from the image (Teal/Aqua) */
-    --shopclues-teal: #00a69a; 
+    --shopclues-teal: #00a69a;
     /* Slightly darker for hover/active */
-    --shopclues-teal-dark: #00897b; 
+    --shopclues-teal-dark: #00897b;
     /* The secondary red-orange from the main Navbar */
-    --shopclues-red-orange: #ff6e40; 
+    --shopclues-red-orange: #ff6e40;
     --text-white: #ffffff;
-    --text-dark: #333333; 
+    --text-dark: #333333;
     --max-content-width: 1400px;
     --padding-sides: 15px;
 }
@@ -17,9 +17,10 @@
 .second-header-wrapper {
     /* This wrapper helps center the content if the main layout is max-width */
     width: 100%;
-    background-color: var(--shopclues-teal); /* Full-width teal bar */
+    background-color: var(--shopclues-teal);
+    /* Full-width teal bar */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 998; 
+    z-index: 998;
 }
 
 .second-header {
@@ -28,13 +29,13 @@
     justify-content: flex-start;
     height: 40px;
     color: var(--text-white);
-    
+
     /* Content Centering within the wrapper */
-    max-width: var(--max-content-width); 
-    margin: 0 auto; 
+    max-width: var(--max-content-width);
+    margin: 0 auto;
     padding: 0 var(--padding-sides);
-    box-sizing: border-box; 
-    
+    box-sizing: border-box;
+
     position: relative;
 }
 
@@ -43,12 +44,15 @@
 .menu-left {
     display: flex;
     align-items: center;
-    overflow-x: auto; 
+    overflow-x: auto;
     scrollbar-width: thin;
     scrollbar-color: #ffffff40 transparent;
     flex-grow: 1;
 }
-.menu-left::-webkit-scrollbar { height: 0; }
+
+.menu-left::-webkit-scrollbar {
+    height: 0;
+}
 
 /* Menu List - The horizontal row of links */
 .menu-list {
@@ -60,12 +64,12 @@
 }
 
 .menu-item {
-    margin-right: 18px; 
+    margin-right: 18px;
     white-space: nowrap;
     cursor: pointer;
     flex-shrink: 0;
     position: relative;
-    height: 40px; 
+    height: 40px;
     display: flex;
     align-items: center;
     font-size: 0.85rem;
@@ -78,8 +82,8 @@
 .menu-item .menu-link-custom {
     color: var(--text-white);
     text-decoration: none;
-    display: block; 
-    padding: 0; 
+    display: block;
+    padding: 0;
     transition: color 0.2s;
 }
 
@@ -96,11 +100,11 @@
 
 /* Hiding the "ALL CATEGORIES" button on desktop */
 .menu-item.all {
-    display: none; 
+    display: none;
 }
 
 .festival-offer {
-    display: none; 
+    display: none;
 }
 
 
@@ -112,7 +116,7 @@
         padding-left: 10px;
         padding-right: 10px;
     }
-    
+
     /* Show ALL CATEGORIES button on mobile */
     .menu-item.all {
         display: flex;
@@ -124,14 +128,15 @@
         margin-right: 10px;
         cursor: pointer;
     }
+
     .menu-icon {
         margin-right: 5px;
         font-size: 1rem;
     }
-    
+
     /* Hide the horizontal menu list by default on mobile */
     .menu-list {
-        display: none; 
+        display: none;
     }
 
     /* Mobile Menu Dropdown (When active) */
@@ -142,33 +147,33 @@
         top: 0;
         left: 0;
         bottom: 0;
-        width: 280px; 
-        background: var(--shopclues-teal-dark); 
+        width: 280px;
+        background: var(--shopclues-teal-dark);
         padding: 0;
         margin: 0;
-        z-index: 1030; 
+        z-index: 1030;
         overflow-y: auto;
         box-shadow: 4px 0 10px rgba(0, 0, 0, 0.5);
     }
-    
+
     .menu-list.active .menu-item {
         height: auto;
         width: 100%;
         font-size: 1rem;
         text-align: left;
-        padding: 12px 15px; 
+        padding: 12px 15px;
         margin: 0;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         text-transform: none;
         font-weight: normal;
     }
-    
+
     .menu-item-mobile-icon {
         margin-right: 10px;
         color: var(--shopclues-red-orange);
         font-size: 1.2rem;
     }
-    
+
     .menu-list.active .menu-item:hover {
         background-color: rgba(255, 255, 255, 0.1);
     }
@@ -177,7 +182,7 @@
     .close-icon {
         position: fixed;
         top: 10px;
-        left: 240px; 
+        left: 240px;
         font-size: 2rem;
         color: var(--text-white);
         cursor: pointer;

@@ -19,10 +19,6 @@ const auth = getAuth(); // Initialize Firebase Auth
 // --- MOCK COD/PAYMENT LOGIC (For demonstration) ---
 // Set this to false to replicate the "COD Not Available" status in the screenshot.
 const MOCK_COD_AVAILABLE = false;
-const MOCK_PAYMENT_OPTIONS = [
-    { value: "online", label: "Online Payment" },
-    { value: "cod", label: "Cash on Delivery" }
-];
 // ----------------------------------------------------
 
 function ProductDetailPage() {
@@ -42,15 +38,16 @@ function ProductDetailPage() {
     const [catLoading, setCatLoading] = useState(true);
     const [catError, setCatError] = useState(null);
 
-    // ✅ NEW STATE FOR IMAGE GALLERY
-    const [selectedImage, setSelectedImage] = useState(null);
+    // ⭐ NEW STATE FOR IMAGE GALLERY
+    const [mainImage, setMainImage] = useState(null);
+    const [productImages, setProductImages] = useState([]);
+
 
     // ⚙️ Filtering/Sorting States
     const [sortBy, setSortBy] = useState("rating");
     const [filterPrice, setFilterPrice] = useState(50000);
 
-    // ✅ STATE FOR PAYMENT METHOD (We default to online since COD is mocked unavailable)
-    const [selectedPayment, setSelectedPayment] = useState(MOCK_COD_AVAILABLE ? "cod" : "online");
+    // ✅ STATE FOR PAYMENT METHOD
     const [codIsAvailable, setCodIsAvailable] = useState(MOCK_COD_AVAILABLE);
 
     // Pincode state for the new input field UI
@@ -61,18 +58,9 @@ function ProductDetailPage() {
         detailImg: { maxHeight: "350px", objectFit: "contain", transition: "transform 0.3s ease-in-out" },
         productImageCol: { borderRight: "1px solid #eee", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" },
         productPrice: { fontSize: "2.2rem", fontWeight: 800, color: "#dc3545", marginTop: "15px", marginBottom: "15px" },
-        thumbnail: {
-            width: '60px', 
-            height: '60px', 
-            objectFit: 'contain', 
-            margin: '0 5px',
-            padding: '2px',
-            border: '2px solid transparent',
-            cursor: 'pointer'
-        },
-        thumbnailSelected: {
-            border: '2px solid #dc3545' // Highlight color for selected image
-        }
+        // New style for thumbnails
+        thumbnail: { width: '60px', height: '60px', objectFit: 'contain', cursor: 'pointer', border: '1px solid #ddd', margin: '0 5px', padding: '3px', transition: 'border-color 0.2s' },
+        activeThumbnail: { borderColor: '#dc3545', boxShadow: '0 0 5px rgba(220, 53, 69, 0.5)' }
     };
 
     // --- Auth State Listener ---
@@ -102,16 +90,24 @@ function ProductDetailPage() {
 
                 const data = { id: productSnap.id, ...productSnap.data() };
                 setProduct(data);
-                
-                // 🎯 SET INITIAL SELECTED IMAGE
-                // Check if 'images' is an array, if so use the first one, otherwise use 'image' or a placeholder.
-                const allImages = Array.isArray(data.images) && data.images.length > 0
-                    ? data.images
-                    : (data.image ? [data.image] : ["https://via.placeholder.com/350"]);
-                    
-                setSelectedImage(allImages[0]);
 
+                // ⭐ LOGIC TO HANDLE PRODUCT IMAGES ARRAY
+                let images = [];
+                // Check if 'images' is an array in the fetched data
+                if (Array.isArray(data.images) && data.images.length > 0) {
+                    images = data.images;
+                } 
+                // Fallback to a single 'image' string field
+                else if (typeof data.image === 'string' && data.image) {
+                    images = [data.image];
+                }
+                // Fallback if both are missing
+                else {
+                    images = ["https://via.placeholder.com/350?text=No+Image"];
+                }
 
+                setProductImages(images);
+                setMainImage(images[0]); // Set the first image as the main displayed image
             } catch (err) {
                 console.error("🔥 Error fetching product details:", err);
                 setError(err.message);
@@ -121,8 +117,8 @@ function ProductDetailPage() {
         };
         fetchProduct();
     }, [id]);
-
-    // --- 2. Fetch Similar Category Products (No change needed here) ---
+    
+    // --- 2. Fetch Similar Category Products (Unchanged) ---
     useEffect(() => {
         if (!product || !product.category) return;
         const fetchCategoryProducts = async () => {
@@ -162,19 +158,13 @@ function ProductDetailPage() {
     }, [product]);
 
     // --- Handlers ---
-    // Pincode Check handler (For demonstration only)
     const handlePincodeCheck = () => {
         if (pincodeInput.length === 6) {
-            // In a real app, this is where you'd call an API to check COD availability and update the state:
-            // setCodIsAvailable(await checkAvailability(pincodeInput));
-
-            // For now, we mock the result and alert the user
             alert(`Checking Pincode ${pincodeInput}... COD is currently set to ${codIsAvailable ? 'AVAILABLE' : 'NOT AVAILABLE'} in the code.`);
         } else {
             alert('Please enter a valid 6-digit Pincode.');
         }
     };
-
 
     const handleAddToCart = () => {
         if (!product) return;
@@ -184,40 +174,46 @@ function ProductDetailPage() {
             id: product.id,
             title: product.name || product.title || "Product",
             price: priceINR,
-            image: product.images || product.image || "https://via.placeholder.com/150",
+            image: mainImage || product.images[0] || product.image || "https://via.placeholder.com/150",
             quantity: 1
         }));
 
+        // ✅ This alert only runs for the dedicated 'ADD TO CART' button
         alert(`Added "${product.name || product.title}" to cart! (₹${priceINR.toFixed(0)})`);
     };
 
-    // ✅ COD/Buy Now Logic (No changes to the original logic)
+    // 🌟 REFACTORED: Buy Now logic to dispatch without alert and navigate directly
     const handleBuyNow = () => {
         if (!product) return;
-
-        // We assume the user intends to use COD if available, otherwise Online.
+        
+        const priceINR = (product.price || 0) * EXCHANGE_RATE;
         const paymentSelection = codIsAvailable ? 'cod' : 'online';
 
-        // 1. Check for COD availability if COD is the assumed method
         if (paymentSelection === 'cod' && !codIsAvailable) {
             alert("Cash on Delivery is currently unavailable for this item/location. Please select an online payment option.");
             return;
         }
 
-        // Add to cart for consistency before redirecting
-        handleAddToCart();
+        // 🚨 CRITICAL: Dispatch the product to the Redux cart state.
+        // This ensures the product is available on the checkout page when navigated.
+        // We SKIP the alert here for a seamless 'Buy Now' experience.
+        dispatch(addToCart({
+            id: product.id,
+            title: product.name || product.title || "Product",
+            price: priceINR,
+            image: mainImage || product.images[0] || product.image || "https://via.placeholder.com/150",
+            quantity: 1
+        }));
 
-        // 2. Redirect logic: Navigate to checkout or login (with redirect)
+        // Navigate directly to checkout/login
         if (isLoggedIn) {
-            // Logged in: Go directly to checkout, passing payment method
             navigate("/checkout", { state: { paymentMethod: paymentSelection } });
         } else {
-            // Not logged in: Go to login, passing checkout as the desired next page
             navigate("/login", { state: { from: "/checkout", paymentMethod: paymentSelection } });
         }
     };
-
-    // --- Filtering and Sorting Logic for Similar Products ---
+    
+    // --- Filtering and Sorting Logic for Similar Products (Unchanged) ---
     const filteredAndSortedCategory = useMemo(() => {
         let list = [...categoryProducts];
         list = list.filter(p => p.priceValue <= filterPrice);
@@ -232,22 +228,16 @@ function ProductDetailPage() {
         return list;
     }, [categoryProducts, sortBy, filterPrice]);
 
-    // --- Render Loading / Error States ---
+    // --- Render Loading / Error States (Unchanged) ---
     if (loading || !isAuthReady) return <div className="text-center py-5"><Spinner animation="border" variant="primary" /></div>;
     if (error) return <Alert variant="danger" className="mt-4 text-center">{error}</Alert>;
     if (!product) return <p className="text-center py-5">No product found for this ID.</p>;
 
-    // --- Data Preparation for Display ---
+    // --- Data Preparation for Display (Unchanged) ---
     const productPriceINR = ((product.price || 0) * EXCHANGE_RATE).toFixed(0);
     const originalPriceINR = ((product.price * 1.5) * EXCHANGE_RATE).toFixed(0);
     const discountPercentage = (((originalPriceINR - productPriceINR) / originalPriceINR) * 100).toFixed(0);
     const rating = product.rating || { rate: 4.0, count: 100 };
-    
-    // Fallback/Mock for Image Gallery Array
-    const productGalleryImages = Array.isArray(product.images) && product.images.length > 0 
-        ? product.images 
-        : (product.image ? [product.image, "https://via.placeholder.com/150/ff0000/ffffff?text=View+2", "https://via.placeholder.com/150/00ff00/ffffff?text=View+3"] : ["https://via.placeholder.com/350"]);
-
 
     // --- Main Render ---
     return (
@@ -256,34 +246,33 @@ function ProductDetailPage() {
             <Card style={styles.productDetailContainer} className="p-4 mb-5">
                 <Row>
                     <Col md={5} style={styles.productImageCol} className="text-center">
+                        {/* Main Product Image (uses mainImage state) */}
                         <img
-                            // 🎯 Use selectedImage state for the main product image
-                            src={selectedImage || product.image || "https://via.placeholder.com/350"} 
+                            src={mainImage || "https://via.placeholder.com/350"}
                             alt={product.name || product.title || "Product Image"}
-                            className="img-fluid"
+                            className="img-fluid mb-3"
                             style={styles.detailImg}
                         />
 
-                        {/* 🎯 START: IMAGE GALLERY SECTION (Thumbnail Row) */}
-                        <div className="d-flex justify-content-center mt-3 p-2 border-top w-100">
-                            {productGalleryImages.map((imgUrl, index) => (
+                        {/* ⭐ START: Image Gallery/Thumbnail Strip */}
+                        <div className="d-flex justify-content-center flex-wrap mt-3 mb-3">
+                            {productImages.map((imgUrl, index) => (
                                 <img
                                     key={index}
                                     src={imgUrl}
-                                    alt={`Product thumbnail ${index + 1}`}
+                                    alt={`Thumbnail ${index + 1}`}
+                                    onClick={() => setMainImage(imgUrl)}
                                     style={{
                                         ...styles.thumbnail,
-                                        ...(selectedImage === imgUrl ? styles.thumbnailSelected : {})
+                                        ...(mainImage === imgUrl ? styles.activeThumbnail : {})
                                     }}
-                                    className="rounded shadow-sm"
-                                    onClick={() => setSelectedImage(imgUrl)}
                                 />
                             ))}
                         </div>
-                        {/* 🎯 END: IMAGE GALLERY SECTION */}
-
+                        {/* ⭐ END: Image Gallery/Thumbnail Strip */}
                     </Col>
                     <Col md={7}>
+                        {/* ... (Existing Product Info) */}
                         <h2 className="fw-bold">{product.name || product.title || "Product Name"}</h2>
                         <p className="text-primary fw-semibold text-uppercase">{product.category || "N/A"}</p>
                         <div className="product-rating mb-3">
@@ -300,7 +289,7 @@ function ProductDetailPage() {
                         </div>
                         <p className="text-muted small">{product.description || "No description available."}</p>
 
-                        {/* 🎯 START: Pincode Check Input (Matches Screenshot 242) */}
+                        {/* Pincode Check Input */}
                         <div className="mb-3 pt-3 border-top">
                             <InputGroup className="w-75 w-md-50">
                                 <InputGroup.Text>
@@ -314,42 +303,30 @@ function ProductDetailPage() {
                                     maxLength={6}
                                     className="border-start-0"
                                 />
-                                <Button
-                                    variant="outline-secondary"
-                                    onClick={handlePincodeCheck}
-                                    className="fw-semibold"
-                                >
+                                <Button variant="outline-secondary" onClick={handlePincodeCheck} className="fw-semibold">
                                     Check
                                 </Button>
                             </InputGroup>
                         </div>
-                        {/* 🎯 END: Pincode Check Input */}
-
-                        {/* Delivery & COD Status Lines (Matches both screenshots) */}
+                        
+                        {/* Delivery & COD Status Lines */}
                         <div className="mb-4 pt-1">
-                            {/* COD Status Line (Uses existing codIsAvailable state) */}
                             <div className="d-flex align-items-center mb-1">
                                 <i className={`fas ${codIsAvailable ? 'fa-check' : 'fa-times'} me-2 small ${codIsAvailable ? 'text-success' : 'text-danger'}`}></i>
-                                <span className={codIsAvailable ? 'text-danger' : 'text-danger'}>
+                                <span className={codIsAvailable ? 'text-success' : 'text-danger'}>
                                     <span className="fw-bold">COD {codIsAvailable ? 'Available' : 'Not Available'}</span>
                                 </span>
                             </div>
-
-                            {/* Delivery Date Line (Mocked, closely matches screenshot) */}
                             <div className="d-flex align-items-center mb-1">
                                 <i className="fas fa-truck text-success me-2 small"></i>
                                 <span className="text-success small">
                                     Delivery <span className="fw-bold">2-5 Business Days</span>
                                 </span>
                             </div>
-
-                            {/* Easy Replacement Line */}
                             <div className="d-flex align-items-center mb-1">
                                 <i className="fas fa-undo-alt text-muted me-2 small"></i>
                                 <span className="text-muted small">Easy Replacement Only</span>
                             </div>
-
-                            {/* Payment Options Line */}
                             <div className="d-flex align-items-center mb-1">
                                 <i className="fas fa-credit-card text-muted me-2 small"></i>
                                 <span className="text-muted small">Payment Options: (Credit Card, Debit Card, Net Banking, Wallets)</span>
@@ -370,10 +347,10 @@ function ProductDetailPage() {
                 </Row>
             </Card>
 
-            {/* --- More from Category Section --- */}
+            {/* --- More from Category Section (Unchanged) --- */}
             <h3 className="mb-4 fw-bold">More from the {product.category || 'Same'} category (Firebase)</h3>
 
-            {/* Sorting & Filtering for Similar Products */}
+            {/* Sorting & Filtering */}
             <Row className="mb-3 align-items-end">
                 <Col md={4} className="mb-3 mb-md-0">
                     <Form.Group>
@@ -394,6 +371,7 @@ function ProductDetailPage() {
                 </Col>
             </Row>
 
+            {/* Similar Products List (Unchanged) */}
             {catLoading ? (
                 <div className="text-center py-3"><Spinner animation="border" size="sm" /></div>
             ) : catError ? (

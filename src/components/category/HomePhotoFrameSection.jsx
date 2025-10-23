@@ -1,101 +1,318 @@
-// src/components/HomePhotoFrameSection.jsx
+// src/components/category/HomePhotoFrameSection.jsx
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Card, Spinner, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Spinner, Button, Badge } from "react-bootstrap";
 import { db } from "../../firebase";
-import { collection, query, where, orderBy, limit, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
 
-// ✏️ Utility: Extract color from description if missing
-const extractColorFromDescription = (description) => {
-  if (!description || typeof description !== "string") return "N/A";
-  const match = description.match(/color:\s*([a-zA-Z]+)/i);
-  return match ? match[1] : "N/A";
+// 🎨 DEFINE CONSTANTS FOR MODERN AESTHETICS (Same as HomeFashionSection)
+const PRIMARY_TEXT_COLOR = "#101010"; // Near-Black
+const ACCENT_COLOR = "#198754"; // Green accent
+const SALE_COLOR = "#dc3545"; // Bootstrap Red
+const WHITE_COLOR = "#FFFFFF";
+
+// 🎨 Custom CSS (Same as HomeFashionSection)
+const customStyles = {
+  sectionContainer: {
+    backgroundColor: WHITE_COLOR,
+    borderRadius: "25px",
+    padding: "3rem 1rem",
+    boxShadow: "0 15px 50px rgba(0, 0, 0, 0.08)",
+  },
+  productCard: {
+    border: "1px solid #e9ecef",
+    borderRadius: "15px",
+    overflow: "hidden",
+    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.05)",
+    transition: "all 0.3s ease",
+    backgroundColor: WHITE_COLOR,
+    cursor: "pointer",
+    height: "100%",
+    position: "relative",
+  },
+  imageContainer: (isMobile) => ({
+    width: "100%",
+    height: isMobile ? "180px" : "220px",
+    overflow: "hidden",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#f8f9fa",
+  }),
+  productImage: {
+    maxWidth: "100%",
+    maxHeight: "100%",
+    objectFit: "contain",
+    transition: "transform 0.3s ease-in-out",
+    padding: "3px",
+  },
+  discountBadge: {
+    position: "absolute",
+    top: "8px",
+    right: "8px",
+    backgroundColor: SALE_COLOR,
+    color: WHITE_COLOR,
+    padding: "0.2rem 0.5rem",
+    borderRadius: "50px",
+    fontSize: "0.75rem",
+    fontWeight: "900",
+    zIndex: 10,
+    boxShadow: "0 2px 5px rgba(220, 53, 69, 0.3)",
+    letterSpacing: "0.5px",
+  },
+  brandText: {
+    fontSize: "0.75rem",
+    fontWeight: "600",
+    color: ACCENT_COLOR,
+    marginBottom: "1px",
+    letterSpacing: "0.5px",
+  },
+  title: { fontSize: "1rem", fontWeight: "700", color: PRIMARY_TEXT_COLOR, marginBottom: "4px" },
+  price: { fontSize: "1.4rem", fontWeight: "900", color: SALE_COLOR, letterSpacing: "-0.5px" },
+  originalPrice: { fontSize: "0.8rem", color: "#adb5bd" },
+  header: {
+    fontSize: "2.5rem",
+    fontWeight: "900",
+    color: PRIMARY_TEXT_COLOR,
+    letterSpacing: "-1.5px",
+    display: "inline-block",
+    position: "relative",
+    paddingBottom: "12px",
+  },
+  headerUnderline: {
+    content: '""',
+    position: "absolute",
+    bottom: 0,
+    left: "50%",
+    transform: "translateX(-50%)",
+    width: "100px",
+    height: "3px",
+    backgroundColor: ACCENT_COLOR,
+    borderRadius: "2px",
+  },
+  viewDealButton: {
+    transition: "all 0.3s ease",
+    borderRadius: "6px",
+    fontSize: "0.9rem",
+    fontWeight: "700",
+    backgroundColor: ACCENT_COLOR,
+    borderColor: ACCENT_COLOR,
+    padding: "0.4rem 0.8rem",
+  },
+  viewDealButtonHover: {
+    backgroundColor: SALE_COLOR,
+    borderColor: SALE_COLOR,
+    transform: "translateY(-2px)",
+    boxShadow: `0 5px 15px ${SALE_COLOR}80`,
+  },
+  exploreButton: {
+    backgroundColor: PRIMARY_TEXT_COLOR,
+    color: "white",
+    borderColor: PRIMARY_TEXT_COLOR,
+    transition: "all 0.3s ease-in-out",
+    borderRadius: "50px",
+    fontSize: "1.1rem",
+    padding: "0.6rem 3rem",
+    boxShadow: `0 8px 25px ${PRIMARY_TEXT_COLOR}40`,
+  },
+  exploreButtonHover: {
+    backgroundColor: ACCENT_COLOR,
+    borderColor: ACCENT_COLOR,
+    transform: "scale(1.03)",
+    boxShadow: `0 5px 15px ${ACCENT_COLOR}60`,
+  },
 };
 
+// Hover Effects (Same as HomeFashionSection)
+const handleCardMouseEnter = (e) => {
+  e.currentTarget.style.transform = "translateY(-8px)";
+  e.currentTarget.style.boxShadow = "0 20px 40px rgba(0, 0, 0, 0.15)";
+  e.currentTarget.querySelector("img").style.transform = "scale(1.03)";
+};
+const handleCardMouseLeave = (e) => {
+  e.currentTarget.style.transform = "translateY(0)";
+  e.currentTarget.style.boxShadow = customStyles.productCard.boxShadow;
+  e.currentTarget.querySelector("img").style.transform = "scale(1)";
+};
+const handleViewDealMouseEnter = (e) => Object.assign(e.currentTarget.style, customStyles.viewDealButtonHover);
+const handleViewDealMouseLeave = (e) => Object.assign(e.currentTarget.style, { ...customStyles.viewDealButton, transform: "none", boxShadow: "none" });
+const handleExploreMouseEnter = (e) => Object.assign(e.currentTarget.style, customStyles.exploreButtonHover);
+const handleExploreMouseLeave = (e) => Object.assign(e.currentTarget.style, { ...customStyles.exploreButton, transform: "none", boxShadow: customStyles.exploreButton.boxShadow });
+
+// Helper functions (Same as HomeFashionSection)
+const getProductImageSource = (product) => {
+  if (typeof product.image === "string" && product.image.trim() !== "") return product.image;
+  if (Array.isArray(product.images) && product.images.length > 0) return product.images[0];
+  return "https://placehold.co/300x380/e0e0e0/555?text=NO+IMAGE";
+};
+const calculateDiscount = (price, originalPrice) => {
+  const p = Number(price);
+  const op = Number(originalPrice);
+  if (op > p) return Math.round(((op - p) / op) * 100);
+  return 0;
+};
+const generateDummyProduct = (index) => {
+  const basePrice = Math.floor(Math.random() * 1500) + 500;
+  const discountFactor = Math.random() * 0.5 + 0.3;
+  const finalPrice = Math.floor(basePrice * discountFactor);
+  const originalPrice = basePrice <= finalPrice ? finalPrice + Math.floor(Math.random() * 500) + 500 : basePrice;
+  return {
+    id: `photoframe-dummy-${index}`,
+    name: `Elegant Photo Frame ${index + 1}`,
+    brand: "HOME GALLERY",
+    price: finalPrice,
+    originalPrice,
+    image: `https://picsum.photos/seed/homeframe${index}/300/300`,
+  };
+};
+
+// Main Component
 function HomePhotoFrameSection() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 576);
 
   useEffect(() => {
-    const fetchPhotoFrameProducts = async () => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 576);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      const productLimit = 4;
       try {
+        // Targetting the 'Home' category as per the likely intent of a PhotoFrame section
+        const categoryName = "Home"; 
         const productsRef = collection(db, "products");
-        const q = query(
-          productsRef,
-          where("category", "==", "PhotoFrame"),
-          orderBy("name"),
-          limit(5)
-        );
+        const q = query(productsRef, where("category", "==", categoryName));
         const snapshot = await getDocs(q);
-        const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+        let data = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+          price: doc.data().price ? Number(doc.data().price) : 499,
+          originalPrice: doc.data().originalPrice ? Number(doc.data().originalPrice) : 999,
+        }));
+
+        // Fill dummy if less than limit (Same logic as HomeFashionSection)
+        while (data.length < productLimit) data.push(generateDummyProduct(data.length));
+
+        // Shuffle products (Same logic as HomeFashionSection)
+        for (let i = data.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [data[i], data[j]] = [data[j], data[i]];
+        }
+
+        data = data.slice(0, productLimit);
         setProducts(data);
       } catch (err) {
-        console.error("Error fetching PhotoFrame preview:", err);
+        console.warn("Firebase fetch failed, using dummy products:", err);
+        setProducts(Array.from({ length: 4 }, (_, i) => generateDummyProduct(i)));
       } finally {
         setLoading(false);
       }
     };
-
-    fetchPhotoFrameProducts();
+    fetchProducts();
   }, []);
 
   return (
-    <Container className="my-5 text-center">
-      <h3 className="fw-bold text-dark mb-4">Trending Photo Frames 🖼️</h3>
+    <Container fluid style={{ backgroundColor: "#f8f9fa" }}>
+      <Container className="py-4" style={customStyles.sectionContainer}>
+        {/* Header */}
+        <div className="text-center mb-3 mb-md-4">
+          <h3 style={customStyles.header}>
+            FRAME YOUR MEMORIES <span style={{ color: ACCENT_COLOR }}>ON SALE</span>
+            <div style={customStyles.headerUnderline}></div>
+          </h3>
+          <p className="text-muted mt-2 fs-6 fw-light d-none d-sm-block">
+            Find the perfect photo frame and home decor essentials.
+          </p>
+        </div>
 
-      {loading ? (
-        <Spinner animation="border" variant="warning" />
-      ) : (
-        <>
-          <Row xs={1} sm={2} md={3} lg={5} className="g-4 justify-content-center">
-            {products.map((product) => {
-              const productColor =
-                product.color || extractColorFromDescription(product.description);
-              return (
-                <Col key={product.id}>
-                  <Card className="product-card h-100 shadow-sm border-0">
-                    <div className="image-container">
-                      <Card.Img
-                        variant="top"
-                        src={
-                          product.images ||
-                          product.image ||
-                          "https://via.placeholder.com/200x200.png?text=No+Image"
-                        }
-                        alt={product.name || "Unnamed Product"}
-                        style={{ objectFit: "contain", height: "200px" }}
-                      />
-                    </div>
-                    <Card.Body>
-                      <Card.Title className="fs-6 text-truncate">
-                        {product.name || "Unnamed Product"}
-                      </Card.Title>
-                      <Card.Text className="text-secondary small">
-                        Color:{" "}
-                        <strong style={{ color: productColor !== "N/A" ? "black" : "grey" }}>
-                          {productColor}
-                        </strong>
-                      </Card.Text>
-                      <Card.Text className="text-success fw-bold">
-                        ₹{product.price || "N/A"}
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              );
-            })}
-          </Row>
-
-          {/* 🔹 Show More Button */}
-          <div className="mt-4">
-            <Link to="/photoframe">
-              <Button variant="success" size="lg" className="px-4 fw-bold">
-                Show More →
-              </Button>
-            </Link>
+        {loading ? (
+          <div className="text-center py-4">
+            <Spinner animation="border" variant="success" />
+            <p className="mt-2 text-muted fs-6">Loading featured home frames...</p>
           </div>
-        </>
-      )}
+        ) : (
+          <>
+            <Row xs={2} sm={2} md={3} lg={4} className="g-2 g-md-3 justify-content-center">
+              {products.map((product) => {
+                const discountPercent = calculateDiscount(product.price, product.originalPrice);
+                return (
+                  <Col key={product.id}>
+                    <Link to={`/product/${product.id}`} className="text-decoration-none d-block">
+                      <Card
+                        className="h-100 product-card"
+                        style={customStyles.productCard}
+                        onMouseEnter={handleCardMouseEnter}
+                        onMouseLeave={handleCardMouseLeave}
+                      >
+                        {discountPercent > 0 && (
+                          <Badge style={customStyles.discountBadge}>-{discountPercent}% OFF</Badge>
+                        )}
+                        <div style={customStyles.imageContainer(isMobile)}>
+                          <Card.Img
+                            variant="top"
+                            src={getProductImageSource(product)}
+                            alt={product.name}
+                            style={customStyles.productImage}
+                            onError={(e) =>
+                              (e.target.src =
+                                "https://placehold.co/300x380/e0e0e0/555?text=Image+Error")
+                            }
+                          />
+                        </div>
+                        <Card.Body className="text-start p-2 p-md-3 d-flex flex-column">
+                          <p style={customStyles.brandText} className="text-uppercase">
+                            {product.brand}
+                          </p>
+                          <Card.Title style={customStyles.title} className="text-truncate">
+                            {product.name}
+                          </Card.Title>
+                          <div className="d-flex align-items-baseline justify-content-between mt-auto pt-1 pt-md-2">
+                            <Card.Text style={customStyles.price}>₹{product.price}</Card.Text>
+                            {product.originalPrice > product.price && (
+                              <small style={customStyles.originalPrice} className="text-decoration-line-through">
+                                ₹{product.originalPrice}
+                              </small>
+                            )}
+                          </div>
+                          <Button
+                            variant="success"
+                            style={customStyles.viewDealButton}
+                            className="w-100 mt-2 text-uppercase"
+                            onMouseEnter={handleViewDealMouseEnter}
+                            onMouseLeave={handleViewDealMouseLeave}
+                          >
+                            View Deal
+                          </Button>
+                        </Card.Body>
+                      </Card>
+                    </Link>
+                  </Col>
+                );
+              })}
+            </Row>
+
+            <div className="text-center mt-4 pt-3">
+              <Link to="/photoframe">
+                <Button
+                  style={customStyles.exploreButton}
+                  size="md"
+                  className="fw-bold"
+                  onMouseEnter={handleExploreMouseEnter}
+                  onMouseLeave={handleExploreMouseLeave}
+                >
+                  Explore All Frames →
+                </Button>
+              </Link>
+            </div>
+          </>
+        )}
+      </Container>
     </Container>
   );
 }

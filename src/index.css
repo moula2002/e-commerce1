@@ -3,8 +3,4 @@
 @tailwind utilities;
 
 
-body {
-  padding-top: 80px; /* adjust depending on navbar height */
-}
-
 

@@ -57,10 +57,6 @@ function Footwears() {
   return (
     <Container className="my-5 text-center">
       <h2 className="fw-bold text-warning mb-4">{categoryName} Collection 👟</h2>
-      <p className="text-dark mb-5">
-        Step into style and comfort with our wide range of **{categoryName.toLowerCase()}** for every occasion!
-      </p>
-
       {products.length > 0 ? (
         <Row xs={1} md={2} lg={4} className="g-4">
           {products.map(product => (

@@ -59,9 +59,6 @@ function Electronics() {
   return (
     <Container className="my-5 text-center">
       <h2 className="fw-bold text-dark mb-4">{categoryName} Collection 💻</h2>
-      <p className="text-muted mb-5">
-        Explore cutting-edge gadgets and essential **{categoryName.toLowerCase()}** for your modern life.
-      </p>
 
       {products.length > 0 ? (
         <Row xs={1} md={2} lg={4} className="g-4">
