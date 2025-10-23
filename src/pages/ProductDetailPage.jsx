@@ -4,6 +4,10 @@ import { Container, Row, Col, Spinner, Alert, Card, Button, Form, InputGroup } f
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartSlice"; // Adjust path as needed
 
+// 🚨 NEW TOAST IMPORTS
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Don't forget the CSS!
+
 // 🚨 FIREBASE IMPORTS
 import { db } from "../firebase"; // Adjust path as needed
 import { doc, getDoc, collection, getDocs, query, where, limit } from "firebase/firestore";
@@ -96,7 +100,7 @@ function ProductDetailPage() {
                 // Check if 'images' is an array in the fetched data
                 if (Array.isArray(data.images) && data.images.length > 0) {
                     images = data.images;
-                } 
+                }
                 // Fallback to a single 'image' string field
                 else if (typeof data.image === 'string' && data.image) {
                     images = [data.image];
@@ -117,7 +121,7 @@ function ProductDetailPage() {
         };
         fetchProduct();
     }, [id]);
-    
+
     // --- 2. Fetch Similar Category Products (Unchanged) ---
     useEffect(() => {
         if (!product || !product.category) return;
@@ -160,9 +164,22 @@ function ProductDetailPage() {
     // --- Handlers ---
     const handlePincodeCheck = () => {
         if (pincodeInput.length === 6) {
-            alert(`Checking Pincode ${pincodeInput}... COD is currently set to ${codIsAvailable ? 'AVAILABLE' : 'NOT AVAILABLE'} in the code.`);
+            // Replaced alert with a basic toast for better UX
+            toast.info(`Checking Pincode ${pincodeInput}...`, { position: "bottom-left" });
+            
+            // This is the actual logic status from the MOCK_COD_AVAILABLE constant
+            setTimeout(() => {
+                const status = codIsAvailable ? 'Available' : 'Not Available';
+                const toastType = codIsAvailable ? 'success' : 'error';
+
+                toast[toastType](`COD Status: ${status} for ${pincodeInput}`, { 
+                    position: "bottom-left", 
+                    autoClose: 3000 
+                });
+            }, 500);
+
         } else {
-            alert('Please enter a valid 6-digit Pincode.');
+            toast.error('Please enter a valid 6-digit Pincode.', { position: "bottom-left" });
         }
     };
 
@@ -178,25 +195,44 @@ function ProductDetailPage() {
             quantity: 1
         }));
 
-        // ✅ This alert only runs for the dedicated 'ADD TO CART' button
-        alert(`Added "${product.name || product.title}" to cart! (₹${priceINR.toFixed(0)})`);
+        // ✅ ATTRACTIVE UI CHANGE: Using toast.success instead of a plain alert()
+        toast.success(
+            <div className="d-flex align-items-center">
+                <i className="fas fa-check-circle me-2 fs-5"></i>
+                <div className="ms-2">
+                    <div className="fw-bold">Item Added to Cart!</div>
+                    <small className="d-block text-truncate">**{product.name || product.title}** (₹{priceINR})</small>
+                </div>
+            </div>,
+            {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "colored", // Gives a nice green background
+            }
+        );
     };
 
     // 🌟 REFACTORED: Buy Now logic to dispatch without alert and navigate directly
     const handleBuyNow = () => {
         if (!product) return;
-        
+
         const priceINR = (product.price || 0) * EXCHANGE_RATE;
         const paymentSelection = codIsAvailable ? 'cod' : 'online';
 
         if (paymentSelection === 'cod' && !codIsAvailable) {
-            alert("Cash on Delivery is currently unavailable for this item/location. Please select an online payment option.");
+            toast.warning("Cash on Delivery is currently unavailable for this item/location.", {
+                position: "bottom-center",
+                autoClose: 4000,
+                theme: "dark",
+            });
             return;
         }
 
         // 🚨 CRITICAL: Dispatch the product to the Redux cart state.
-        // This ensures the product is available on the checkout page when navigated.
-        // We SKIP the alert here for a seamless 'Buy Now' experience.
         dispatch(addToCart({
             id: product.id,
             title: product.name || product.title || "Product",
@@ -212,7 +248,7 @@ function ProductDetailPage() {
             navigate("/login", { state: { from: "/checkout", paymentMethod: paymentSelection } });
         }
     };
-    
+
     // --- Filtering and Sorting Logic for Similar Products (Unchanged) ---
     const filteredAndSortedCategory = useMemo(() => {
         let list = [...categoryProducts];
@@ -242,6 +278,9 @@ function ProductDetailPage() {
     // --- Main Render ---
     return (
         <Container className="py-4">
+            {/* 🎯 IMPORTANT: Add ToastContainer to render notifications globally */}
+            <ToastContainer />
+
             {/* Main Product Detail Card */}
             <Card style={styles.productDetailContainer} className="p-4 mb-5">
                 <Row>
@@ -308,7 +347,7 @@ function ProductDetailPage() {
                                 </Button>
                             </InputGroup>
                         </div>
-                        
+
                         {/* Delivery & COD Status Lines */}
                         <div className="mb-4 pt-1">
                             <div className="d-flex align-items-center mb-1">
@@ -404,7 +443,8 @@ function ProductDetailPage() {
                                             onClick={(e) => {
                                                 e.preventDefault();
                                                 dispatch(addToCart({ id: p.id, title: p.name || p.title, price: p.priceValue, image: p.images || p.image, quantity: 1 }));
-                                                alert(`Added "${p.name || p.title}" to cart!`);
+                                                // Replaced internal alert with toast for consistent UX
+                                                toast.success(`Added "${p.name || p.title}" to cart!`, { position: "top-right", autoClose: 2000 });
                                             }}>
                                             Add to Cart
                                         </Button>

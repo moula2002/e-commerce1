@@ -20,9 +20,11 @@ import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 
 const auth = getAuth();
 
-// ----------------------------------------------------
-// Helper Function: Fetch Search Suggestions
-// ----------------------------------------------------
+/**
+ * Fetches product suggestions from Firestore based on the search text.
+ * @param {string} searchText - The text entered by the user.
+ * @returns {Promise<Array<{id: string, name: string}>>} A list of matching product suggestions.
+ */
 const fetchSuggestions = async (searchText) => {
     // Placeholder implementation for brevity
     if (!searchText || searchText.trim().length < 2) return [];
@@ -276,9 +278,11 @@ export default function Header() {
         navigate(`/product/${product.id}`);
     };
 
+    // 🌟 CORE FUNCTION TO HANDLE SEARCH BUTTON CLICK / FORM SUBMISSION
     const handleSearchSubmit = () => {
         if (search.trim()) {
             setShowSuggestions(false);
+            // This is the correct navigation to the search results page
             navigate(`/search-results?q=${encodeURIComponent(search.trim())}`);
         }
     };
@@ -329,7 +333,6 @@ export default function Header() {
                     </motion.div>
 
                     {/* 2. RIGHT SIDE ICONS (Visible on all screen sizes, moved right) */}
-                    {/* d-none d-lg-block removes this set of icons on mobile, but they appear in the collapse. On the mobile layout, we want them visible on the top row, so we take them out of the collapse AND the main Nav component and display them using a div */}
                     <div className="d-flex d-lg-none align-items-center ms-auto">
                         {/* Mobile: Account/Sign In Icon */}
                         {currentUser ? (
@@ -363,7 +366,14 @@ export default function Header() {
                         transition={{ duration: 0.4, delay: 0.1 }}
                         style={{ transformOrigin: 'center' }}
                     >
-                        <Form className="d-flex search-form">
+                        <Form
+                            className="d-flex search-form"
+                            // 🌟 Search is triggered here when submitting the form (e.g., pressing enter)
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                handleSearchSubmit();
+                            }}
+                        >
                             <Form.Control
                                 type="search"
                                 placeholder="What is on your mind today?"
@@ -379,6 +389,7 @@ export default function Header() {
                                 <Button
                                     variant="warning"
                                     className="search-btn"
+                                    // 🌟 Search is triggered here when clicking the icon
                                     onClick={handleSearchSubmit}
                                 >
                                     <i className="fas fa-search"></i>
@@ -410,12 +421,8 @@ export default function Header() {
                             </motion.div>
                         )}
                     </motion.div>
-
-
-                    {/* 4. NAVBAR COLLAPSE (Only visible on large screens) */}
                     <Navbar.Collapse id="responsive-navbar-nav" className="d-none d-lg-flex flex-grow-1">
                         <Nav className="mx-auto align-items-center flex-grow-1">
-                            {/* Desktop Search Bar - Takes up majority of center space */}
                             <motion.div
                                 ref={searchBarRef}
                                 className="search-bar-container my-2 my-lg-0 position-relative w-100"
@@ -424,7 +431,14 @@ export default function Header() {
                                 transition={{ duration: 0.4, delay: 0.2 }}
                                 style={{ transformOrigin: 'center' }}
                             >
-                                <Form className="d-flex search-form">
+                                <Form
+                                    className="d-flex search-form"
+                                    // 🌟 Search is triggered here when submitting the form (e.g., pressing enter)
+                                    onSubmit={(e) => {
+                                        e.preventDefault();
+                                        handleSearchSubmit();
+                                    }}
+                                >
                                     <Form.Control
                                         type="search"
                                         placeholder="What is on your mind today?"
@@ -440,6 +454,7 @@ export default function Header() {
                                         <Button
                                             variant="warning"
                                             className="search-btn"
+                                            // 🌟 Search is triggered here when clicking the icon
                                             onClick={handleSearchSubmit}
                                         >
                                             <i className="fas fa-search d-lg-none"></i>
@@ -527,7 +542,6 @@ export default function Header() {
                             </motion.div>
                         </Nav>
                     </Navbar.Collapse>
-                    {/* The `Navbar.Toggle` is not needed since the primary layout for mobile is handled outside the collapse */}
                 </Container>
             </Navbar>
 
@@ -584,15 +598,11 @@ export default function Header() {
                     </Modal.Footer>
                 </motion.div>
             </Modal>
-
-            {/* LOGIN CONFIRMATION MODAL (GREEN - BEST UI) */}
             <LoginConfirmationModal
                 show={showLoginModal}
                 onClose={() => setShowLoginModal(false)}
                 userName={loggedInUserName}
             />
-
-            {/* LOGOUT CONFIRMATION MODAL (RED) */}
             <LogoutConfirmationModal
                 show={showLogoutModal}
                 onClose={() => setShowLogoutModal(false)}

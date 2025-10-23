@@ -19,6 +19,9 @@ import CategoryPage from "./pages/CategoryPage";
 import CartPage from "./components/cartPage/CartPage";
 import CheckoutPage from "./components/cartPage/CheckoutPage";
 import CashOnDelivery from "./components/cartPage/CashOnDelivey";
+import OrderConformPage from "./components/cartPage/OrderConformPage";
+// 🎯 NEW IMPORT: ViewOrderDetails component (Order History)
+import ViewOrderDetails from "./components/cartPage/ViewOrderDetails"; 
 
 // ✅ Category Components
 import Fashion from "./components/category/Fashion";
@@ -47,78 +50,85 @@ const AdminLogin = () => <div className="text-center p-5">Admin Login Page</div>
 const AdminDashboard = () => <div className="text-center p-5">Admin Dashboard Page</div>;
 
 const AppContent = () => {
-  const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith("/admin");
+    const location = useLocation();
+    const isAdminRoute = location.pathname.startsWith("/admin");
 
-  return (
-    <>
-      {!isAdminRoute && <Header />}
+    return (
+        <>
+            {!isAdminRoute && <Header />}
 
-      <main>
-        <Routes>
-          {/* 🔹 Admin Routes */}
-          <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <main>
+                <Routes>
+                    {/* 🔹 Admin Routes */}
+                    <Route path="/admin" element={<AdminLogin />} />
+                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
-          {/* 🔹 Main Routes */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<AuthPage />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/cod" element={<CashOnDelivery />} />
-          <Route path="/support" element={<CustomerSupportCenter />} />
+                    {/* 🔹 Main Routes */}
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/login" element={<AuthPage />} />
+                    <Route path="/cart" element={<CartPage />} />
+                    <Route path="/checkout" element={<CheckoutPage />} />
+                    <Route path="/cod" element={<CashOnDelivery />} />
+                    
+                    {/* 🎯 Order Confirmation Page */}
+                    <Route path="/order-confirm" element={<OrderConformPage />} /> 
 
-          {/* 🔹 Product & Category Routes */}
-          <Route path="/category" element={<CategoryPage />} />
-          <Route path="/category/:categoryName" element={<CategoryPage />} />
-          <Route path="/product/:id" element={<ProductDetailPage />} />
+                    {/* 🚀 NEW ROUTE: View Order Details/History Page */}
+                    <Route path="/orders" element={<ViewOrderDetails />} /> 
 
-          {/* 🔹 Individual Category Pages */}
-          <Route path="/fashion" element={<Fashion />} />
-          <Route path="/accessories" element={<Accessories />} />
-          <Route path="/cosmetics" element={<Cosmetics />} />
-          <Route path="/toys" element={<Toys />} />
-          <Route path="/stationary" element={<Stationary />} />
-          <Route path="/book" element={<Book />} />
-          <Route path="/photoframe" element={<PhotoFrame />} />
-          <Route path="/footwears" element={<Footwears />} />
-          <Route path="/jewellery" element={<Jewellery />} />
-          <Route path="/mens" element={<Mens />} />
-          <Route path="/kids" element={<Kids />} />
-          <Route path="/electronics" element={<Electronics />} />
-          <Route path="/personal-care" element={<PersonalCare />} />
+                    <Route path="/support" element={<CustomerSupportCenter />} />
 
-          {/* 🔹 Footer Policy Pages */}
-          <Route path="/return-policy" element={<ReturnPolicy />} />
-          <Route path="/shipping-policy" element={<ShippingPolicy />} />
-          <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/faqs" element={<Faqs />} />
+                    {/* 🔹 Product & Category Routes */}
+                    <Route path="/category" element={<CategoryPage />} />
+                    <Route path="/category/:categoryName" element={<CategoryPage />} />
+                    <Route path="/product/:id" element={<ProductDetailPage />} />
 
-          {/* 🔹 404 Fallback */}
-          <Route
-            path="*"
-            element={
-              <div className="text-center mt-5 p-5">
-                <h2>404 - Page Not Found</h2>
-                <p className="text-muted">The page you are looking for doesn’t exist.</p>
-              </div>
-            }
-          />
-        </Routes>
-      </main>
+                    {/* 🔹 Individual Category Pages */}
+                    <Route path="/fashion" element={<Fashion />} />
+                    <Route path="/accessories" element={<Accessories />} />
+                    <Route path="/cosmetics" element={<Cosmetics />} />
+                    <Route path="/toys" element={<Toys />} />
+                    <Route path="/stationary" element={<Stationary />} />
+                    <Route path="/book" element={<Book />} />
+                    <Route path="/photoframe" element={<PhotoFrame />} />
+                    <Route path="/footwears" element={<Footwears />} />
+                    <Route path="/jewellery" element={<Jewellery />} />
+                    <Route path="/mens" element={<Mens />} />
+                    <Route path="/kids" element={<Kids />} />
+                    <Route path="/electronics" element={<Electronics />} />
+                    <Route path="/personal-care" element={<PersonalCare />} />
 
-      {!isAdminRoute && <Footer />}
-    </>
-  );
+                    {/* 🔹 Footer Policy Pages */}
+                    <Route path="/return-policy" element={<ReturnPolicy />} />
+                    <Route path="/shipping-policy" element={<ShippingPolicy />} />
+                    <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+                    <Route path="/about-us" element={<AboutUs />} />
+                    <Route path="/faqs" element={<Faqs />} />
+
+                    {/* 🔹 404 Fallback */}
+                    <Route
+                        path="*"
+                        element={
+                            <div className="text-center mt-5 p-5">
+                                <h2>404 - Page Not Found</h2>
+                                <p className="text-muted">The page you are looking for doesn’t exist.</p>
+                            </div>
+                        }
+                    />
+                </Routes>
+            </main>
+
+            {!isAdminRoute && <Footer />}
+        </>
+    );
 };
 
 function App() {
-  return (
-    <Router>
-      <AppContent />
-    </Router>
-  );
+    return (
+        <Router>
+            <AppContent />
+        </Router>
+    );
 }
 
 export default App;

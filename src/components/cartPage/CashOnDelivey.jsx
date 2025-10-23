@@ -1,12 +1,18 @@
 import React from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+
+// 🚨 IMPORT the necessary action from your Redux slice
+import { clearCart } from "../../redux/cartSlice"; 
 
 function CashOnDelivery() {
   const location = useLocation();
   const navigate = useNavigate();
-  const billingDetails = location.state?.billingDetails || {};
+  const dispatch = useDispatch();
+  
+  // Get billing details from the state passed from the previous checkout step
+  const billingDetails = location.state?.billingDetails || {}; 
   const cartItems = useSelector((state) => state.cart.items || []);
 
   const totalPrice = cartItems.reduce(
@@ -26,8 +32,20 @@ function CashOnDelivery() {
       "Do you want to confirm your Cash on Delivery order?"
     );
     if (confirmOrder) {
-      alert("Order confirmed! You will pay on delivery.");
-      // Dispatch action to save order or clear cart
+      // 1. Clear the cart first
+      dispatch(clearCart()); 
+
+      // 2. Navigate to the Order Confirmation Page
+      navigate("/order-confirm", { // <-- 🎯 Navigation to the Order Confirmation Page
+          state: { 
+              paymentMethod: "Cash on Delivery",
+              total: formatPrice(totalPrice), // Pass the formatted total price
+              itemsCount: cartItems.length,   // Pass the count of items
+              // 🎯 PASSING THE REAL ADDRESS DATA
+              billingDetails: billingDetails
+          } 
+      });
+      
     } else {
       alert("Order not placed. You can continue shopping.");
     }
@@ -35,7 +53,7 @@ function CashOnDelivery() {
 
   // Handle back navigation
   const handleBack = () => {
-    navigate("/checkout");  // Navigate back to CheckoutPage
+    navigate("/checkout"); // Navigate back to CheckoutPage
   };
 
   return (
