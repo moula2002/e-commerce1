@@ -107,7 +107,7 @@ body {
     border-color: #e0e0e0;
 }
 
-/* -------------------- ACCOUNT & CART ICONS -------------------- */
+/* -------------------- ACCOUNT & CART ICONS (DESKTOP) -------------------- */
 
 .cart-button {
     /* Ensures cart is styled as a link/icon group */
@@ -138,7 +138,7 @@ body {
     right: 0;
 }
 
-/* -------------------- SEARCH BAR -------------------- */
+/* -------------------- SEARCH BAR (DESKTOP) -------------------- */
 .search-bar-container {
     position: relative;
     max-width: 700px;
@@ -267,32 +267,87 @@ body {
     padding: 10px 0;
     /* STICKY PROPERTIES */
     position: sticky; /* ஒட்டும் நிலைக்கு மாற்றுகிறது */
-    top: 0;          /* ஸ்கிரீனின் மேல் விளிம்பில் ஒட்டுகிறது */
-    z-index: 1000;   /* மற்ற content-ஐ விட மேலே வைக்கிறது */
+    top: 0;          /* ஸ்கிரீனின் மேல் விளிம்பில் ஒட்டுகிறது */
+    z-index: 1000;   /* மற்ற content-ஐ விட மேலே வைக்கிறது */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* லேசான shadow ஒட்டும்போது அழகாக இருக்கும் */
 }
 
-/* -------------------- RESPONSIVE -------------------- */
+/* -------------------- RESPONSIVE (MOBILE) -------------------- */
 @media (max-width: 992px) {
-    .search-bar-container {
+    /* 1. Mobile Top Row Setup */
+    .navbar-custom .container-fluid {
+        /* This is key: uses flex-wrap to allow elements to wrap to the next line */
+        flex-wrap: wrap; 
+        align-items: flex-start; /* Align all items to the start of the container */
+    }
+
+    /* 2. Mobile Search Bar */
+    .search-bar-container-mobile {
         max-width: 100%;
-        margin: 10px 0;
+        /* Ensures the search bar spans the full width of the container on its own row */
+        order: 3; /* Forces the search bar to the third position, after logo and icons */
+        margin: 5px 0 !important;
     }
-
-    /* Ensure mobile menu links look right on a white background */
-    .navbar-collapse .nav-link-custom {
+    
+    .search-bar-container-mobile .search-btn {
+        min-width: 40px; /* Smaller search button for mobile */
+        padding: 0 10px;
+    }
+    .search-bar-container-mobile .search-btn span {
+        display: none; /* Hide 'Search' text on mobile */
+    }
+    .search-bar-container-mobile .fa-search {
+        display: block !important; /* Show search icon on mobile button */
+    }
+    
+    /* 3. Mobile Account/Cart Icons */
+    .account-button-mobile,
+    .cart-button-mobile {
+        /* Smaller buttons with padding for just the icon */
+        padding: 8px 10px !important; 
+        font-size: 1.1rem;
+        border: none !important;
+        background-color: transparent !important;
         color: var(--text-dark) !important;
-        justify-content: start;
-        /* Align text left in mobile menu */
     }
 
-    /* Hide the text labels for the icons and only show the icons themselves on small screens */
-    .nav-link-custom span:not(.cart-count) {
+    .cart-button-mobile {
+        position: relative;
+    }
+
+    /* Cart Count on Mobile Icon */
+    .cart-count-mobile {
+        background-color: var(--shopclues-dark-red);
+        color: var(--text-white);
+        font-size: 0.7rem;
+        padding: 1px 5px;
+        border-radius: 50%;
+        font-weight: bold;
+        min-width: 18px;
+        text-align: center;
+        position: absolute;
+        top: -3px;
+        right: 0px; 
+    }
+    
+    .account-button-mobile:hover,
+    .cart-button-mobile:hover {
+        background-color: #f0f0f0 !important;
+    }
+
+    /* Since we're not using the toggle, we can hide the default Bootstrap toggle button */
+    .navbar-toggler {
         display: none;
     }
 
-    .nav-link-custom i {
-        margin-right: 0 !important;
+    /* We hide the desktop location text */
+    .location {
+        display: none !important;
+    }
+
+    /* Make sure the main search bar for desktop is hidden */
+    .search-bar-container {
+        display: none !important;
     }
 }
 
