@@ -55,10 +55,13 @@ const cartSlice = createSlice({
             saveCartToStorage(state.items); // 💾 Save updated cart
         },
         
-        increaseQuantity: (state, action) => {
-            const item = state.items.find(item => item.id === action.payload.id);
-            if (item) {
-                item.quantity++;
+        increaseQuantity: (state, action, stock) => {
+            if(stock <= 0){
+
+                const item = state.items.find(item => item.id === action.payload.id);
+                if (item) {
+                    item.quantity++;
+                }
             }
             saveCartToStorage(state.items); // 💾 Save updated cart
         },

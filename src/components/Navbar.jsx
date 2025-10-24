@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// Bootstrap components
+
 import { Navbar, Nav, Container, Button, Modal, Form } from "react-bootstrap";
-// Animation library
+
 import { motion } from "framer-motion";
 // Redux actions
 import { setLocation } from "../redux/store";
-// Components
-// We need to pass a callback to AuthPage to handle successful login
 import AuthPage from "../pages/LoginPage";
 import SecondHeader from "./searchBar/SecondHeader";
 import "./Navbar.css";
@@ -58,9 +56,6 @@ const fetchSuggestions = async (searchText) => {
     }
 };
 
-// ----------------------------------------------------
-// Component: Animated Login Confirmation Modal 
-// ----------------------------------------------------
 const LoginConfirmationModal = ({ show, onClose, userName }) => {
     if (!show) return null;
 
@@ -73,21 +68,18 @@ const LoginConfirmationModal = ({ show, onClose, userName }) => {
             className="login-success-modal" // Custom CSS target
         >
             <motion.div
-                // Framer Motion: Spring-like entry animation
                 initial={{ opacity: 0, scale: 0.7, y: -50 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ duration: 0.3, type: "spring", damping: 15, stiffness: 300 }}
             >
                 <Modal.Body className="p-4 text-center py-5">
 
-                    {/* ICON CONTAINER - Animated Separately */}
                     <motion.div
                         initial={{ scale: 0.5 }}
                         animate={{ scale: 1 }}
                         transition={{ duration: 0.5, type: "spring" }}
                         className="text-success mb-4"
                     >
-                        {/* Checkmark icon with custom CSS animation (success-bounce) */}
                         <i className="fas fa-check-circle"></i>
                     </motion.div>
 
@@ -109,9 +101,6 @@ const LoginConfirmationModal = ({ show, onClose, userName }) => {
     );
 };
 
-// ----------------------------------------------------
-// Component: Logout Confirmation Modal 
-// ----------------------------------------------------
 const LogoutConfirmationModal = ({ show, onClose }) => {
     if (!show) return null;
 
@@ -166,17 +155,14 @@ export default function Header() {
 
     const [showAuthModal, setShowAuthModal] = useState(false);
     const [showLocationModal, setShowLocationModal] = useState(false);
-    // Initialize newLocation with the current Redux location
     const [newLocation, setNewLocation] = useState(location || "");
     const [search, setSearch] = useState("");
 
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
 
-    // Auth state for conditional rendering
     const [currentUser, setCurrentUser] = useState(null);
 
-    // NEW STATE: Login success modal
     const [showLoginModal, setShowLoginModal] = useState(false);
     // Logout success modal
     const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -327,6 +313,7 @@ export default function Header() {
                             href="/"
                             className="shopclues-logo d-flex align-items-center"
                         >
+                            <img src="./Sadhanacart1.png" alt="" style={{width:"25px"}} />
                             <span className="brand-text">Sadhana
                                 <span style={{ color: "orangered" }}>Cart</span></span>
                         </Navbar.Brand>
@@ -386,14 +373,7 @@ export default function Header() {
                                 onKeyDown={handleKeyPress}
                             />
                             <motion.div whileTap={{ scale: 0.95 }}>
-                                <Button
-                                    variant="warning"
-                                    className="search-btn"
-                                    // 🌟 Search is triggered here when clicking the icon
-                                    onClick={handleSearchSubmit}
-                                >
-                                    <i className="fas fa-search"></i>
-                                </Button>
+                                
                             </motion.div>
                         </Form>
 
@@ -431,37 +411,28 @@ export default function Header() {
                                 transition={{ duration: 0.4, delay: 0.2 }}
                                 style={{ transformOrigin: 'center' }}
                             >
-                                <Form
-                                    className="d-flex search-form"
-                                    // 🌟 Search is triggered here when submitting the form (e.g., pressing enter)
-                                    onSubmit={(e) => {
-                                        e.preventDefault();
-                                        handleSearchSubmit();
-                                    }}
-                                >
-                                    <Form.Control
-                                        type="search"
-                                        placeholder="What is on your mind today?"
-                                        className="search-input"
-                                        value={search}
-                                        onChange={(e) => setSearch(e.target.value)}
-                                        onFocus={() => {
-                                            if (suggestions.length > 0 && search.trim().length > 1) setShowSuggestions(true);
-                                        }}
-                                        onKeyDown={handleKeyPress}
-                                    />
-                                    <motion.div whileTap={{ scale: 0.95 }}>
-                                        <Button
-                                            variant="warning"
-                                            className="search-btn"
-                                            // 🌟 Search is triggered here when clicking the icon
-                                            onClick={handleSearchSubmit}
-                                        >
-                                            <i className="fas fa-search d-lg-none"></i>
-                                            <span className="d-none d-lg-block">Search</span>
-                                        </Button>
-                                    </motion.div>
-                                </Form>
+                              
+                                    <Form
+  className="d-flex align-items-center justify-content-center gap-2"
+  onSubmit={(e) => {
+    e.preventDefault();
+    handleSearchSubmit();
+  }}
+>
+  <Form.Control
+    type="search"
+    placeholder="What is on your mind today?"
+    className="form-control rounded-pill shadow-sm"
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    onFocus={() => {
+      if (suggestions.length > 0 && search.trim().length > 1)
+        setShowSuggestions(true);
+    }}
+    onKeyDown={handleKeyPress}
+  />
+  
+</Form>
 
                                 {/* Search Suggestions Dropdown */}
                                 {showSuggestions && suggestions.length > 0 && (

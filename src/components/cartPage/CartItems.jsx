@@ -86,5 +86,4 @@ const CartItems = ({ items, onIncrease, onDecrease, onRemove }) => {
     </div>
   );
 };
-
 export default CartItems;

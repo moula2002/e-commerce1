@@ -1,17 +1,27 @@
 // src/components/category/HomePhotoFrameSection.jsx
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Card, Spinner, Button, Badge } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Spinner,
+  Button,
+  Badge,
+} from "react-bootstrap";
 import { db } from "../../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
-// 🎨 DEFINE CONSTANTS FOR MODERN AESTHETICS (Same as HomeFashionSection)
-const PRIMARY_TEXT_COLOR = "#101010"; // Near-Black
-const ACCENT_COLOR = "#198754"; // Green accent
-const SALE_COLOR = "#dc3545"; // Bootstrap Red
+// 🎨 STYLE CONSTANTS
+const PRIMARY_TEXT_COLOR = "#101010";
+const ACCENT_COLOR = "#198754";
+const SALE_COLOR = "#dc3545";
 const WHITE_COLOR = "#FFFFFF";
 
-// 🎨 Custom CSS (Same as HomeFashionSection)
+// 🎨 CUSTOM STYLES
 const customStyles = {
   sectionContainer: {
     backgroundColor: WHITE_COLOR,
@@ -67,8 +77,18 @@ const customStyles = {
     marginBottom: "1px",
     letterSpacing: "0.5px",
   },
-  title: { fontSize: "1rem", fontWeight: "700", color: PRIMARY_TEXT_COLOR, marginBottom: "4px" },
-  price: { fontSize: "1.4rem", fontWeight: "900", color: SALE_COLOR, letterSpacing: "-0.5px" },
+  title: {
+    fontSize: "1rem",
+    fontWeight: "700",
+    color: PRIMARY_TEXT_COLOR,
+    marginBottom: "4px",
+  },
+  price: {
+    fontSize: "1.4rem",
+    fontWeight: "900",
+    color: SALE_COLOR,
+    letterSpacing: "-0.5px",
+  },
   originalPrice: { fontSize: "0.8rem", color: "#adb5bd" },
   header: {
     fontSize: "2.5rem",
@@ -123,7 +143,7 @@ const customStyles = {
   },
 };
 
-// Hover Effects (Same as HomeFashionSection)
+// 🧠 Utility Functions
 const handleCardMouseEnter = (e) => {
   e.currentTarget.style.transform = "translateY(-8px)";
   e.currentTarget.style.boxShadow = "0 20px 40px rgba(0, 0, 0, 0.15)";
@@ -134,39 +154,54 @@ const handleCardMouseLeave = (e) => {
   e.currentTarget.style.boxShadow = customStyles.productCard.boxShadow;
   e.currentTarget.querySelector("img").style.transform = "scale(1)";
 };
-const handleViewDealMouseEnter = (e) => Object.assign(e.currentTarget.style, customStyles.viewDealButtonHover);
-const handleViewDealMouseLeave = (e) => Object.assign(e.currentTarget.style, { ...customStyles.viewDealButton, transform: "none", boxShadow: "none" });
-const handleExploreMouseEnter = (e) => Object.assign(e.currentTarget.style, customStyles.exploreButtonHover);
-const handleExploreMouseLeave = (e) => Object.assign(e.currentTarget.style, { ...customStyles.exploreButton, transform: "none", boxShadow: customStyles.exploreButton.boxShadow });
+const handleViewDealMouseEnter = (e) =>
+  Object.assign(e.currentTarget.style, customStyles.viewDealButtonHover);
+const handleViewDealMouseLeave = (e) =>
+  Object.assign(e.currentTarget.style, {
+    ...customStyles.viewDealButton,
+    transform: "none",
+    boxShadow: "none",
+  });
+const handleExploreMouseEnter = (e) =>
+  Object.assign(e.currentTarget.style, customStyles.exploreButtonHover);
+const handleExploreMouseLeave = (e) =>
+  Object.assign(e.currentTarget.style, {
+    ...customStyles.exploreButton,
+    transform: "none",
+    boxShadow: customStyles.exploreButton.boxShadow,
+  });
 
-// Helper functions (Same as HomeFashionSection)
 const getProductImageSource = (product) => {
-  if (typeof product.image === "string" && product.image.trim() !== "") return product.image;
-  if (Array.isArray(product.images) && product.images.length > 0) return product.images[0];
+  if (typeof product.image === "string" && product.image.trim() !== "")
+    return product.image;
+  if (Array.isArray(product.images) && product.images.length > 0)
+    return product.images[0];
   return "https://placehold.co/300x380/e0e0e0/555?text=NO+IMAGE";
 };
 const calculateDiscount = (price, originalPrice) => {
-  const p = Number(price);
-  const op = Number(originalPrice);
-  if (op > p) return Math.round(((op - p) / op) * 100);
+  if (originalPrice > price)
+    return Math.round(((originalPrice - price) / originalPrice) * 100);
   return 0;
 };
 const generateDummyProduct = (index) => {
-  const basePrice = Math.floor(Math.random() * 1500) + 500;
+  const basePrice = Math.floor(Math.random() * 800) + 1500;
   const discountFactor = Math.random() * 0.5 + 0.3;
   const finalPrice = Math.floor(basePrice * discountFactor);
-  const originalPrice = basePrice <= finalPrice ? finalPrice + Math.floor(Math.random() * 500) + 500 : basePrice;
+  const originalPrice =
+    basePrice <= finalPrice
+      ? finalPrice + Math.floor(Math.random() * 500) + 500
+      : basePrice;
   return {
-    id: `photoframe-dummy-${index}`,
+    id: `home-dummy-${index}`,
     name: `Elegant Photo Frame ${index + 1}`,
     brand: "HOME GALLERY",
     price: finalPrice,
     originalPrice,
-    image: `https://picsum.photos/seed/homeframe${index}/300/300`,
+    image: `https://picsum.photos/seed/home${index}/300/300`,
   };
 };
 
-// Main Component
+// 🧩 MAIN COMPONENT
 function HomePhotoFrameSection() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -179,12 +214,19 @@ function HomePhotoFrameSection() {
   }, []);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchHomeFrames = async () => {
       setLoading(true);
-      const productLimit = 4;
       try {
-        // Targetting the 'Home' category as per the likely intent of a PhotoFrame section
-        const categoryName = "Home"; 
+        // 🧠 LocalStorage cache check
+        const cached = localStorage.getItem("homeProducts");
+        if (cached) {
+          setProducts(JSON.parse(cached));
+          setLoading(false);
+          return;
+        }
+
+        const categoryName = "Home";
+        const productLimit = 4;
         const productsRef = collection(db, "products");
         const q = query(productsRef, where("category", "==", categoryName));
         const snapshot = await getDocs(q);
@@ -193,13 +235,16 @@ function HomePhotoFrameSection() {
           id: doc.id,
           ...doc.data(),
           price: doc.data().price ? Number(doc.data().price) : 499,
-          originalPrice: doc.data().originalPrice ? Number(doc.data().originalPrice) : 999,
+          originalPrice: doc.data().originalPrice
+            ? Number(doc.data().originalPrice)
+            : 999,
         }));
 
-        // Fill dummy if less than limit (Same logic as HomeFashionSection)
-        while (data.length < productLimit) data.push(generateDummyProduct(data.length));
+        // Ensure at least 4 items
+        while (data.length < productLimit)
+          data.push(generateDummyProduct(data.length));
 
-        // Shuffle products (Same logic as HomeFashionSection)
+        // Shuffle & limit
         for (let i = data.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [data[i], data[j]] = [data[j], data[i]];
@@ -207,6 +252,7 @@ function HomePhotoFrameSection() {
 
         data = data.slice(0, productLimit);
         setProducts(data);
+        localStorage.setItem("homeProducts", JSON.stringify(data)); // Cache
       } catch (err) {
         console.warn("Firebase fetch failed, using dummy products:", err);
         setProducts(Array.from({ length: 4 }, (_, i) => generateDummyProduct(i)));
@@ -214,7 +260,7 @@ function HomePhotoFrameSection() {
         setLoading(false);
       }
     };
-    fetchProducts();
+    fetchHomeFrames();
   }, []);
 
   return (
@@ -227,23 +273,35 @@ function HomePhotoFrameSection() {
             <div style={customStyles.headerUnderline}></div>
           </h3>
           <p className="text-muted mt-2 fs-6 fw-light d-none d-sm-block">
-            Find the perfect photo frame and home decor essentials.
+            Discover premium photo frames and home décor deals.
           </p>
         </div>
 
         {loading ? (
           <div className="text-center py-4">
             <Spinner animation="border" variant="success" />
-            <p className="mt-2 text-muted fs-6">Loading featured home frames...</p>
+            <p className="mt-2 text-muted fs-6">Loading home products...</p>
           </div>
         ) : (
           <>
-            <Row xs={2} sm={2} md={3} lg={4} className="g-2 g-md-3 justify-content-center">
+            <Row
+              xs={2}
+              sm={2}
+              md={3}
+              lg={4}
+              className="g-2 g-md-3 justify-content-center"
+            >
               {products.map((product) => {
-                const discountPercent = calculateDiscount(product.price, product.originalPrice);
+                const discountPercent = calculateDiscount(
+                  product.price,
+                  product.originalPrice
+                );
                 return (
                   <Col key={product.id}>
-                    <Link to={`/product/${product.id}`} className="text-decoration-none d-block">
+                    <Link
+                      to={`/product/${product.id}`}
+                      className="text-decoration-none d-block"
+                    >
                       <Card
                         className="h-100 product-card"
                         style={customStyles.productCard}
@@ -251,13 +309,15 @@ function HomePhotoFrameSection() {
                         onMouseLeave={handleCardMouseLeave}
                       >
                         {discountPercent > 0 && (
-                          <Badge style={customStyles.discountBadge}>-{discountPercent}% OFF</Badge>
+                          <Badge style={customStyles.discountBadge}>
+                            -{discountPercent}% OFF
+                          </Badge>
                         )}
                         <div style={customStyles.imageContainer(isMobile)}>
-                          <Card.Img
-                            variant="top"
+                          <LazyLoadImage
                             src={getProductImageSource(product)}
                             alt={product.name}
+                            effect="blur"
                             style={customStyles.productImage}
                             onError={(e) =>
                               (e.target.src =
@@ -266,16 +326,27 @@ function HomePhotoFrameSection() {
                           />
                         </div>
                         <Card.Body className="text-start p-2 p-md-3 d-flex flex-column">
-                          <p style={customStyles.brandText} className="text-uppercase">
+                          <p
+                            style={customStyles.brandText}
+                            className="text-uppercase"
+                          >
                             {product.brand}
                           </p>
-                          <Card.Title style={customStyles.title} className="text-truncate">
+                          <Card.Title
+                            style={customStyles.title}
+                            className="text-truncate"
+                          >
                             {product.name}
                           </Card.Title>
                           <div className="d-flex align-items-baseline justify-content-between mt-auto pt-1 pt-md-2">
-                            <Card.Text style={customStyles.price}>₹{product.price}</Card.Text>
+                            <Card.Text style={customStyles.price}>
+                              ₹{product.price}
+                            </Card.Text>
                             {product.originalPrice > product.price && (
-                              <small style={customStyles.originalPrice} className="text-decoration-line-through">
+                              <small
+                                style={customStyles.originalPrice}
+                                className="text-decoration-line-through"
+                              >
                                 ₹{product.originalPrice}
                               </small>
                             )}

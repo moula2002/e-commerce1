@@ -2,7 +2,6 @@ import { configureStore } from "@reduxjs/toolkit";
 // Assuming you have these slice reducers defined elsewhere
 import cartReducer from "./cartSlice";
 import footerReducer from "./footerSlice";
-import productReducer from "./productSlice"; 
 
 // 🧩 Header slice definition using plain Redux pattern (as per your original code)
 const initialHeader = { location: "Bengaluru", cartCount: 0 };
@@ -50,7 +49,6 @@ export const store = configureStore({
     // Other reducers
     cart: cartReducer,
     footer: footerReducer,
-    products: productReducer,
     
     // Header reducer is now a separate function imported here
     header: headerReducer, 
